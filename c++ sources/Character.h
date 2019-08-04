@@ -16,7 +16,7 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt;
+	int map_change_attempt,inventory_size;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
 	Item* equipped_items[NUM_SLOTS-1];
@@ -25,10 +25,10 @@ public:
 	void Change_map(Map*,COORD);
 	void Draw();
 	void Move();
+	void Show_inventory();
 	friend int Check_terrain(Character, COORD);
-	friend void Transfer_from_container(Character*, Container*);
 	Character();
-	Character(int, int,Map*);
+	Character(int, int,Map*,int);
 };
 
 

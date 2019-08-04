@@ -59,6 +59,7 @@ Object* Map::Get_obj(COORD coordonata) {
 	for (int i = 0; i < num_obj; i++) {
 		if (Compare_coord2(coordonata, objects[i]->GetCoord())) return objects[i];
 	}
+	return nullptr;
 }
 
 char Map::GetLoc(COORD coord) {

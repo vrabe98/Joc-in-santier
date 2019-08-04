@@ -52,12 +52,27 @@ int Check_terrain(Character caract,COORD coordonata) {		//function checks if the
 	}
 }
 
+void Character::Show_inventory() {
+	system("cls");
+	printf("Inventory:\n");
+	for (int i = 0; i < inventory_size; i++) {
+		printf("%d. ", i);
+		inventory[i]->Show_info();
+		printf("\n");
+	}
+	printf("\n\n");
+	system("pause");
+}
+
 void Character::Move() {
 	COORD new_coord = coordonate;
 	int entered_connection = 0;
 	int check_ter;
-	while (!GetAsyncKeyState(VK_UP) && !GetAsyncKeyState(VK_DOWN) && !GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_RIGHT)&&!GetAsyncKeyState(VK_RETURN)) {}
-	if (GetAsyncKeyState(VK_UP) & (1 << 16)) {				//if the UP arrow key is pressed
+	while (!GetAsyncKeyState(VK_UP) && !GetAsyncKeyState(VK_DOWN) && !GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_RIGHT)&&!GetAsyncKeyState(VK_RETURN)&&!GetAsyncKeyState(0x49)) {}
+	if (GetAsyncKeyState(0x49)&(1<<16)) {					//if I is pressed
+		Show_inventory();
+	}
+	else if (GetAsyncKeyState(VK_UP) & (1 << 16)) {				//if the UP arrow key is pressed
 		new_coord.Y-=1;
 	}
 	else if (GetAsyncKeyState(VK_DOWN) & (1 << 16)) {		//DOWN arrow key press
@@ -75,7 +90,9 @@ void Character::Move() {
 	}
 	check_ter = Check_terrain(*this, new_coord);
 	if (check_ter == 2) {
-		(current_map->Get_obj(new_coord))->Interact();
+		Item* item=(current_map->Get_obj(new_coord))->Interact();
+		inventory[inventory_size] = item;
+		inventory_size++;
 	}
 	else if ((check_ter == 1) && !entered_connection) coordonate = new_coord;
 }
@@ -85,10 +102,11 @@ void Character::Change_map(Map* map,COORD coord) {
 	coordonate = coord;
 }
 
-Character::Character(int x, int y,Map* starting_map) {
+Character::Character(int x, int y,Map* starting_map,int inv_size) {
 	coordonate.X = x;
 	coordonate.Y = y;
 	current_map = starting_map;
+	inventory_size = inv_size;
 	map_change_attempt = 1;
 }
 

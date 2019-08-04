@@ -13,7 +13,7 @@ protected:
 	COORD coordonate;
 public:
 	virtual void Load(std::ifstream&,Item**)=0;
-	virtual void Interact() = 0;
+	virtual Item* Interact() = 0;
 	virtual int IsContainer() = 0;
 	virtual int IsGeneric() = 0;
 	virtual void Draw()=0;
@@ -32,8 +32,9 @@ class Generic_object :public Object {
 public:
 	void Draw();
 	void Load(std::ifstream&,Item**);
-	inline void Interact() {
+	inline Item* Interact() {
 		printf("Interaction not possible");
+		return nullptr;
 	}
 	inline int IsContainer() {
 		return 0;
@@ -48,7 +49,7 @@ class Container:public Object {
 	Item* inventory[MAX_STORAGE];
 public:
 	void Load(std::ifstream&,Item**);
-	void Interact();
+	Item* Interact();
 	void Draw();
 	inline int Get_inventory_size() {
 		return inventory_size;

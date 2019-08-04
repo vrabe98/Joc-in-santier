@@ -68,14 +68,34 @@ void Container::Load_inventory(std::ifstream& obj_stream,Item** db) {
 	}
 }
 
-void Container::Interact() {
+Item* Container::Interact() {
+	char c;
 	system("cls");
 	printf("Inventory:\n");
 	for (int i = 0; i < inventory_size; i++) {
-		printf("%d. ", i+1);
+		printf("%d. ", i);
 		inventory[i]->Show_info();
 		printf("\n");
 	}
-	printf("\n\nPress any key to continue");
-	std::cin.get();
+	printf("\n\n");
+	printf("Do you want to transfer any item to your inventory? (y/n) ");
+	std::cin >> c;
+	if (c == 'n') {
+		system("cls");
+		return nullptr;
+	}
+	else if (c == 'y') {
+		int opt;
+		Item* item;
+		printf("Which item do you want to get? (enter the order number, the one before the item name) ");
+		std::cin >> opt;
+		if (opt >= inventory_size) return nullptr;
+		else {
+			item = inventory[opt];
+			inventory[opt] = nullptr;
+			system("cls");
+			return item;
+		}
+	}
+	else Interact();
 }

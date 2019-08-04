@@ -29,7 +29,7 @@ void Game::Load_maps(std::ifstream& map_stream) {
 }
 
 void Game::Load_MainCharacter(std::ifstream& character_stream) {
-	int map_id=0,x=0,y=0;
+	int map_id=0,x=0,y=0,inventory_size=0;
 	std::string aux;
 	getline(character_stream, aux, '\n');
 	if (aux == "Starting map ID:") {
@@ -40,7 +40,11 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	if (aux == "Starting coordinates:") {
 		character_stream >> y >> x;
 	}
-	main_character = new Character(x, y, &maps[map_id]);
+	getline(character_stream, aux, '\n');
+	if (aux == "Inventory size:") {
+		character_stream >> inventory_size;
+	}
+	main_character = new Character(x, y, &maps[map_id],inventory_size);
 }
 
 void Game::Load_connections(std::ifstream& conn_stream) {
