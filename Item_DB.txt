@@ -1,0 +1,31 @@
+First: Number of items;
+Type
+Item_ID
+Name
+Equip slot (1-Weapon, 0-Armor, -1 - Generic/Non-Equipable)
+Stat
+Weight
+;;
+3
+;;
+Weapon
+0
+Cartea de fizica a lui Zaharie
+1
+1
+100
+;;
+Armor
+1
+Armura de bronz de la Termopile
+0
+10
+100
+;;
+Generic
+2
+Sendvisul Inghetat al Disperarii
+-1
+1
+-1
+;;
