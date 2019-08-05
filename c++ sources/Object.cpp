@@ -92,7 +92,10 @@ Item* Container::Interact() {
 		if (opt >= inventory_size) return nullptr;
 		else {
 			item = inventory[opt];
-			inventory[opt] = nullptr;
+			for (int i = opt; i < inventory_size-1; i++) {
+				inventory[i] = inventory[i + 1];
+			}
+			inventory_size--;
 			system("cls");
 			return item;
 		}

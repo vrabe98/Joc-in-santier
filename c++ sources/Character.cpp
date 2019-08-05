@@ -91,8 +91,10 @@ void Character::Move() {
 	check_ter = Check_terrain(*this, new_coord);
 	if (check_ter == 2) {
 		Item* item=(current_map->Get_obj(new_coord))->Interact();
-		inventory[inventory_size] = item;
-		inventory_size++;
+		if (item != nullptr) {
+			inventory[inventory_size] = item;
+			inventory_size++;
+		}
 	}
 	else if ((check_ter == 1) && !entered_connection) coordonate = new_coord;
 }
