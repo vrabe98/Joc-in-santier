@@ -26,6 +26,7 @@ public:
 	void Draw();
 	void Move();
 	void Show_inventory();
+	void Query_inventory(Object*);
 	friend int Check_terrain(Character, COORD);
 	Character();
 	Character(int, int,Map*,int);

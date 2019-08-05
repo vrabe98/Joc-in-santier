@@ -68,9 +68,12 @@ void Container::Load_inventory(std::ifstream& obj_stream,Item** db) {
 	}
 }
 
-Item* Container::Interact() {
-	char c;
-	system("cls");
+void Container::Transfer_to(Item* item) {
+	inventory[inventory_size - 1] = item;
+	inventory_size++;
+}
+
+void Container::Show_inventory() {
 	printf("Inventory:\n");
 	for (int i = 0; i < inventory_size; i++) {
 		printf("%d. ", i);
@@ -78,7 +81,13 @@ Item* Container::Interact() {
 		printf("\n");
 	}
 	printf("\n\n");
-	printf("Do you want to transfer any item to your inventory? (y/n) ");
+}
+
+Item* Container::Interact() {
+	char c;
+	system("cls");
+	Show_inventory();
+	printf("Do you want to transfer any item to your inventory? (y/n): ");
 	std::cin >> c;
 	if (c == 'n') {
 		system("cls");
@@ -87,7 +96,7 @@ Item* Container::Interact() {
 	else if (c == 'y') {
 		int opt;
 		Item* item;
-		printf("Which item do you want to get? (enter the order number, the one before the item name) ");
+		printf("Which item do you want to get? (enter the order number, the one before the item name): ");
 		std::cin >> opt;
 		if (opt >= inventory_size) return nullptr;
 		else {
@@ -100,5 +109,8 @@ Item* Container::Interact() {
 			return item;
 		}
 	}
-	else Interact();
+	else {
+		system("cls");
+		Interact();
+	}
 }

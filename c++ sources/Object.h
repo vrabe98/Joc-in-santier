@@ -14,8 +14,10 @@ protected:
 public:
 	virtual void Load(std::ifstream&,Item**)=0;
 	virtual Item* Interact() = 0;
+	virtual void Transfer_to(Item*)=0;
 	virtual int IsContainer() = 0;
 	virtual int IsGeneric() = 0;
+	virtual void Show_inventory() = 0;
 	virtual void Draw()=0;
 	inline COORD GetCoord() {
 		return coordonate;
@@ -32,6 +34,12 @@ class Generic_object :public Object {
 public:
 	void Draw();
 	void Load(std::ifstream&,Item**);
+	inline void Transfer_to(Item* item) {
+		printf("The item is not a container!");
+	}
+	inline void Show_inventory() {
+		printf("The object is not a container!");
+	}
 	inline Item* Interact() {
 		printf("Interaction not possible");
 		return nullptr;
@@ -51,6 +59,8 @@ public:
 	void Load(std::ifstream&,Item**);
 	Item* Interact();
 	void Draw();
+	void Transfer_to(Item*);
+	void Show_inventory();
 	inline int Get_inventory_size() {
 		return inventory_size;
 	}
