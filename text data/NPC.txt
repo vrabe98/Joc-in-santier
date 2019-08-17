@@ -1,17 +1,21 @@
+NPC_ID (incremental, from 0, to help with dialogue file)
 Map_ID
 Coordinate_x Coordinate_y
 Name
 ;;
 3
 ;;
+0
 1
 4 4
 Toma Leonida Dragomir
 ;;
 1
+1
 5 5
 Marian Greconici
 ;;
+2
 1
 6 6
 Ioan Zaharie

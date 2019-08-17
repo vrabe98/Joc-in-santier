@@ -9,6 +9,10 @@ int Compare_coord(COORD coord1,COORD coord2) {
 	else return 0;
 }
 
+int Game::Check_NPC(int auxint, std::string aux) {
+	int j = 1;
+	return npcs[auxint]->CheckName(aux);
+}
 void Game::Load_maps(std::ifstream& map_stream) {
 	std::string aux;
 	for (int i = 0; i < 5; i++) {				//skip file format specifiers at the top
@@ -49,6 +53,9 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 
 void Game::Load_connections(std::ifstream& conn_stream) {
 	std::string aux;
+	for (int i = 0; i < 6; i++) {				//skip file format specifiers at the top
+		getline(conn_stream, aux, '\n');
+	}
 	conn_stream >> num_conn;
 	conn_stream >> aux;
 	if (aux != ";;") {
@@ -93,7 +100,7 @@ void Game::Load_objects(std::ifstream& obj_stream) {
 
 void Game::Load_npcs(std::ifstream& npc_stream) {
 	std::string aux;
-	for (int i = 0; i < 4; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 5; i++) {				//skip file format specifiers at the top
 		getline(npc_stream, aux, '\n');
 	}
 	npc_stream >> num_chars;
@@ -104,6 +111,8 @@ void Game::Load_npcs(std::ifstream& npc_stream) {
 	}
 	for (int i = 0; i < num_chars; i++) {
 		npcs[i] = new NPC;
+		npc_stream.ignore();				//ignores the character ID
+		npc_stream.ignore();				//ignores the newline after the character ID
 		npcs[i]->Load(npc_stream, maps);
 	}
 }
@@ -136,19 +145,51 @@ void Game::Load_item_db(std::ifstream& item_db_stream) {
 	}
 }
 
-void Game::Load(std::string maps_file_name, std::string character_file_name,std::string conn_file_name,std::string obj_file_name,std::string npc_file_name,std::string item_db_file) {
-	std::ifstream map_stream(maps_file_name, std::ifstream::in);
-	std::ifstream character_stream(character_file_name, std::ifstream::in);
-	std::ifstream connections_stream(conn_file_name, std::ifstream::in);
-	std::ifstream objects_stream(obj_file_name, std::ifstream::in);
-	std::ifstream npc_stream(npc_file_name, std::ifstream::in);
+void Game::Load_dialogues(std::ifstream& dialogue_stream) {
+	std::string aux;
+	for (int i = 0; i < 23; i++) {				//skip file format specifiers at the top
+		getline(dialogue_stream, aux, '\n');
+	}
+	for (int i = 0; i < num_chars; i++) {
+		DialogueState* root = new DialogueState;
+		std::string _aux;
+		int auxint;
+		dialogue_stream >> auxint;
+		dialogue_stream.ignore();
+		getline(dialogue_stream, _aux, '\n');
+		if (Check_NPC(auxint, _aux)) {
+			dialogue_stream >> _aux;
+			if (_aux == ";;") {
+				root->Load(dialogue_stream,0);
+			}
+			else {
+				printf("Dialogue file corrupted!");
+				exit(1);
+			}
+		}
+		else {
+			printf("Dialogue file corrupted!");
+			exit(1);
+		}
+		npcs[i]->Bind_dialogue_root(root);
+	}
+}
+
+void Game::Load(std::string maps_file, std::string character_file,std::string conn_file,std::string obj_file,std::string npc_file,std::string item_db_file,std::string dialogue_file) {
+	std::ifstream map_stream(maps_file, std::ifstream::in);
+	std::ifstream character_stream(character_file, std::ifstream::in);
+	std::ifstream connections_stream(conn_file, std::ifstream::in);
+	std::ifstream objects_stream(obj_file, std::ifstream::in);
+	std::ifstream npc_stream(npc_file, std::ifstream::in);
 	std::ifstream item_db_stream(item_db_file, std::ifstream::in);
+	std::ifstream dialogue_stream(dialogue_file, std::ifstream::in);
 	Load_maps(map_stream);
 	Load_item_db(item_db_stream);
 	Load_objects(objects_stream);
 	Load_MainCharacter(character_stream);
 	Load_connections(connections_stream);
 	Load_npcs(npc_stream);
+	Load_dialogues(dialogue_stream);
 }
 
 void Game::Play() {
@@ -159,6 +200,12 @@ void Game::Play() {
 		}
 		printf(" ");
 		main_character->Move();
+	}
+}
+
+NPC* Game::GetNPC(COORD coordonate, int map_id) {
+	for (int i = 0; i < num_chars; i++) {
+		if (npcs[i]->CheckNPC(coordonate, map_id)) return npcs[i];
 	}
 }
 

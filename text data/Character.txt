@@ -2,3 +2,5 @@ Starting map ID:
 0
 Starting coordinates:
 1 1
+Inventory size:
+0

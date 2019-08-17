@@ -1,3 +1,9 @@
+First: number of map connections
+;;
+If two-way, this line is 1, if one-way, it is 0
+Entry point: Y X Map_ID
+Exit point: Y X Map_ID (the order is important for one-way connections)
+;;
 2
 ;;
 0

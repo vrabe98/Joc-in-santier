@@ -5,6 +5,6 @@
 Game game;
 
 int main() {
-	game.Load("Maps.txt", "Character.txt","Connections.txt","Objects.txt","NPC.txt","Item_DB.txt");
+	game.Load("Maps.txt", "Character.txt","Connections.txt","Objects.txt","NPC.txt","Item_DB.txt","Dialogues.txt");
 	game.Play();
 }

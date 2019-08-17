@@ -16,6 +16,9 @@ public:
 	void Draw();
 	void Load(std::ifstream&);
 	void Bind_object(Object*);
+	inline int Get_ID() {
+		return map_id;
+	}
 	Object* Get_obj(COORD);
 	char GetLoc(COORD);
 	inline int Dimx() {

@@ -30,13 +30,16 @@ class Game
 public:
 	void Enter_connection();
 	Connection Search(COORD ,int);
+	int Check_NPC(int, std::string);
+	NPC* GetNPC(COORD, int);
 	void Load_maps(std::ifstream&);
 	void Load_MainCharacter(std::ifstream&);
 	void Load_connections(std::ifstream&);
 	void Load_objects(std::ifstream&);
 	void Load_npcs(std::ifstream&);
 	void Load_item_db(std::ifstream&);
-	void Load(std::string,std::string,std::string,std::string,std::string,std::string);
+	void Load_dialogues(std::ifstream&);
+	void Load(std::string,std::string,std::string,std::string,std::string,std::string,std::string);
 	void Play();
 };
 

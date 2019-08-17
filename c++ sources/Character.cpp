@@ -7,6 +7,11 @@
 
 extern Game game;
 
+int Compare_coord3(COORD coord1, COORD coord2) {
+	if ((coord1.X == coord2.X) && (coord1.Y == coord2.Y)) return 1;
+	else return 0;
+}
+
 char GetConsoleChar(COORD coord) {
 	SMALL_RECT rect;
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -42,9 +47,10 @@ void Character::Draw() {								//function draws both the character and the curr
 }
 
 int Check_terrain(Character caract,COORD coordonata) {		//function checks if the terrain is accessible,if not returns 0;
-	if (GetConsoleChar(coordonata) == '|' || GetConsoleChar(coordonata) == '+' || GetConsoleChar(coordonata) == '-' || GetConsoleChar(coordonata) == 'O' || GetConsoleChar(coordonata) == 'K')
+	if (GetConsoleChar(coordonata) == '|' || GetConsoleChar(coordonata) == '+' || GetConsoleChar(coordonata) == '-' || GetConsoleChar(coordonata) == 'O')
 		return 0;
 	else if (GetConsoleChar(coordonata) == '0') return 2;
+	else if (GetConsoleChar(coordonata) == 'K') return 3;
 	else {													//if accessible, check boundaries;
 		if ((coordonata.X > caract.current_map->Dimx() - 1) || (coordonata.Y > caract.current_map->Dimy() - 1) || (coordonata.X < 0) || (coordonata.Y < 0))
 			return 0;
@@ -87,6 +93,44 @@ void Character::Query_inventory(Object* cont) {
 	}
 }
 
+void Character::Interact_container(COORD new_coord) {
+	std::string opt;
+	printf("Do you want to transfer items to or from the container? (to/from/anything else)\n The option 'from' lets you view the inventory of the container without transfering any items.\n Your option: ");
+	std::cin >> opt;
+	if (opt == "to") {
+		Object* cont = current_map->Get_obj(new_coord);
+		Query_inventory(cont);
+	}
+	else if (opt == "from") {
+		Item* item = (current_map->Get_obj(new_coord))->Interact();
+		if (item != nullptr) {
+			inventory[inventory_size] = item;
+			inventory_size++;
+		}
+	}
+	else system("cls");
+}
+
+std::string NPC::GetName() {
+	return name;
+}
+
+void NPC::Dialogue() {
+	root->Enter_dialogue(name);
+}
+
+void Character::Interact_NPC(COORD new_coord) {
+	NPC* npc_inter = nullptr;
+	npc_inter=game.GetNPC(new_coord, current_map->Get_ID());
+	if (npc_inter) {
+		npc_inter->Dialogue();
+	}
+	else {
+		printf("NPC not found! Error!");
+		exit(1);
+	}
+}
+
 void Character::Move() {
 	COORD new_coord = coordonate;
 	int entered_connection = 0;
@@ -112,22 +156,11 @@ void Character::Move() {
 		entered_connection = 1;
 	}
 	check_ter = Check_terrain(*this, new_coord);
-	if (check_ter == 2) {
-		std::string opt;
-		printf("Do you want to transfer to or from the container? (to/from/anything else)\n The option 'from' lets you view the inventory of the container without transfering any items.\n Your option: ");
-		std::cin >> opt;
-		if (opt == "to") {
-			Object* cont = current_map->Get_obj(new_coord);
-			Query_inventory(cont);
-		}
-		else if (opt == "from") {
-			Item* item = (current_map->Get_obj(new_coord))->Interact();
-			if (item != nullptr) {
-				inventory[inventory_size] = item;
-				inventory_size++;
-			}
-		}
-		else system("cls");
+	if (check_ter == 2) {			//container interaction
+		Interact_container(new_coord);
+	}
+	else if (check_ter == 3) {		//NPC dialogue interaction
+		Interact_NPC(new_coord);
 	}
 	else if ((check_ter == 1) && !entered_connection) coordonate = new_coord;
 }
@@ -147,6 +180,10 @@ Character::Character(int x, int y,Map* starting_map,int inv_size) {
 
 Character::Character(){}
 NPC::NPC(){}
+
+int NPC::CheckNPC(COORD coord, int map_id) {
+	if (Compare_coord3(coord,coordonate)&&(map_id==current_map->Get_ID())) return 1;
+}
 
 void NPC::Load(std::ifstream& npc_str,Map maps[]) {
 	std::string aux;

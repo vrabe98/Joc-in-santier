@@ -8,6 +8,7 @@
 #define NONEQUIPABLE -1
 
 #include "Item.h"
+#include "DialogueState.h"
 #include "Game.h"
 
 class Map;
@@ -23,6 +24,8 @@ protected:
 	Map* current_map;
 public:
 	void Change_map(Map*,COORD);
+	void Interact_container(COORD);
+	void Interact_NPC(COORD);
 	void Draw();
 	void Move();
 	void Show_inventory();
@@ -37,10 +40,21 @@ class NPC :protected Character
 {
 	friend class Game;
 	std::string name;
+	DialogueState* root;
 public:
 	NPC();
 	void Draw(Map*,int);
 	void Load(std::ifstream&,Map[]);
+	void Dialogue();
+	std::string GetName();
+	int CheckNPC(COORD, int);
+	int CheckName(std::string aux) {
+		aux = aux;
+		return (name == aux);
+	}
+	inline void Bind_dialogue_root(DialogueState* root_state) {
+		root = root_state;
+	}
 };
 #endif
 
