@@ -182,7 +182,8 @@ Character::Character(){}
 NPC::NPC(){}
 
 int NPC::CheckNPC(COORD coord, int map_id) {
-	if (Compare_coord3(coord,coordonate)&&(map_id==current_map->Get_ID())) return 1;
+	if (Compare_coord3(coord, coordonate) && (map_id == current_map->Get_ID())) return 1;
+	else return 0;
 }
 
 void NPC::Load(std::ifstream& npc_str,Map maps[]) {

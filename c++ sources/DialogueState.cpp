@@ -49,5 +49,8 @@ void DialogueState::Enter_dialogue(std::string NPCname) {
 	std::cin >> opt;
 	DialogueState* next = options[opt]->next;
 	if (next) next->Enter_dialogue(NPCname);
-	else return;
+	else {
+		system("cls");
+		return;
+	}
 }

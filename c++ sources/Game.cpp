@@ -207,6 +207,7 @@ NPC* Game::GetNPC(COORD coordonate, int map_id) {
 	for (int i = 0; i < num_chars; i++) {
 		if (npcs[i]->CheckNPC(coordonate, map_id)) return npcs[i];
 	}
+	return nullptr;
 }
 
 Connection Game::Search(COORD coord, int id_mapa) {
