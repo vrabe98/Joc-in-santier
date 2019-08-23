@@ -269,7 +269,7 @@ void Game::Menu() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
 	std::cout << "2";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	std::cout << "]. Iesi\n\n";
+	std::cout << "]. Iesi, cat timp mai poti\n\n";
 	std::cout << "Ce alegi? ";
 	std::cin >> opt;
 	if (opt == 1) {
