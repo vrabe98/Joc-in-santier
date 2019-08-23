@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <Windows.h>
 #include "DialogueState.h"
 
 void DialogueState::Load(std::ifstream& stream,int j) {
@@ -38,10 +39,20 @@ void DialogueState::Load(std::ifstream& stream,int j) {
 void DialogueState::Enter_dialogue(std::string NPCname) {
 	int opt;
 	system("cls");
-	std::cout << "-----------------------------------------\n" << NPCname << "\n-----------------------------------------\n\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "-------------------------------------------\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+	std::cout << NPCname;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout<< "\n-------------------------------------------\n\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	std::cout <<NPCname<<": "<< text<<"\n\n";
 	for (int i = 0; i < num_options; i++) {
-		std::cout << "[" << i << "]. " << options[i]->text;
+		std::cout << "[";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << i;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		std::cout<< "]. " << options[i]->text;
 		if (options[i]->exit) std::cout << " (EXIT)\n";
 		else std::cout << "\n";
 	}

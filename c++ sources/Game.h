@@ -28,6 +28,8 @@ class Game
 	Character* main_character;
 	Item* item_db[MAX_STORAGE];
 public:
+	void Splash(std::string);
+	void Menu();
 	void Enter_connection();
 	Connection Search(COORD ,int);
 	int Check_NPC(int, std::string);

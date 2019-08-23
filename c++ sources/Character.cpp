@@ -62,7 +62,11 @@ void Character::Show_inventory() {
 	system("cls");
 	printf("Inventory:\n");
 	for (int i = 0; i < inventory_size; i++) {
-		printf("%d. ", i);
+		std::cout << "[";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << i;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		std::cout << "]. ";
 		inventory[i]->Show_info();
 		printf("\n");
 	}
@@ -123,7 +127,13 @@ void Character::Interact_NPC(COORD new_coord) {
 	NPC* npc_inter = nullptr;
 	npc_inter=game.GetNPC(new_coord, current_map->Get_ID());
 	if (npc_inter) {
-		npc_inter->Dialogue();
+		char opt;
+		system("cls");
+		std::cout << "Do you want to talk to " << npc_inter->GetName() << "? (y/n)";
+		std::cin >> opt;
+		if (opt == 'y')
+			npc_inter->Dialogue();
+		else return;
 	}
 	else {
 		printf("NPC not found! Error!");

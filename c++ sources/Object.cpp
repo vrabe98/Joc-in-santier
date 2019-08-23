@@ -76,7 +76,11 @@ void Container::Transfer_to(Item* item) {
 void Container::Show_inventory() {
 	printf("Inventory:\n");
 	for (int i = 0; i < inventory_size; i++) {
-		printf("%d. ", i);
+		std::cout << "[";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << i;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		std::cout << "]. ";
 		inventory[i]->Show_info();
 		printf("\n");
 	}

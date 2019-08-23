@@ -5,6 +5,7 @@
 Game game;
 
 int main() {
-	game.Load("Maps.txt", "Character.txt","Connections.txt","Objects.txt","NPC.txt","Item_DB.txt","Dialogues.txt");
-	game.Play();
+	game.Splash("Splash.txt");
+	std::cin.get();
+	game.Menu();
 }

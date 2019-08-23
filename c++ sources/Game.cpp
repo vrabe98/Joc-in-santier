@@ -242,3 +242,39 @@ void Game::Enter_connection() {
 	}
 	Sleep(70);
 }
+
+void Game::Splash(std::string splashscreen_file) {
+	std::ifstream stream(splashscreen_file);
+	std::string splash((std::istreambuf_iterator<char>(stream)),
+		(std::istreambuf_iterator<char>()));
+	std::cout << splash;
+}
+
+void Game::Menu() {
+	int opt;
+	system("cls");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "-------------------------------------------\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+	std::cout << "MENIU";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "\n-------------------------------------------\n\n\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << "[";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "1";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << "]. Intra in joc\n";
+	std::cout << "[";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "2";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << "]. Iesi\n\n";
+	std::cout << "Ce alegi? ";
+	std::cin >> opt;
+	if (opt == 1) {
+		Load("Maps.txt", "Character.txt", "Connections.txt", "Objects.txt", "NPC.txt", "Item_DB.txt", "Dialogues.txt");
+		Play();
+	}
+	else return;
+}
