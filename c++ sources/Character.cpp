@@ -58,9 +58,33 @@ int Check_terrain(Character caract,COORD coordonata) {		//function checks if the
 	}
 }
 
+void Character::Equip(int item_id) {
+	if (item_id >= inventory_size) printf("The number entered is invalid!");
+	else if (inventory[item_id]->IsGeneric()) printf("The item you want to equip can't be equipped!");
+	else if (equipped_items[inventory[item_id]->GetSlot()] != nullptr) printf("The slot is already occupied!");
+	else {
+		equipped_items[inventory[item_id]->GetSlot()] = inventory[item_id];
+		inventory_size--;
+		for (int i = item_id; i < inventory_size; i++) {
+			inventory[i] = inventory[i + 1];
+		}
+	}
+}
+
+void Character::Unequip(Item* item_unequiped) {
+
+}
+
 void Character::Show_inventory() {
+	char opt;
 	system("cls");
-	printf("Inventory:\n");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "-------------------------------------------\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+	std::cout<<"Inventory:";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "\n-------------------------------------------\n\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	for (int i = 0; i < inventory_size; i++) {
 		std::cout << "[";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
@@ -71,6 +95,35 @@ void Character::Show_inventory() {
 		printf("\n");
 	}
 	printf("\n\n");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "-------------------------------------------\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+	std::cout << "Equipped items:";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "\n-------------------------------------------\n\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	for (int i = 0; i < NUM_SLOTS-1; i++) {
+		if (equipped_items[i]!=nullptr) {
+			std::cout << "[";
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+			std::cout << i;
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+			std::cout << "]. ";
+			equipped_items[i]->Show_info();
+			printf("\n");
+		}
+	}
+	printf("\n\n");
+	if (inventory_size != 0) {
+		printf("Do you want to equip an item? (y/n): ");
+		std::cin >> opt;
+		if (opt == 'y') {
+			int id;
+			printf("Which item would you like to equip? (enter the order number from the inventory tab): ");
+			std::cin >> id;
+			Equip(id);
+		}
+	}
 }
 
 void Character::Query_inventory(Object* cont) {
@@ -186,6 +239,9 @@ Character::Character(int x, int y,Map* starting_map,int inv_size) {
 	current_map = starting_map;
 	inventory_size = inv_size;
 	map_change_attempt = 1;
+	for (int i = 0; i < NUM_SLOTS-1; i++) {
+		equipped_items[i] = nullptr;
+	}
 }
 
 Character::Character(){}

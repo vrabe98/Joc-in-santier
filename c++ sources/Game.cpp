@@ -119,7 +119,7 @@ void Game::Load_npcs(std::ifstream& npc_stream) {
 
 void Game::Load_item_db(std::ifstream& item_db_stream) {
 	std::string aux;
-	for (int i = 0; i < 8; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 18; i++) {				//skip file format specifiers at the top
 		getline(item_db_stream, aux, '\n');
 	}
 	item_db_stream >> num_items;

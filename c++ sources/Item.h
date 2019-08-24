@@ -1,9 +1,14 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#define BODY 0
-#define HAND 1
-#define NONEQUIPABLE -1
+#define CHEST 0				//Armor slots
+#define HEAD 1
+#define LEGS 2
+#define ARMS 3
+#define FEET 4
+#define LHAND 5				//Weapon/shield slots
+#define RHAND 6
+#define NONEQUIPABLE -1		//Items that can't be equipped
 
 class Container;
 class Character;
@@ -20,12 +25,14 @@ public:
 	virtual int IsArmor()=0;
 	virtual int IsWeapon()=0;
 	virtual int IsGeneric() = 0;
-
+	inline int GetSlot() {
+		return equip_slot;
+	}
 };
 
 class Weapon:public Item
 {
-	int damage;
+	int damage,twohanded;
 public:
 	void Load(std::ifstream&);
 	void Show_info();

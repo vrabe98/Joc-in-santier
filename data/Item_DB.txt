@@ -2,16 +2,26 @@ First: Number of items;
 Type
 Item_ID
 Name
-Equip slot (1-Weapon, 0-Armor, -1 - Generic/Non-Equipable)
+Equip slot (if weapon: also two-handed, next to equip slot; 1 if twohanded, 0 if onehanded; equip slot is always LEFT HAND-5, one-handed weapons can be equipped on the right hand as well though)
 Stat
 Weight
+-----------
+SLOT CODES:
+CHEST 0				//Armor slots
+HEAD 1
+LEGS 2
+ARMS 3
+FEET 4
+LHAND 5				//Weapon/shield slots
+RHAND 6
+NONEQUIPABLE -1			//Items that can't be equipped
 ;;
 3
 ;;
 Weapon
 0
 Cartea de fizica a lui Zaharie
-1
+5 0
 1
 100
 ;;

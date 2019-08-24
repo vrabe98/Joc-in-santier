@@ -2,10 +2,15 @@
 #define CHARACTER_H
 
 #define MAX_STORAGE 100
-#define NUM_SLOTS 2
-#define BODY 0
-#define HAND 1
-#define NONEQUIPABLE -1
+#define NUM_SLOTS 7
+#define CHEST 0				//Armor slots
+#define HEAD 1
+#define LEGS 2
+#define ARMS 3
+#define FEET 4
+#define LHAND 5				//Weapon/shield slots
+#define RHAND 6
+#define NONEQUIPABLE -1		//Items that can't be equipped
 
 #include "Item.h"
 #include "DialogueState.h"
@@ -23,6 +28,8 @@ protected:
 	Item* equipped_items[NUM_SLOTS-1];
 	Map* current_map;
 public:
+	void Equip(int);
+	void Unequip(Item*);
 	void Change_map(Map*,COORD);
 	void Interact_container(COORD);
 	void Interact_NPC(COORD);
