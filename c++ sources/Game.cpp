@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <string>
 #include <Windows.h>
@@ -274,6 +274,7 @@ void Game::Menu() {
 	std::cin >> opt;
 	if (opt == 1) {
 		Load("Maps.txt", "Character.txt", "Connections.txt", "Objects.txt", "NPC.txt", "Item_DB.txt", "Dialogues.txt");
+		PlaySound(TEXT("D E N I M I C N U M I P A S A.wav"), NULL, SND_FILENAME|SND_ASYNC);
 		Play();
 	}
 	else return;
