@@ -6,8 +6,8 @@
 #define LEGS 2
 #define ARMS 3
 #define FEET 4
-#define LHAND 5				//Weapon/shield slots
-#define RHAND 6
+#define LHAND 6				//Weapon/shield slots
+#define RHAND 5
 #define NONEQUIPABLE -1		//Items that can't be equipped
 
 class Container;
@@ -21,13 +21,14 @@ protected:
 public:
 	virtual void Load(std::ifstream&)=0;
 	virtual void Show_info() = 0;
-	friend void Equip(Character*);
 	virtual int IsArmor()=0;
 	virtual int IsWeapon()=0;
 	virtual int IsGeneric() = 0;
 	inline int GetSlot() {
 		return equip_slot;
 	}
+	virtual int GetArmor()=0;
+	virtual int GetDamage() = 0;
 };
 
 class Weapon:public Item
@@ -45,7 +46,12 @@ public:
 	inline int IsGeneric() {
 		return 0;
 	}
-
+	inline int GetArmor() {
+		return 0;
+	}
+	inline int GetDamage() {
+		return damage;
+	}
 };
 
 class Armor :public Item {
@@ -62,6 +68,12 @@ public:
 	inline int IsGeneric() {
 		return 0;
 	}
+	inline int GetArmor() {
+		return armor;
+	}
+	inline int GetDamage() {
+		return 0;
+	}
 };
 
 class Generic_item :public Item {
@@ -76,6 +88,12 @@ public:
 	}
 	inline int IsGeneric() {
 		return 1;
+	}
+	inline int GetArmor() {
+		return 0;
+	}
+	inline int GetDamage() {
+		return 0;
 	}
 };
 #endif

@@ -54,3 +54,7 @@
 0.021-24.08.2019:
 *Acelasi joc depresiv, acum si cu o manea in fundal pe care sa-ti ineci amarul!
 *Am inceput lucrul la sistemul de combat, deocamdata poti echipa iteme
+
+0.022-25.08.2019:
+*Poti dezechipa iteme
+*Caracterul are stats

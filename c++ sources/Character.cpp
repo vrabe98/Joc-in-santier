@@ -58,6 +58,50 @@ int Check_terrain(Character caract,COORD coordonata) {		//function checks if the
 	}
 }
 
+void Character::ShowStats() {
+	float hp, base = 100, armor = 0,main_hand_dmg=0,offhand_dmg=0;
+	hp = base * (1.05 * (strength - 10)) + constitution * 10;
+	for (int i = 0; i <= 4; i++) {
+		if (equipped_items[i] != nullptr) {
+			armor += equipped_items[i]->GetArmor();
+		}
+	}
+	if (equipped_items[RHAND] != nullptr) main_hand_dmg = equipped_items[RHAND]->GetDamage();
+	if (equipped_items[LHAND] != nullptr) offhand_dmg = equipped_items[LHAND]->GetDamage();
+	system("cls");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "-------------------------------------------\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+	std::cout << "Stats:";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "\n-------------------------------------------\n\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "Strength:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << strength;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "\nDexterity:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << dexterity;	
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "\nConstitution:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << constitution;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "\nHP:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << hp;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "\nMain hand weapon damage:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << main_hand_dmg ;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "\nOffhand weapon damage:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << offhand_dmg << "\n\n";
+	std::cin.get();
+}
+
 void Character::Equip(int item_id) {
 	if (item_id >= inventory_size) printf("The number entered is invalid!");
 	else if (inventory[item_id]->IsGeneric()) printf("The item you want to equip can't be equipped!");
@@ -71,12 +115,24 @@ void Character::Equip(int item_id) {
 	}
 }
 
-void Character::Unequip(Item* item_unequiped) {
+int Character::HasEquippedItems() {
+	for (int i = 0; i < NUM_SLOTS - 1; i++) {
+		if (equipped_items[i] != nullptr) return 1;
+	}
+	return 0;
+}
 
+void Character::Unequip(int slot) {
+	if (slot >= NUM_SLOTS-1) printf("The number you entered is invalid!");
+	else if (equipped_items[slot] == nullptr) printf("There's no equipment in that slot!");
+	else {
+		inventory_size++;
+		inventory[inventory_size - 1] = equipped_items[slot];
+		equipped_items[slot] = nullptr;
+	}
 }
 
 void Character::Show_inventory() {
-	char opt;
 	system("cls");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "-------------------------------------------\n";
@@ -102,7 +158,7 @@ void Character::Show_inventory() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "\n-------------------------------------------\n\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	for (int i = 0; i < NUM_SLOTS-1; i++) {
+	for (int i = 0; i < NUM_SLOTS; i++) {
 		if (equipped_items[i]!=nullptr) {
 			std::cout << "[";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
@@ -114,14 +170,29 @@ void Character::Show_inventory() {
 		}
 	}
 	printf("\n\n");
-	if (inventory_size != 0) {
-		printf("Do you want to equip an item? (y/n): ");
+	if ((inventory_size != 0)||(HasEquippedItems())) {
+		char opt;
+		printf("Do you want to equip or unequip an item (e/u): ");
 		std::cin >> opt;
-		if (opt == 'y') {
-			int id;
-			printf("Which item would you like to equip? (enter the order number from the inventory tab): ");
-			std::cin >> id;
-			Equip(id);
+		if (opt == 'e') {
+			printf("Do you want to equip an item? (y/n): ");
+			std::cin >> opt;
+			if (opt == 'y') {
+				int id;
+				printf("Which item would you like to equip? (enter the order number from the inventory tab): ");
+				std::cin >> id;
+				Equip(id);
+			}
+		}
+		else if (opt == 'u') {
+			printf("Do you want to unequip an item? (y/n): ");
+			std::cin >> opt;
+			if (opt == 'y') {
+				int slot;
+				printf("Which item would you like to unequip? (enter the order number from the equipment tab): ");
+				std::cin >> slot;
+				Unequip(slot);
+			}
 		}
 	}
 }
@@ -198,9 +269,12 @@ void Character::Move() {
 	COORD new_coord = coordonate;
 	int entered_connection = 0;
 	int check_ter;
-	while (!GetAsyncKeyState(VK_UP) && !GetAsyncKeyState(VK_DOWN) && !GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_RIGHT)&&!GetAsyncKeyState(VK_RETURN)&&!GetAsyncKeyState(0x49)) {}
+	while (!GetAsyncKeyState(VK_UP) && !GetAsyncKeyState(VK_DOWN) && !GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_RIGHT)&&!GetAsyncKeyState(VK_RETURN)&&!GetAsyncKeyState(0x49) && !GetAsyncKeyState(0x4B)) {}
 	if (GetAsyncKeyState(0x49)&(1<<16)) {					//if I is pressed
 		Query_inventory(nullptr);
+	}
+	else if (GetAsyncKeyState(0x4B) & (1 << 16)) {
+		ShowStats();
 	}
 	else if (GetAsyncKeyState(VK_UP) & (1 << 16)) {				//if the UP arrow key is pressed
 		new_coord.Y-=1;
@@ -233,13 +307,16 @@ void Character::Change_map(Map* map,COORD coord) {
 	coordonate = coord;
 }
 
-Character::Character(int x, int y,Map* starting_map,int inv_size) {
+Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex,int con) {
 	coordonate.X = x;
 	coordonate.Y = y;
 	current_map = starting_map;
 	inventory_size = inv_size;
+	strength = str;
+	dexterity = dex;
+	constitution = con;
 	map_change_attempt = 1;
-	for (int i = 0; i < NUM_SLOTS-1; i++) {
+	for (int i = 0; i < NUM_SLOTS; i++) {
 		equipped_items[i] = nullptr;
 	}
 }

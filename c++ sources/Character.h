@@ -8,8 +8,8 @@
 #define LEGS 2
 #define ARMS 3
 #define FEET 4
-#define LHAND 5				//Weapon/shield slots
-#define RHAND 6
+#define LHAND 6				//Weapon/shield slots
+#define RHAND 5
 #define NONEQUIPABLE -1		//Items that can't be equipped
 
 #include "Item.h"
@@ -22,14 +22,25 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt,inventory_size;
+	int map_change_attempt,inventory_size,strength,dexterity,constitution;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
-	Item* equipped_items[NUM_SLOTS-1];
+	Item* equipped_items[NUM_SLOTS];
 	Map* current_map;
 public:
+	inline int STR() {
+		return strength;
+	}
+	inline int DEX() {
+		return dexterity;
+	}
+	inline int CON() {
+		return constitution;
+	}
+	void ShowStats();
+	int HasEquippedItems();
 	void Equip(int);
-	void Unequip(Item*);
+	void Unequip(int);
 	void Change_map(Map*,COORD);
 	void Interact_container(COORD);
 	void Interact_NPC(COORD);
@@ -39,7 +50,7 @@ public:
 	void Query_inventory(Object*);
 	friend int Check_terrain(Character, COORD);
 	Character();
-	Character(int, int,Map*,int);
+	Character(int, int,Map*,int,int,int,int);
 };
 
 

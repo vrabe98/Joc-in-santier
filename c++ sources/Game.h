@@ -29,7 +29,7 @@ class Game
 	Item* item_db[MAX_STORAGE];
 public:
 	void Splash(std::string);
-	void Menu();
+	void Menu(std::string, std::string, std::string, std::string, std::string, std::string, std::string,std::string);
 	void Enter_connection();
 	Connection Search(COORD ,int);
 	int Check_NPC(int, std::string);
