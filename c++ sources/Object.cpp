@@ -30,6 +30,16 @@ void Generic_object::Draw() {
 	std::cout << " - " + name << "\n";
 }
 
+void Container::Load_inventory(std::ifstream& obj_stream, Item** db) {
+	int item_index;
+	obj_stream >> inventory_size;
+	inventory_size = inventory_size;
+	for (int i = 0; i < inventory_size; i++) {
+		obj_stream >> item_index;
+		inventory[i] = db[item_index];
+	}
+}
+
 void Container::Load(std::ifstream& obj_stream,Item** db) {
 	std::string aux;
 	Load_inventory(obj_stream,db);
@@ -58,18 +68,8 @@ void Container::Draw() {
 	std::cout << " - " + name << "\n";
 }
 
-void Container::Load_inventory(std::ifstream& obj_stream,Item** db) {
-	int item_index;
-	obj_stream >> inventory_size;
-	inventory_size = inventory_size;
-	for (int i = 0; i < inventory_size; i++) {
-		obj_stream >> item_index;
-		inventory[i] = db[item_index];
-	}
-}
-
 void Container::Transfer_to(Item* item) {
-	inventory[inventory_size - 1] = item;
+	inventory[inventory_size] = item;
 	inventory_size++;
 }
 

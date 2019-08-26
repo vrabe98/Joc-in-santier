@@ -59,8 +59,8 @@ int Check_terrain(Character caract,COORD coordonata) {		//function checks if the
 }
 
 void Character::ShowStats() {
-	float hp, base = 100, armor = 0,main_hand_dmg=0,offhand_dmg=0;
-	hp = base * (1.05 * (strength - 10)) + constitution * 10;
+	double hp, base = 100, armor = 0,main_hand_dmg=0,offhand_dmg=0;
+	hp = base * (1+0.05 * (strength - 10.0)) + constitution * 10.0;
 	for (int i = 0; i <= 4; i++) {
 		if (equipped_items[i] != nullptr) {
 			armor += equipped_items[i]->GetArmor();
@@ -99,6 +99,7 @@ void Character::ShowStats() {
 	std::cout << "\nOffhand weapon damage:\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	std::cout << offhand_dmg << "\n\n";
+	std::cout << "Press any key to continue...";
 	std::cin.get();
 }
 
@@ -132,111 +133,130 @@ void Character::Unequip(int slot) {
 	}
 }
 
-void Character::Show_inventory() {
-	system("cls");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
-	std::cout << "-------------------------------------------\n";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
-	std::cout<<"Inventory:";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
-	std::cout << "\n-------------------------------------------\n\n";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	for (int i = 0; i < inventory_size; i++) {
-		std::cout << "[";
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
-		std::cout << i;
+void Character::Show_inventory(int want_to_equip) {
+	while (1) {
+		system("cls");
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+		std::cout << "-------------------------------------------\n";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+		std::cout << "Inventory:";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+		std::cout << "\n-------------------------------------------\n\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-		std::cout << "]. ";
-		inventory[i]->Show_info();
-		printf("\n");
-	}
-	printf("\n\n");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
-	std::cout << "-------------------------------------------\n";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
-	std::cout << "Equipped items:";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
-	std::cout << "\n-------------------------------------------\n\n";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	for (int i = 0; i < NUM_SLOTS; i++) {
-		if (equipped_items[i]!=nullptr) {
+		for (int i = 0; i < inventory_size; i++) {
 			std::cout << "[";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
 			std::cout << i;
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			std::cout << "]. ";
-			equipped_items[i]->Show_info();
+			inventory[i]->Show_info();
 			printf("\n");
 		}
-	}
-	printf("\n\n");
-	if ((inventory_size != 0)||(HasEquippedItems())) {
-		char opt;
-		printf("Do you want to equip or unequip an item (e/u): ");
-		std::cin >> opt;
-		if (opt == 'e') {
-			printf("Do you want to equip an item? (y/n): ");
+		printf("\n\n");
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+		std::cout << "-------------------------------------------\n";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+		std::cout << "Equipped items:";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+		std::cout << "\n-------------------------------------------\n\n";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		for (int i = 0; i < NUM_SLOTS; i++) {
+			if (equipped_items[i] != nullptr) {
+				std::cout << "[";
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+				std::cout << i;
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+				std::cout << "]. ";
+				equipped_items[i]->Show_info();
+				printf("\n");
+			}
+		}
+		printf("\n\n");
+		if ((inventory_size != 0 || HasEquippedItems()) && want_to_equip) {
+			char opt;
+			printf("Do you want to equip/unequip an item or exit (e/u/x): ");
 			std::cin >> opt;
-			if (opt == 'y') {
+			if (opt == 'e') {
 				int id;
 				printf("Which item would you like to equip? (enter the order number from the inventory tab): ");
 				std::cin >> id;
 				Equip(id);
 			}
-		}
-		else if (opt == 'u') {
-			printf("Do you want to unequip an item? (y/n): ");
-			std::cin >> opt;
-			if (opt == 'y') {
+			else if (opt == 'u') {
 				int slot;
 				printf("Which item would you like to unequip? (enter the order number from the equipment tab): ");
 				std::cin >> slot;
 				Unequip(slot);
 			}
+			else if (opt == 'x') return;
+		}
+		else if (!want_to_equip) return;
+		else {
+			printf("Nothing to see here...\n");
+			std::cin.get();
+			return;
 		}
 	}
 }
 
 void Character::Query_inventory(Object* cont) {
-	Show_inventory();
 	if (cont==nullptr) {
-		system("pause");
+		Show_inventory(1);
+		std::cin.get();
 		system("cls");
 	}
 	else {
 		int opt;
-		printf("Which item would you like to deposit in the container? (enter the order number): ");
-		std::cin >> opt;
-		if (opt >= inventory_size) Query_inventory(cont);
-		else {
-			Item* item;
-			item = inventory[opt];
-			for (int i = opt; i < inventory_size - 1; i++) {
-				inventory[i] = inventory[i + 1];
+		char opt_c;
+		while (1) {
+			Show_inventory(0);
+			printf("Which item would you like to deposit in the container? (enter the order number): ");
+			std::cin >> opt;
+			if (opt >= inventory_size) Query_inventory(cont);
+			else {
+				Item* item;
+				item = inventory[opt];
+				for (int i = opt; i < inventory_size - 1; i++) {
+					inventory[i] = inventory[i + 1];
+				}
+				inventory_size--;
+				cont->Transfer_to(item);
+				system("cls");
 			}
-			inventory_size--;
-			cont->Transfer_to(item);
-			system("cls");
+			printf("Done? (y/n): ");
+			std::cin >> opt_c;
+			if (opt_c == 'y') return;
 		}
 	}
 }
 
 void Character::Interact_container(COORD new_coord) {
-	std::string opt;
-	printf("Do you want to transfer items to or from the container? (to/from/anything else)\n The option 'from' lets you view the inventory of the container without transfering any items.\n Your option: ");
+	char opt;
+	printf("Do you want to transfer items to or from the container or just exit? (t/f/x)\n The option 'from' lets you view the inventory of the container without transfering any items.\n Your option: ");
 	std::cin >> opt;
-	if (opt == "to") {
-		Object* cont = current_map->Get_obj(new_coord);
-		Query_inventory(cont);
-	}
-	else if (opt == "from") {
-		Item* item = (current_map->Get_obj(new_coord))->Interact();
-		if (item != nullptr) {
-			inventory[inventory_size] = item;
-			inventory_size++;
+	if (opt == 't') {
+		if (inventory_size) {
+			Object* cont = current_map->Get_obj(new_coord);
+			Query_inventory(cont);
+		}
+		else {
+			printf("You have no items!");
+			std::cin.ignore();
+			std::cin.get();
+			system("cls");
 		}
 	}
-	else system("cls");
+	else if (opt == 'f') {
+		while (1) {
+			Item* item = (current_map->Get_obj(new_coord))->Interact();
+			if (item != nullptr) {
+				inventory[inventory_size] = item;
+				inventory_size++;
+			}
+			else return;
+		}
+	}
+	else if (opt == 'x') return;
 }
 
 std::string NPC::GetName() {
@@ -272,6 +292,7 @@ void Character::Move() {
 	while (!GetAsyncKeyState(VK_UP) && !GetAsyncKeyState(VK_DOWN) && !GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_RIGHT)&&!GetAsyncKeyState(VK_RETURN)&&!GetAsyncKeyState(0x49) && !GetAsyncKeyState(0x4B)) {}
 	if (GetAsyncKeyState(0x49)&(1<<16)) {					//if I is pressed
 		Query_inventory(nullptr);
+		int i = 1;
 	}
 	else if (GetAsyncKeyState(0x4B) & (1 << 16)) {
 		ShowStats();
@@ -322,7 +343,9 @@ Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex
 }
 
 Character::Character(){}
-NPC::NPC(){}
+NPC::NPC() {
+	root = nullptr;
+}
 
 int NPC::CheckNPC(COORD coord, int map_id) {
 	if (Compare_coord3(coord, coordonate) && (map_id == current_map->Get_ID())) return 1;

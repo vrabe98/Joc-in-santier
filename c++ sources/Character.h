@@ -46,7 +46,7 @@ public:
 	void Interact_NPC(COORD);
 	void Draw();
 	void Move();
-	void Show_inventory();
+	void Show_inventory(int);
 	void Query_inventory(Object*);
 	friend int Check_terrain(Character, COORD);
 	Character();
