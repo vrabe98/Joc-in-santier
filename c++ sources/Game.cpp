@@ -33,7 +33,9 @@ void Game::Load_maps(std::ifstream& map_stream) {
 }
 
 void Game::Load_MainCharacter(std::ifstream& character_stream) {
-	int map_id = 0, x = 0, y = 0, inventory_size = 0, str = 0,dex=0,con=0;
+	int map_id = 0, x = 0, y = 0, inventory_size = 0, str = 0,dex=0,con=0,num_items=0;
+	char name[100];
+	Item* inventory[MAX_ITEMS];
 	std::string aux;
 	getline(character_stream, aux, '\n');
 	if (aux == "Starting map ID:") {
@@ -64,7 +66,21 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	if (aux == "Constitution:") {
 		character_stream >> con;
 	}
-	main_character = new Character(x, y, &maps[map_id],inventory_size,str,dex,con);
+	character_stream.ignore();
+	getline(character_stream, aux, '\n');
+	if (aux == "Items:") {
+		while (!character_stream.eof()) {
+			int id;
+			num_items++;
+			character_stream >> id;
+			inventory[num_items-1] = item_db[id];
+		}
+	}
+	printf("What's your name? ");
+	std::cin.ignore(INT_MAX, '\n');
+	std::cin.getline(name,100);
+	std::string nume(name);
+	main_character = new Character(x, y, &maps[map_id],inventory_size,str,dex,con,nume,inventory,num_items);
 }
 
 void Game::Load_connections(std::ifstream& conn_stream) {
@@ -210,6 +226,7 @@ void Game::Load(std::string maps_file, std::string character_file,std::string co
 
 void Game::Play() {
 	while (1) {
+		fflush(stdin);
 		main_character->Draw();
 		for (int i = 0; i < num_chars; i++) {
 			npcs[i]->Draw(main_character->current_map,i+1);

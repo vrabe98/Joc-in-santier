@@ -139,7 +139,7 @@ void Character::Show_inventory(int want_to_equip) {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 		std::cout << "-------------------------------------------\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
-		std::cout << "Inventory:";
+		std::cout << name<<" - Inventory:";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 		std::cout << "\n-------------------------------------------\n\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
@@ -256,7 +256,10 @@ void Character::Interact_container(COORD new_coord) {
 			else return;
 		}
 	}
-	else if (opt == 'x') return;
+	else if (opt == 'x') {
+		system("cls");
+		return;
+	}
 }
 
 std::string NPC::GetName() {
@@ -294,10 +297,10 @@ void Character::Move() {
 		Query_inventory(nullptr);
 		int i = 1;
 	}
-	else if (GetAsyncKeyState(0x4B) & (1 << 16)) {
+	else if (GetAsyncKeyState(0x4B) & (1 << 16)) {			//if the K key is pressed
 		ShowStats();
 	}
-	else if (GetAsyncKeyState(VK_UP) & (1 << 16)) {				//if the UP arrow key is pressed
+	else if (GetAsyncKeyState(VK_UP) & (1 << 16)) {			//if the UP arrow key is pressed
 		new_coord.Y-=1;
 	}
 	else if (GetAsyncKeyState(VK_DOWN) & (1 << 16)) {		//DOWN arrow key press
@@ -328,7 +331,7 @@ void Character::Change_map(Map* map,COORD coord) {
 	coordonate = coord;
 }
 
-Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex,int con) {
+Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex,int con,std::string nume,Item** inventory_copy,int items) {
 	coordonate.X = x;
 	coordonate.Y = y;
 	current_map = starting_map;
@@ -337,9 +340,14 @@ Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex
 	dexterity = dex;
 	constitution = con;
 	map_change_attempt = 1;
+	name = nume;
 	for (int i = 0; i < NUM_SLOTS; i++) {
 		equipped_items[i] = nullptr;
 	}
+	for (int i = 0; i < items; i++) {
+		inventory[i] = inventory_copy[i];
+	}
+	inventory_size = items;
 }
 
 Character::Character(){}

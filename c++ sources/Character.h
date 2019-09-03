@@ -23,6 +23,7 @@ class Character
 	friend class Game;
 protected:
 	int map_change_attempt,inventory_size,strength,dexterity,constitution;
+	std::string name;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
 	Item* equipped_items[NUM_SLOTS];
@@ -50,14 +51,13 @@ public:
 	void Query_inventory(Object*);
 	friend int Check_terrain(Character, COORD);
 	Character();
-	Character(int, int,Map*,int,int,int,int);
+	Character(int, int,Map*,int,int,int,int,std::string,Item**,int);
 };
 
 
 class NPC :protected Character 
 {
 	friend class Game;
-	std::string name;
 	DialogueState* root;
 public:
 	NPC();
