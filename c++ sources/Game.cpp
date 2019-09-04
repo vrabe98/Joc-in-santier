@@ -10,9 +10,9 @@ int Compare_coord(COORD coord1,COORD coord2) {
 }
 
 int Game::Check_NPC(int auxint, std::string aux) {
-	int j = 1;
 	return npcs[auxint]->CheckName(aux);
 }
+
 void Game::Load_maps(std::ifstream& map_stream) {
 	std::string aux;
 	for (int i = 0; i < 5; i++) {				//skip file format specifiers at the top
@@ -132,7 +132,7 @@ void Game::Load_objects(std::ifstream& obj_stream) {
 
 void Game::Load_npcs(std::ifstream& npc_stream) {
 	std::string aux;
-	for (int i = 0; i < 5; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 8; i++) {				//skip file format specifiers at the top
 		getline(npc_stream, aux, '\n');
 	}
 	npc_stream >> num_chars;
@@ -145,7 +145,7 @@ void Game::Load_npcs(std::ifstream& npc_stream) {
 		npcs[i] = new NPC;
 		npc_stream.ignore();				//ignores the character ID
 		npc_stream.ignore();				//ignores the newline after the character ID
-		npcs[i]->Load(npc_stream, maps);
+		npcs[i]->Load(npc_stream, maps,item_db);
 	}
 }
 

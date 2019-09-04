@@ -16,7 +16,7 @@ RHAND 5				//Weapon/shield slots
 LHAND 6
 NONEQUIPABLE -1			//Items that can't be equipped
 ;;
-7
+10
 ;;
 Weapon
 0
@@ -66,4 +66,25 @@ Cizmele de Cauciuc ale Ghinionului
 4
 10
 -10
+;;
+Weapon
+7
+Subiect examen TS1 P1
+5 0
+1
+101
+;;
+Weapon
+8
+Proiectia epileptica
+5 0
+1
+101
+;;
+Armor
+9
+Pyur Fucken Nolledge
+1
+1
+300
 ;;

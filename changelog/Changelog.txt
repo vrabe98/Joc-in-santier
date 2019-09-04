@@ -64,3 +64,6 @@
 
 0.024-3.09.2019:
 *Acum poti incepe jocul cu iteme in inventar! (+cateva alte schimbari de care nu-mi mai aduc aminte)
+
+0.025-4.09.2019:
+*NPC-ii pot incepe jocul cu iteme echipate! Mai putin si vor prinde putere!

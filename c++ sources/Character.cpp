@@ -72,7 +72,7 @@ void Character::ShowStats() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "-------------------------------------------\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
-	std::cout << "Stats:";
+	std::cout << name<<" - Stats:";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "\n-------------------------------------------\n\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
@@ -98,9 +98,15 @@ void Character::ShowStats() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
 	std::cout << "\nOffhand weapon damage:\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	std::cout << offhand_dmg << "\n\n";
+	std::cout << offhand_dmg;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "\nArmor:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << armor<< "\n\n";
 	std::cout << "Press any key to continue...";
+	std::cin.ignore();
 	std::cin.get();
+	system("cls");
 }
 
 void Character::Equip(int item_id) {
@@ -276,10 +282,17 @@ void Character::Interact_NPC(COORD new_coord) {
 	if (npc_inter) {
 		char opt;
 		system("cls");
-		std::cout << "Do you want to talk to " << npc_inter->GetName() << "? (y/n)";
+		std::cout << "Do you want to talk to " << npc_inter->GetName() << " or see his stats, or even see the items he has on?"<<"\n(t/s/i/x-exit)";
 		std::cin >> opt;
-		if (opt == 'y')
+		if (opt == 't')
 			npc_inter->Dialogue();
+		else if (opt == 's')
+			npc_inter->ShowStats();
+		else if (opt == 'i') {
+			npc_inter->Show_inventory(0);
+			std::cin.ignore();
+			std::cin.get();
+		}
 		else return;
 	}
 	else {
@@ -295,7 +308,6 @@ void Character::Move() {
 	while (!GetAsyncKeyState(VK_UP) && !GetAsyncKeyState(VK_DOWN) && !GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_RIGHT)&&!GetAsyncKeyState(VK_RETURN)&&!GetAsyncKeyState(0x49) && !GetAsyncKeyState(0x4B)) {}
 	if (GetAsyncKeyState(0x49)&(1<<16)) {					//if I is pressed
 		Query_inventory(nullptr);
-		int i = 1;
 	}
 	else if (GetAsyncKeyState(0x4B) & (1 << 16)) {			//if the K key is pressed
 		ShowStats();
@@ -360,12 +372,32 @@ int NPC::CheckNPC(COORD coord, int map_id) {
 	else return 0;
 }
 
-void NPC::Load(std::ifstream& npc_str,Map maps[]) {
+void NPC::Load(std::ifstream& npc_str,Map maps[],Item** database) {
 	std::string aux;
 	int map_ID;
 	npc_str >> map_ID;
 	current_map = &maps[map_ID];
 	npc_str >> coordonate.X >> coordonate.Y;
+	npc_str >> aux;
+	if (aux != "Items:") {
+		printf("NPC file corrupted!");
+		exit(1);
+	}
+	else {
+		int id=1, num_equipped;
+		npc_str >> num_equipped;
+		if (num_equipped > NUM_SLOTS) {
+			std::cout << "Too many items for the character: " << name;
+			exit(1);
+		}
+		else {
+			for (int i = 0; i < num_equipped; i++) {
+				npc_str >> id;
+				id = id;
+				equipped_items[database[id]->GetSlot()] = database[id];
+			}
+		}
+	}
 	npc_str.ignore();
 	getline(npc_str,name, '\n');
 	npc_str >> aux;

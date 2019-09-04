@@ -1,6 +1,9 @@
 NPC_ID (incremental, from 0, to help with dialogue file)
 Map_ID
 Coordinate_x Coordinate_y
+"Items:" -mandatory text
+Number of equipped items
+*Equipped items list* (if more items per one slot, an error will be signalled)
 Name
 ;;
 3
@@ -8,15 +11,24 @@ Name
 0
 1
 4 4
+Items:
+3
+1 3 7
 Toma Leonida Dragomir
 ;;
 1
 1
 5 5
+Items:
+2
+8 9
 Marian Greconici
 ;;
 2
 1
 6 6
+Items:
+2
+0 9
 Ioan Zaharie
 ;;

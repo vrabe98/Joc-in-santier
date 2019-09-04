@@ -22,7 +22,7 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt,inventory_size,strength,dexterity,constitution;
+	int map_change_attempt,inventory_size,strength,dexterity,constitution;	//for npcs, inventory_size is auxiliary in the loading process
 	std::string name;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
@@ -55,14 +55,14 @@ public:
 };
 
 
-class NPC :protected Character 
+class NPC :public Character 
 {
 	friend class Game;
 	DialogueState* root;
 public:
 	NPC();
 	void Draw(Map*,int);
-	void Load(std::ifstream&,Map[]);
+	void Load(std::ifstream&,Map[],Item**);
 	void Dialogue();
 	std::string GetName();
 	int CheckNPC(COORD, int);
