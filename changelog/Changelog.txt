@@ -67,3 +67,6 @@
 
 0.025-4.09.2019:
 *NPC-ii pot incepe jocul cu iteme echipate! Mai putin si vor prinde putere!
+
+0.026-7.09.2019:
+*NPC-ii nu mai sunt oameni de nimic si au propriile stats!

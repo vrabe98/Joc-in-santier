@@ -379,6 +379,53 @@ void NPC::Load(std::ifstream& npc_str,Map maps[],Item** database) {
 	current_map = &maps[map_ID];
 	npc_str >> coordonate.X >> coordonate.Y;
 	npc_str >> aux;
+	if (aux != "Stats:") {
+		printf("NPC file corrupted!");
+		exit(1);
+	}
+	else {
+		int stat;
+		npc_str >> aux;
+		if (aux != "STR") {
+			printf("NPC file corrupted! Stats order is wrong!");
+			exit(1);
+		}
+		else {
+			npc_str >> stat;
+			if (stat <= 20 && stat >= 0) strength = stat;
+			else {
+				printf("Wrong stat value! Stats need to be in the 0-20 range!");
+				exit(1);
+			}
+		}
+		npc_str >> aux;
+		if (aux != "DEX") {
+			printf("NPC file corrupted! Stats order is wrong!");
+			exit(1);
+		}
+		else {
+			npc_str >> stat;
+			if (stat <= 20 && stat >= 0) dexterity = stat;
+			else {
+				printf("Wrong stat value! Stats need to be in the 0-20 range!");
+				exit(1);
+			}
+		}
+		npc_str >> aux;
+		if (aux != "CON") {
+			printf("NPC file corrupted! Stats order is wrong!");
+			exit(1);
+		}
+		else {
+			npc_str >> stat;
+			if (stat <= 20 && stat >= 0) constitution = stat;
+			else {
+				printf("Wrong stat value! Stats need to be in the 0-20 range!");
+				exit(1);
+			}
+		}
+	}
+	npc_str >> aux;
 	if (aux != "Items:") {
 		printf("NPC file corrupted!");
 		exit(1);
