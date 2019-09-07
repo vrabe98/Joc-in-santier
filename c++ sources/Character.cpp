@@ -58,14 +58,22 @@ int Check_terrain(Character caract,COORD coordonata) {		//function checks if the
 	}
 }
 
-void Character::ShowStats() {
-	double hp, base = 100, armor = 0,main_hand_dmg=0,offhand_dmg=0;
-	hp = base * (1+0.05 * (strength - 10.0)) + constitution * 10.0;
+void Character::RefreshArmor() {		//function recalculates the armor value
+	armor = 0;
 	for (int i = 0; i <= 4; i++) {
 		if (equipped_items[i] != nullptr) {
 			armor += equipped_items[i]->GetArmor();
 		}
 	}
+}
+
+void Character::RefreshHP() {			//function replenishes HP, by recalculating its value
+	float base = 100.0;
+	hp = base * (1 + 0.05 * (strength - 10.0)) + constitution * 10.0;
+}
+
+void Character::ShowStats() {
+	double main_hand_dmg=0,offhand_dmg=0;
 	if (equipped_items[RHAND] != nullptr) main_hand_dmg = equipped_items[RHAND]->GetDamage();
 	if (equipped_items[LHAND] != nullptr) offhand_dmg = equipped_items[LHAND]->GetDamage();
 	system("cls");
@@ -120,6 +128,7 @@ void Character::Equip(int item_id) {
 			inventory[i] = inventory[i + 1];
 		}
 	}
+	RefreshArmor();
 }
 
 int Character::HasEquippedItems() {
@@ -137,6 +146,7 @@ void Character::Unequip(int slot) {
 		inventory[inventory_size - 1] = equipped_items[slot];
 		equipped_items[slot] = nullptr;
 	}
+	RefreshArmor();
 }
 
 void Character::Show_inventory(int want_to_equip) {
@@ -360,6 +370,8 @@ Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex
 		inventory[i] = inventory_copy[i];
 	}
 	inventory_size = items;
+	RefreshArmor();
+	RefreshHP();
 }
 
 Character::Character(){}
@@ -452,6 +464,8 @@ void NPC::Load(std::ifstream& npc_str,Map maps[],Item** database) {
 		printf("NPC file corrupted!");
 		exit(1);
 	}
+	RefreshArmor();
+	RefreshHP();
 }
 
 void NPC::Draw(Map* map,int style) {

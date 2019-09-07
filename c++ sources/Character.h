@@ -22,7 +22,8 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt,inventory_size,strength,dexterity,constitution;	//for npcs, inventory_size is auxiliary in the loading process
+	int map_change_attempt,inventory_size,strength,dexterity,constitution,armor;	//for npcs, inventory_size is auxiliary in the loading process
+	float hp;
 	std::string name;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
@@ -39,6 +40,8 @@ public:
 		return constitution;
 	}
 	void ShowStats();
+	void RefreshArmor();
+	void RefreshHP();
 	int HasEquippedItems();
 	void Equip(int);
 	void Unequip(int);
