@@ -15,6 +15,7 @@
 #include "Item.h"
 #include "DialogueState.h"
 #include "Game.h"
+#include "Combat.h"
 
 class Map;
 
@@ -22,7 +23,7 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt,inventory_size,strength,dexterity,constitution,armor;	//for npcs, inventory_size is auxiliary in the loading process
+	int map_change_attempt,inventory_size,strength,dexterity,constitution,armor,damage_bonus;	//for npcs, inventory_size is auxiliary in the loading process
 	float hp;
 	std::string name;
 	COORD coordonate;
@@ -30,6 +31,20 @@ protected:
 	Item* equipped_items[NUM_SLOTS];
 	Map* current_map;
 public:
+	std::string GetName() {
+		return name;
+	}
+	inline int died() {
+		if (hp <= 0) {
+			hp = 0;
+			return 1;
+		}
+		else return 0;
+	}
+	inline float GetHP() {
+		return hp;
+	}
+	void GetDamaged(float,Character*,int,int);
 	inline int STR() {
 		return strength;
 	}
@@ -38,6 +53,23 @@ public:
 	}
 	inline int CON() {
 		return constitution;
+	}
+	inline void SetDmgBonus() {
+		damage_bonus = 1;
+	}
+	inline void ResetDmgBonus() {
+		damage_bonus = 0;
+	}
+	inline int HasDmgBonus() {
+		return damage_bonus;
+	}
+	inline int GetWeaponDmg() {
+		return equipped_items[RHAND]->GetDamage();
+	}
+	float GetEvasion();
+	int Has1h();
+	inline int IsPlayer() {
+		return 1;
 	}
 	void ShowStats();
 	void RefreshArmor();
@@ -64,6 +96,9 @@ class NPC :public Character
 	DialogueState* root;
 public:
 	NPC();
+	inline int IsPlayer() {
+		return 0;
+	}
 	void Draw(Map*,int);
 	void Load(std::ifstream&,Map[],Item**);
 	void Dialogue();

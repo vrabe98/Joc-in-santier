@@ -19,6 +19,7 @@ protected:
 	std::string name;
 	int equip_slot,weight,id;
 public:
+	virtual int Is2h()=0;
 	virtual void Load(std::ifstream&)=0;
 	virtual void Show_info() = 0;
 	virtual int IsArmor()=0;
@@ -37,6 +38,9 @@ class Weapon:public Item
 public:
 	void Load(std::ifstream&);
 	void Show_info();
+	inline int Is2h() {
+		return twohanded;
+	}
 	inline int IsWeapon() {
 		return 1;
 	}
@@ -59,6 +63,9 @@ class Armor :public Item {
 public:
 	void Load(std::ifstream&);
 	void Show_info();
+	inline int Is2h() {
+		return NULL;
+	}
 	inline int IsWeapon() {
 		return 0;
 	}
@@ -80,6 +87,9 @@ class Generic_item :public Item {
 public:
 	void Load(std::ifstream&);
 	void Show_info();
+	inline int Is2h() {
+		return NULL;
+	}
 	inline int IsWeapon() {
 		return 0;
 	}

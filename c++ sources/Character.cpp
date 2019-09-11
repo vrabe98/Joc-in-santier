@@ -292,7 +292,7 @@ void Character::Interact_NPC(COORD new_coord) {
 	if (npc_inter) {
 		char opt;
 		system("cls");
-		std::cout << "Do you want to talk to " << npc_inter->GetName() << " or see his stats, or even see the items he has on?"<<"\n(t/s/i/x-exit)";
+		std::cout << "Do you want to talk to " << npc_inter->GetName() << " or see his stats, or even see the items he has on? Or maybe you want to fight?"<<"\n(t/s/i/f/x-exit)";
 		std::cin >> opt;
 		if (opt == 't')
 			npc_inter->Dialogue();
@@ -302,6 +302,15 @@ void Character::Interact_NPC(COORD new_coord) {
 			npc_inter->Show_inventory(0);
 			std::cin.ignore();
 			std::cin.get();
+		}
+		else if (opt == 'f') {
+			int result=Combat(this, npc_inter);
+			if (result == 0) DeathScreen(this, npc_inter);
+			else if (result == 1) {
+				std::cout << "VICTORIE!\n" << npc_inter->GetName() << " a fost invins!";
+				std::cin.get();
+				system("cls");
+			}
 		}
 		else return;
 	}
@@ -372,6 +381,48 @@ Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex
 	inventory_size = items;
 	RefreshArmor();
 	RefreshHP();
+}
+
+void Character::GetDamaged(float enemy_damage,Character* enemy,int riposte,int critted) {
+	int block_roll;
+	float received_dmg;
+	block_roll = Roll_d20();
+	if (block_roll < 0) block_roll = 0;
+	else if (block_roll > 20) block_roll = 20;
+	if (!riposte) {
+		if (block_roll < 10||critted) {
+			std::cout << name << " couldn't block the strike from " << enemy->GetName() << "\n";
+			received_dmg = enemy_damage;			//no damage blocked
+		}
+		else if (block_roll < 19||(!critted)) {
+			std::cout << name << " blocked " << enemy->GetName() << "'s strike.\n";
+			received_dmg = 0.25 * enemy_damage;		//average value, shields not implemented yet
+		}
+		else if (((block_roll == 19) || (block_roll == 20))&&(!critted)) {
+			float riposte_dmg = equipped_items[RHAND]->GetDamage();
+			std::cout << name << " blocks the attack from " << enemy->GetName() << ". Oh no! "<<enemy->GetName()<<" let his guard down for a second! "<<name<<" sees the opportunity and strikes him!"<<"\n";
+			received_dmg = 0;						//100% block
+			enemy->GetDamaged(riposte_dmg, this, 1,0);
+		}
+	}
+	else {
+		std::cout << name<<" is taken by surprise!"<<enemy->GetName()<<"'s riposte goes through his poor defense like a knife through butter!\n";
+		received_dmg = enemy_damage;
+	}
+	received_dmg = received_dmg-(armor/20.0);
+	if (received_dmg < 0) received_dmg = 0;
+	std::cout << this->GetName() << " a luat " << received_dmg << " daune.\n";
+	hp = hp - received_dmg;
+}
+
+int Character::Has1h() {
+	if (equipped_items[RHAND]->Is2h()) return 0;
+	else return 1;
+}
+
+float Character::GetEvasion() {
+	float noshield_bonus = 1;		//placeholder,until I implement shields
+	return 0.5 * (dexterity-10.0)+noshield_bonus*0.5;
 }
 
 Character::Character(){}
