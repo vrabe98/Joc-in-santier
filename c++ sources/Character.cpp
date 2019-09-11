@@ -58,6 +58,19 @@ int Check_terrain(Character caract,COORD coordonata) {		//function checks if the
 	}
 }
 
+Damage Character::GetWeaponDmg() {
+	Damage dmg;
+	if (equipped_items[RHAND] == nullptr) {
+		dmg.type = "pumni";
+		dmg.damage = FIST_DMG;
+	}
+	else {
+		dmg.type = "arma";
+		dmg.damage = equipped_items[RHAND]->GetDamage();
+	}
+	return dmg;
+}
+
 void Character::RefreshArmor() {		//function recalculates the armor value
 	armor = 0;
 	for (int i = 0; i <= 4; i++) {
@@ -416,8 +429,8 @@ void Character::GetDamaged(float enemy_damage,Character* enemy,int riposte,int c
 }
 
 int Character::Has1h() {
+	if (equipped_items[RHAND] == nullptr||(!equipped_items[RHAND]->Is2h())) return 1;
 	if (equipped_items[RHAND]->Is2h()) return 0;
-	else return 1;
 }
 
 float Character::GetEvasion() {

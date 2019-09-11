@@ -12,12 +12,19 @@
 #define RHAND 5
 #define NONEQUIPABLE -1		//Items that can't be equipped
 
+#define FIST_DMG 50
+
 #include "Item.h"
 #include "DialogueState.h"
 #include "Game.h"
 #include "Combat.h"
 
 class Map;
+
+typedef struct Damage {
+	int damage;
+	std::string type;
+} Damage;
 
 class Character
 {
@@ -63,9 +70,7 @@ public:
 	inline int HasDmgBonus() {
 		return damage_bonus;
 	}
-	inline int GetWeaponDmg() {
-		return equipped_items[RHAND]->GetDamage();
-	}
+	Damage GetWeaponDmg();
 	float GetEvasion();
 	int Has1h();
 	inline int IsPlayer() {

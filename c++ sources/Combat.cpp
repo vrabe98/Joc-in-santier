@@ -15,8 +15,8 @@ int Roll_d20() {
 void Round(Character* attacker, Character* defender,int turn) {
 	float attacker_roll, crit = 1, glance = 1, hit = 0;
 	std::cout << "\n\nTurn " << turn;
-	std::cout << "\nAttacker: " << attacker->GetName()<<". HP: "<<attacker->GetHP()<<". Daune arma: "<<attacker->GetWeaponDmg()<<"\n";
-	std::cout << "Defender: " << defender->GetName() << ". HP: " << defender->GetHP()<< ". Daune arma: " << defender->GetWeaponDmg() << "\n"<<std::endl;
+	std::cout << "\nAttacker: " << attacker->GetName()<<". HP: "<<attacker->GetHP()<<". Daune "<<attacker->GetWeaponDmg().type<<": "<<attacker->GetWeaponDmg().damage<<"\n";
+	std::cout << "Defender: " << defender->GetName() << ". HP: " << defender->GetHP() << ". Daune " << defender->GetWeaponDmg().type << ": " << defender->GetWeaponDmg().damage << "\n"<<std::endl;
 	attacker_roll = Roll_d20() + (attacker->DEX() - 10.0) * 0.5 + attacker->Has1h()*0.5-defender->GetEvasion();
 	if (attacker_roll < 0) attacker_roll = 0;
 	if (attacker_roll > 20) attacker_roll = 20;
@@ -45,7 +45,7 @@ void Round(Character* attacker, Character* defender,int turn) {
 		crit = 1.5;
 	}
 	if (hit) {
-		float damage = attacker->GetWeaponDmg() * (1 + 0.1 * (attacker->STR() - 10.0)) * crit * glance *(1+attacker->HasDmgBonus() * 0.2);
+		float damage = attacker->GetWeaponDmg().damage * (1 + 0.1 * (attacker->STR() - 10.0)) * crit * glance *(1+attacker->HasDmgBonus() * 0.2);
 		if (crit == 1) defender->GetDamaged(damage, attacker, 0, 0);
 		else if (crit == 1.5) defender->GetDamaged(damage, attacker, 0, 1);
 	}

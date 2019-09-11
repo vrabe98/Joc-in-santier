@@ -73,3 +73,6 @@
 
 0.027-11.09.2019:
 *Te poti bate cu cine vrea sufletu tau!
+
+0.028-11.09.2019:
+*Am adaugat daune pt pumni, in caz ca nu ai arme echipate
