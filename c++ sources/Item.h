@@ -19,6 +19,7 @@ protected:
 	std::string name;
 	int equip_slot,weight,id;
 public:
+	virtual double BlockMultiplier()=0;		//also acts as shield type identifier
 	virtual int Is2h()=0;
 	virtual void Load(std::ifstream&)=0;
 	virtual void Show_info() = 0;
@@ -36,6 +37,9 @@ class Weapon:public Item
 {
 	int damage,twohanded;
 public:
+	inline double BlockMultiplier() {
+		return 0.4;
+	}
 	void Load(std::ifstream&);
 	void Show_info();
 	inline int Is2h() {
@@ -61,6 +65,9 @@ public:
 class Armor :public Item {
 	int armor;
 public:
+	inline double BlockMultiplier() {
+		return 1;
+	}
 	void Load(std::ifstream&);
 	void Show_info();
 	inline int Is2h() {
@@ -85,6 +92,9 @@ public:
 
 class Generic_item :public Item {
 public:
+	inline double BlockMultiplier() {
+		return 1;
+	}
 	void Load(std::ifstream&);
 	void Show_info();
 	inline int Is2h() {
@@ -98,6 +108,33 @@ public:
 	}
 	inline int IsGeneric() {
 		return 1;
+	}
+	inline int GetArmor() {
+		return 0;
+	}
+	inline int GetDamage() {
+		return 0;
+	}
+};
+
+class Shield :public Item {
+public:
+	inline double BlockMultiplier() {
+		return 0.1;
+	}
+	void Load(std::ifstream&);
+	void Show_info();
+	inline int Is2h() {
+		return NULL;
+	}
+	inline int IsWeapon() {
+		return 0;
+	}
+	inline int IsArmor() {
+		return 1;
+	}
+	inline int IsGeneric() {
+		return 0;
 	}
 	inline int GetArmor() {
 		return 0;

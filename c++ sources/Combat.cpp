@@ -13,7 +13,7 @@ int Roll_d20() {
 }
 
 void Round(Character* attacker, Character* defender,int turn) {
-	float attacker_roll, crit = 1, glance = 1, hit = 0;
+	double attacker_roll, crit = 1, glance = 1, hit = 0;
 	std::cout << "\n\nTurn " << turn;
 	std::cout << "\nAttacker: " << attacker->GetName()<<". HP: "<<attacker->GetHP()<<". Daune "<<attacker->GetWeaponDmg().type<<": "<<attacker->GetWeaponDmg().damage<<"\n";
 	std::cout << "Defender: " << defender->GetName() << ". HP: " << defender->GetHP() << ". Daune " << defender->GetWeaponDmg().type << ": " << defender->GetWeaponDmg().damage << "\n"<<std::endl;
@@ -54,7 +54,7 @@ void Round(Character* attacker, Character* defender,int turn) {
 
 int Combat(Character* me, NPC* enemy) {
 	int turn_number = 0,someonedied;
-	float initiative_roll_mainchar, initiative_roll_enemy;
+	double initiative_roll_mainchar, initiative_roll_enemy;
 	Character* attacker=nullptr;
 	Character* defender=nullptr;
 	system("cls");

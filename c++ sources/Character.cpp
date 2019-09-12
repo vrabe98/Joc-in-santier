@@ -408,12 +408,27 @@ void Character::GetDamaged(float enemy_damage,Character* enemy,int riposte,int c
 			received_dmg = enemy_damage;			//no damage blocked
 		}
 		else if (block_roll < 19||(!critted)) {
-			std::cout << name << " blocked " << enemy->GetName() << "'s strike.\n";
-			received_dmg = 0.25 * enemy_damage;		//average value, shields not implemented yet
+			double block_mult = 1;
+			if (equipped_items[RHAND] == nullptr && equipped_items[LHAND] == nullptr) block_mult = 0.5;	//fist block
+			else if (equipped_items[LHAND] != nullptr) block_mult = equipped_items[LHAND]->BlockMultiplier();	//offhand block multiplier has priority
+			else if (equipped_items[RHAND] == nullptr) block_mult = equipped_items[RHAND]->BlockMultiplier();	//main hand block multiplier, if no item in offhand
+			std::cout << name << " blocked " << enemy->GetName() << "'s strike with his ";
+			if (block_mult == 0.5) std::cout << "fists.\n";
+			else if (block_mult == 0.4) std::cout << "weapon.\n";
+			else if (block_mult == 0.1) std::cout << "shield.\n";
+			received_dmg = block_mult* enemy_damage;		//average value, shields not implemented yet
 		}
 		else if (((block_roll == 19) || (block_roll == 20))&&(!critted)) {
+			double block_mult = 1;
 			float riposte_dmg = equipped_items[RHAND]->GetDamage();
-			std::cout << name << " blocks the attack from " << enemy->GetName() << ". Oh no! "<<enemy->GetName()<<" let his guard down for a second! "<<name<<" sees the opportunity and strikes him!"<<"\n";
+			if (equipped_items[RHAND] == nullptr && equipped_items[LHAND] == nullptr) block_mult = 0.5;	//fist block
+			else if (equipped_items[LHAND] != nullptr) block_mult = equipped_items[LHAND]->BlockMultiplier();	//offhand block multiplier has priority
+			else if (equipped_items[RHAND] == nullptr) block_mult = equipped_items[RHAND]->BlockMultiplier();	//main hand block multiplier, if no item in offhand
+			std::cout << name << " blocks the attack from " << enemy->GetName() << "with his ";
+			if (block_mult == 0.5) std::cout << "fists";
+			else if (block_mult == 0.4) std::cout << "weapon";
+			else if (block_mult == 0.1) std::cout << "shield";
+			std::cout<<". Oh no! " << enemy->GetName() << " let his guard down for a second! " << name << " sees the opportunity and strikes him!" << "\n";
 			received_dmg = 0;						//100% block
 			enemy->GetDamaged(riposte_dmg, this, 1,0);
 		}
@@ -434,7 +449,9 @@ int Character::Has1h() {
 }
 
 float Character::GetEvasion() {
-	float noshield_bonus = 1;		//placeholder,until I implement shields
+	float noshield_bonus = 0;
+	if (equipped_items[LHAND] == nullptr) noshield_bonus = 1;
+	else if (equipped_items[LHAND]->BlockMultiplier() == 0.4) noshield_bonus = 1;
 	return 0.5 * (dexterity-10.0)+noshield_bonus*0.5;
 }
 

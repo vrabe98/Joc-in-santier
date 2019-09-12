@@ -1,5 +1,5 @@
 First: Number of items;
-Type
+Type	(Weapon/Armor/Generic/Shield)
 Item_ID (incremental only)
 Name
 Equip slot (if weapon: also two-handed, next to equip slot; 1 if twohanded, 0 if onehanded; equip slot is always RIGHT HAND-5, one-handed weapons can be equipped on the right hand as well though)
@@ -12,11 +12,11 @@ HEAD 1
 LEGS 2
 ARMS 3
 FEET 4
-RHAND 5				//Weapon/shield slots
-LHAND 6
+RHAND 5				//Main hand slot
+LHAND 6				//Shield/Offhand weapon slot
 NONEQUIPABLE -1			//Items that can't be equipped
 ;;
-10
+11
 ;;
 Weapon
 0
@@ -87,4 +87,11 @@ Pyur Fucken Nolledge
 1
 1
 300
+;;
+Shield
+10
+Ajutor la examen
+6
+10
+-1
 ;;

@@ -172,6 +172,9 @@ void Game::Load_item_db(std::ifstream& item_db_stream) {
 		else if (type == "Generic") {
 			item_db[i] = new Generic_item();
 		}
+		else if (type == "Shield") {
+			item_db[i] = new Shield();
+		}
 		item_db[i]->Load(item_db_stream);
 		item_db[i] = item_db[i];
 	}

@@ -12,7 +12,6 @@ void Weapon::Load(std::ifstream& item_db_str) {
 	item_db_str >> equip_slot;
 	item_db_str >> twohanded;
 	item_db_str >> weight;
-	weight = weight;
 	item_db_str >> damage;
 	item_db_str >> aux;
 	if (aux != ";;") {
@@ -28,7 +27,6 @@ void Armor::Load(std::ifstream& item_db_str) {
 	getline(item_db_str, name, '\n');
 	item_db_str >> equip_slot;
 	item_db_str >> weight;
-	weight = weight;
 	item_db_str >> armor;
 	item_db_str >> aux;
 	if (aux != ";;") {
@@ -53,11 +51,36 @@ void Generic_item::Load(std::ifstream& item_db_str) {
 	}
 }
 
+void Shield::Load(std::ifstream& item_db_str) {
+	std::string aux;
+	int garbage;
+	item_db_str >> id;
+	item_db_str.ignore();
+	getline(item_db_str, name, '\n');
+	item_db_str >> equip_slot;
+	item_db_str >> weight;
+	item_db_str >> garbage;
+	item_db_str >> aux;
+	if (aux != ";;") {
+		printf("Item database corrupted!");
+		exit(1);
+	}
+}
+
 void Generic_item::Show_info() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
 	std::cout << name << "\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	printf("Item type: generic (non-equipable)\n");
+	printf("Weight: %d\n", weight);
+}
+
+void Shield::Show_info() {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+	std::cout << name << "\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	printf("Item type: shield\n");
+	printf("Slot: Left hand\n");
 	printf("Weight: %d\n", weight);
 }
 
