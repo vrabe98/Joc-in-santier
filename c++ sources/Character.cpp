@@ -81,7 +81,7 @@ void Character::RefreshArmor() {		//function recalculates the armor value
 }
 
 void Character::RefreshHP() {			//function replenishes HP, by recalculating its value
-	float base = 100.0;
+	double base = 100.0;
 	hp = base * (1 + 0.05 * (strength - 10.0)) + constitution * 10.0;
 }
 
@@ -324,6 +324,11 @@ void Character::Interact_NPC(COORD new_coord) {
 				std::cin.get();
 				system("cls");
 			}
+			else if (result == 2) {
+				std::cout << "Ai fugit ca ultimul las de " << npc_inter->GetName() << ". Csf, tot in viata esti, desi nu meriti.\n";
+				std::cin.get();
+				system("cls");
+			}
 		}
 		else return;
 	}
@@ -411,7 +416,7 @@ void Character::GetDamaged(float enemy_damage,Character* enemy,int riposte,int c
 			double block_mult = 1;
 			if (equipped_items[RHAND] == nullptr && equipped_items[LHAND] == nullptr) block_mult = 0.5;	//fist block
 			else if (equipped_items[LHAND] != nullptr) block_mult = equipped_items[LHAND]->BlockMultiplier();	//offhand block multiplier has priority
-			else if (equipped_items[RHAND] == nullptr) block_mult = equipped_items[RHAND]->BlockMultiplier();	//main hand block multiplier, if no item in offhand
+			else if (equipped_items[LHAND] == nullptr) block_mult = equipped_items[RHAND]->BlockMultiplier();	//main hand block multiplier, if no item in offhand
 			std::cout << name << " blocked " << enemy->GetName() << "'s strike with his ";
 			if (block_mult == 0.5) std::cout << "fists.\n";
 			else if (block_mult == 0.4) std::cout << "weapon.\n";
@@ -437,7 +442,7 @@ void Character::GetDamaged(float enemy_damage,Character* enemy,int riposte,int c
 		std::cout << name<<" is taken by surprise!"<<enemy->GetName()<<"'s riposte goes through his poor defense like a knife through butter!\n";
 		received_dmg = enemy_damage;
 	}
-	received_dmg = received_dmg-(armor/20.0);
+	received_dmg = received_dmg-(armor/20.0f);
 	if (received_dmg < 0) received_dmg = 0;
 	std::cout << this->GetName() << " a luat " << received_dmg << " daune.\n";
 	hp = hp - received_dmg;
@@ -452,7 +457,7 @@ float Character::GetEvasion() {
 	float noshield_bonus = 0;
 	if (equipped_items[LHAND] == nullptr) noshield_bonus = 1;
 	else if (equipped_items[LHAND]->BlockMultiplier() == 0.4) noshield_bonus = 1;
-	return 0.5 * (dexterity-10.0)+noshield_bonus*0.5;
+	return 0.5f * (dexterity-10.0f)+noshield_bonus*0.5f;
 }
 
 Character::Character(){}

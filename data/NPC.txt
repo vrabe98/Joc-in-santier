@@ -28,9 +28,9 @@ Toma Leonida Dragomir
 1
 5 5
 Stats:
-STR 15
-DEX 15
-CON 15
+STR 11
+DEX 10
+CON 11
 Items:
 2
 8 9

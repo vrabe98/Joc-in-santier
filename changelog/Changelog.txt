@@ -79,3 +79,4 @@
 
 0.029-12.09.2019:
 *Am adaugat scuturi.
+*Am reparat unele buguri.

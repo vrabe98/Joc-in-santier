@@ -85,7 +85,7 @@ int Combat(Character* me, NPC* enemy) {
 		}
 		else if (action=='x'&&(!someonedied)){
 			std::cout << "Lasul de tine n-a putut sa se bata nici macar " << turn_number + 1 << " runde. Rusine...\n";
-			return 1;
+			return 2;
 		}
 		std::cin.get();
 		someonedied = me->died() || enemy->died();
