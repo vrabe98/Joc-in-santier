@@ -41,6 +41,11 @@ public:
 	std::string GetName() {
 		return name;
 	}
+	int Dualwield() {
+		if (equipped_items[LHAND] == nullptr) return 0;
+		else if (equipped_items[LHAND]->IsWeapon() && (!equipped_items[LHAND]->Is2h())) return 1;
+		else return 0;
+	}
 	inline int died() {
 		if (hp <= 0) {
 			hp = 0;
@@ -70,7 +75,7 @@ public:
 	inline int HasDmgBonus() {
 		return damage_bonus;
 	}
-	Damage GetWeaponDmg();
+	Damage GetWeaponDmg(int);
 	float GetEvasion();
 	int Has1h();
 	inline int IsPlayer() {

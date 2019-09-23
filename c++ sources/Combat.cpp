@@ -13,43 +13,47 @@ int Roll_d20() {
 }
 
 void Round(Character* attacker, Character* defender,int turn) {
-	double attacker_roll, crit = 1, glance = 1, hit = 0;
+	double attacker_roll, crit = 1, glance = 1, hit = 0,counter=1;
+	int dualwield = attacker->Dualwield()+1;		//the do...while doesn't work well without this
 	std::cout << "\n\nTurn " << turn;
-	std::cout << "\nAttacker: " << attacker->GetName()<<". HP: "<<attacker->GetHP()<<". Daune "<<attacker->GetWeaponDmg().type<<": "<<attacker->GetWeaponDmg().damage<<"\n";
-	std::cout << "Defender: " << defender->GetName() << ". HP: " << defender->GetHP() << ". Daune " << defender->GetWeaponDmg().type << ": " << defender->GetWeaponDmg().damage << "\n"<<std::endl;
-	attacker_roll = Roll_d20() + (attacker->DEX() - 10.0) * 0.5 + attacker->Has1h()*0.5-defender->GetEvasion();
-	if (attacker_roll < 0) attacker_roll = 0;
-	if (attacker_roll > 20) attacker_roll = 20;
-	std::cout << attacker->GetName() << " rolls " << attacker_roll << std::endl<<std::endl;
-	if (attacker_roll == 0) {
-		std::cout << attacker->GetName() << " makes a bad mistake.\n";
-		defender->SetDmgBonus();
-		hit = 0;
-	}
-	else if (attacker_roll < 5) {
-		std::cout << attacker->GetName() << " misses " << defender->GetName()<<" by an inch.\n";
-		hit = 0;
-	}
-	else if (attacker_roll < 10) {
-		std::cout << attacker->GetName() << " almost misses, but somehow manages to scratch " << defender->GetName()<<".\n";
-		glance = 0.5;
-		hit = 1;
-	}
-	else if (attacker_roll < 19) {
-		std::cout << attacker->GetName() << " hits " << defender->GetName()<<". Boring.\n";
-		hit = 1;
-	}
-	else if ((attacker_roll == 19) || (attacker_roll == 20)) {
-		std::cout << attacker->GetName() << " hits " << defender->GetName() << "'s weak spot. Blood flies everywhere! Eugh, I need to wash. Damn it, " << attacker->GetName() << " I'm wearing my new shirt!\n";
-		hit = 1;
-		crit = 1.5;
-	}
-	if (hit) {
-		float damage = attacker->GetWeaponDmg().damage * (1 + 0.1 * (attacker->STR() - 10.0)) * crit * glance *(1+attacker->HasDmgBonus() * 0.2);
-		if (crit == 1) defender->GetDamaged(damage, attacker, 0, 0);
-		else if (crit == 1.5) defender->GetDamaged(damage, attacker, 0, 1);
-	}
-	if(attacker->HasDmgBonus())	attacker->ResetDmgBonus();
+	do {
+		std::cout << "\nAttacker: " << attacker->GetName() << ". HP: " << attacker->GetHP() << ". Daune " << attacker->GetWeaponDmg(RHAND+dualwield-1).type << " mana curenta: " << attacker->GetWeaponDmg(RHAND+dualwield-1).damage << "\n";
+		std::cout << "Defender: " << defender->GetName() << ". HP: " << defender->GetHP() << ". Daune " << defender->GetWeaponDmg(RHAND).type << " mana dreapta: " << defender->GetWeaponDmg(RHAND).damage << "\n" << std::endl;
+		attacker_roll = Roll_d20() + (attacker->DEX() - 10.0) * 0.5 + attacker->Has1h() * 0.5 - defender->GetEvasion();
+		if (attacker_roll < 0) attacker_roll = 0;
+		if (attacker_roll > 20) attacker_roll = 20;
+		std::cout << attacker->GetName() << " rolls " << attacker_roll << std::endl << std::endl;
+		if (attacker_roll == 0) {
+			std::cout << attacker->GetName() << " makes a bad mistake.\n";
+			defender->SetDmgBonus();
+			hit = 0;
+		}
+		else if (attacker_roll < 5) {
+			std::cout << attacker->GetName() << " misses " << defender->GetName() << " by an inch.\n";
+			hit = 0;
+		}
+		else if (attacker_roll < 10) {
+			std::cout << attacker->GetName() << " almost misses, but somehow manages to scratch " << defender->GetName() << ".\n";
+			glance = 0.5;
+			hit = 1;
+		}
+		else if (attacker_roll < 19) {
+			std::cout << attacker->GetName() << " hits " << defender->GetName() << ". Boring.\n";
+			hit = 1;
+		}
+		else if ((attacker_roll == 19) || (attacker_roll == 20)) {
+			std::cout << attacker->GetName() << " hits " << defender->GetName() << "'s weak spot. Blood flies everywhere! Eugh, I need to wash. Damn it, " << attacker->GetName() << " I'm wearing my new shirt!\n";
+			hit = 1;
+			crit = 1.5;
+		}
+		if (hit) {
+			float damage = attacker->GetWeaponDmg(RHAND+dualwield-1).damage * (1.0f + 0.1f * (attacker->STR() - 10.0f)) * crit * glance * (1.0f + attacker->HasDmgBonus() * 0.2f);
+			if (crit == 1) defender->GetDamaged(damage, attacker, 0, 0);
+			else if (crit == 1.5) defender->GetDamaged(damage, attacker, 0, 1);
+		}
+		if (attacker->HasDmgBonus())	attacker->ResetDmgBonus();
+		dualwield--;
+	} while (dualwield);
 }
 
 int Combat(Character* me, NPC* enemy) {

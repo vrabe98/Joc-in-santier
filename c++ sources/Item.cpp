@@ -110,9 +110,13 @@ void Weapon::Show_info() {
 	std::cout << name<<"\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	printf("Item type: weapon\n");
-	if (twohanded) printf("Two-handed\n");
+	if (twohanded) {
+		printf("Two-handed\n");
+		printf("Slots: both hands\n");
+	}
 	else {
 		printf("One-handed\n");
+		printf("Slot: Right Hand\n");
 	}
 	printf("Weight: %d\n", weight);
 	printf("Damage: %d\n", damage);

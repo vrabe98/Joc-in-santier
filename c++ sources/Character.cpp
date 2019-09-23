@@ -58,15 +58,15 @@ int Check_terrain(Character caract,COORD coordonata) {		//function checks if the
 	}
 }
 
-Damage Character::GetWeaponDmg() {
+Damage Character::GetWeaponDmg(int hand) {
 	Damage dmg;
-	if (equipped_items[RHAND] == nullptr) {
+	if (hand==RHAND&&equipped_items[RHAND] == nullptr) {
 		dmg.type = "pumni";
 		dmg.damage = FIST_DMG;
 	}
 	else {
 		dmg.type = "arma";
-		dmg.damage = equipped_items[RHAND]->GetDamage();
+		dmg.damage = equipped_items[hand]->GetDamage();
 	}
 	return dmg;
 }
@@ -81,14 +81,14 @@ void Character::RefreshArmor() {		//function recalculates the armor value
 }
 
 void Character::RefreshHP() {			//function replenishes HP, by recalculating its value
-	double base = 100.0;
+	float base = 100.0;
 	hp = base * (1 + 0.05 * (strength - 10.0)) + constitution * 10.0;
 }
 
 void Character::ShowStats() {
 	double main_hand_dmg=0,offhand_dmg=0;
 	if (equipped_items[RHAND] != nullptr) main_hand_dmg = equipped_items[RHAND]->GetDamage();
-	if (equipped_items[LHAND] != nullptr) offhand_dmg = equipped_items[LHAND]->GetDamage();
+	if (equipped_items[LHAND] != nullptr&&(!equipped_items[LHAND]->Is2h())) offhand_dmg = equipped_items[LHAND]->GetDamage();
 	system("cls");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "-------------------------------------------\n";
@@ -133,9 +133,12 @@ void Character::ShowStats() {
 void Character::Equip(int item_id) {
 	if (item_id >= inventory_size) printf("The number entered is invalid!");
 	else if (inventory[item_id]->IsGeneric()) printf("The item you want to equip can't be equipped!");
-	else if (equipped_items[inventory[item_id]->GetSlot()] != nullptr) printf("The slot is already occupied!");
+	else if ((equipped_items[inventory[item_id]->GetSlot()] != nullptr)&&(inventory[item_id]->GetSlot()!=RHAND)) printf("The slot is already occupied!");
 	else {
-		equipped_items[inventory[item_id]->GetSlot()] = inventory[item_id];
+		if(equipped_items[RHAND]==nullptr&&inventory[item_id]->GetSlot()==RHAND) equipped_items[RHAND] = inventory[item_id];
+		else if (equipped_items[LHAND] == nullptr && inventory[item_id]->GetSlot() == RHAND) equipped_items[LHAND] = inventory[item_id];
+		else equipped_items[inventory[item_id]->GetSlot()] = inventory[item_id];
+		if (inventory[item_id]->IsWeapon() && inventory[item_id]->Is2h()) equipped_items[LHAND] = inventory[item_id];
 		inventory_size--;
 		for (int i = item_id; i < inventory_size; i++) {
 			inventory[i] = inventory[i + 1];
@@ -157,6 +160,7 @@ void Character::Unequip(int slot) {
 	else {
 		inventory_size++;
 		inventory[inventory_size - 1] = equipped_items[slot];
+		if (equipped_items[slot]->IsWeapon() && equipped_items[slot]->Is2h()) equipped_items[LHAND] = nullptr;
 		equipped_items[slot] = nullptr;
 	}
 	RefreshArmor();
@@ -196,7 +200,10 @@ void Character::Show_inventory(int want_to_equip) {
 				std::cout << i;
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 				std::cout << "]. ";
-				equipped_items[i]->Show_info();
+				if (i == LHAND && equipped_items[i]->Is2h()) {
+					printf("Slot occupied by two-handed weapon.\n");
+				}
+				else equipped_items[i]->Show_info();
 				printf("\n");
 			}
 		}

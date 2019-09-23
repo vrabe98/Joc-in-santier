@@ -80,3 +80,7 @@
 0.029-12.09.2019:
 *Am adaugat scuturi.
 *Am reparat unele buguri.
+
+0.030-22.09.2019:
+*Am bagat dual wielding
+*Am bagat arme pt 2 maini

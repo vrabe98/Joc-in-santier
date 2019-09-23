@@ -16,7 +16,7 @@ RHAND 5				//Main hand slot
 LHAND 6				//Shield/Offhand weapon slot
 NONEQUIPABLE -1			//Items that can't be equipped
 ;;
-11
+13
 ;;
 Weapon
 0
@@ -94,4 +94,18 @@ Ajutor la examen
 6
 10
 -1
+;;
+Weapon
+11
+Cartile de fizica a lui Zaharie
+5 1
+1
+150
+;;
+Weapon
+12
+Aialalta carte de fizica a lui Zaharie
+5 0
+1
+100
 ;;
