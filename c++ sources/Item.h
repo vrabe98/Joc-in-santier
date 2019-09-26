@@ -18,16 +18,20 @@ class Item
 protected:
 	std::string name;
 	int equip_slot,weight,id;
+	float price;
 public:
 	virtual double BlockMultiplier()=0;		//also acts as shield type identifier
 	virtual int Is2h()=0;
 	virtual void Load(std::ifstream&)=0;
-	virtual void Show_info() = 0;
+	virtual void Show_info(int) = 0;
 	virtual int IsArmor()=0;
 	virtual int IsWeapon()=0;
 	virtual int IsGeneric() = 0;
 	inline int GetSlot() {
 		return equip_slot;
+	}
+	inline float GetPrice() {
+		return price;
 	}
 	virtual int GetArmor()=0;
 	virtual int GetDamage() = 0;
@@ -41,7 +45,7 @@ public:
 		return 0.4;
 	}
 	void Load(std::ifstream&);
-	void Show_info();
+	void Show_info(int);
 	inline int Is2h() {
 		return twohanded;
 	}
@@ -69,7 +73,7 @@ public:
 		return 1;
 	}
 	void Load(std::ifstream&);
-	void Show_info();
+	void Show_info(int);
 	inline int Is2h() {
 		return NULL;
 	}
@@ -96,7 +100,7 @@ public:
 		return 1;
 	}
 	void Load(std::ifstream&);
-	void Show_info();
+	void Show_info(int);
 	inline int Is2h() {
 		return NULL;
 	}
@@ -123,7 +127,7 @@ public:
 		return 0.1;
 	}
 	void Load(std::ifstream&);
-	void Show_info();
+	void Show_info(int);
 	inline int Is2h() {
 		return NULL;
 	}

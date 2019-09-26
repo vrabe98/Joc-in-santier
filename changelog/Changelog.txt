@@ -84,3 +84,6 @@
 0.030-22.09.2019:
 *Am bagat dual wielding
 *Am bagat arme pt 2 maini
+
+0.031-26.09.2019:
+*Acum poti cumpara ce vrea sufletul tau de la noii bisnitari!

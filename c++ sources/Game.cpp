@@ -33,7 +33,8 @@ void Game::Load_maps(std::ifstream& map_stream) {
 }
 
 void Game::Load_MainCharacter(std::ifstream& character_stream) {
-	int map_id = 0, x = 0, y = 0, inventory_size = 0, str = 0,dex=0,con=0,num_items=0;
+	int map_id = 0, x = 0, y = 0, inventory_size = 0, str = 0,dex=0,con=0,cha=0,num_items=0;
+	float currency = 0.0;
 	char name[100];
 	Item* inventory[MAX_ITEMS];
 	std::string aux;
@@ -45,6 +46,11 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	getline(character_stream, aux, '\n');
 	if (aux == "Starting coordinates:") {
 		character_stream >> y >> x;
+	}
+	character_stream.ignore();
+	getline(character_stream, aux, '\n');
+	if (aux == "Starting cash:") {
+		character_stream >> currency;
 	}
 	character_stream.ignore();
 	getline(character_stream, aux, '\n');
@@ -68,6 +74,11 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	}
 	character_stream.ignore();
 	getline(character_stream, aux, '\n');
+	if (aux == "Charisma:") {
+		character_stream >> cha;
+	}
+	character_stream.ignore();
+	getline(character_stream, aux, '\n');
 	if (aux == "Items:") {
 		while (!character_stream.eof()) {
 			int id;
@@ -80,7 +91,7 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	std::cin.ignore(INT_MAX, '\n');
 	std::cin.getline(name,100);
 	std::string nume(name);
-	main_character = new Character(x, y, &maps[map_id],inventory_size,str,dex,con,nume,inventory,num_items);
+	main_character = new Character(x, y, &maps[map_id],inventory_size,str,dex,con,cha,currency,nume,inventory,num_items);
 }
 
 void Game::Load_connections(std::ifstream& conn_stream) {
@@ -132,7 +143,7 @@ void Game::Load_objects(std::ifstream& obj_stream) {
 
 void Game::Load_npcs(std::ifstream& npc_stream) {
 	std::string aux;
-	for (int i = 0; i < 12; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 13; i++) {				//skip file format specifiers at the top
 		getline(npc_stream, aux, '\n');
 	}
 	npc_stream >> num_chars;
@@ -151,7 +162,7 @@ void Game::Load_npcs(std::ifstream& npc_stream) {
 
 void Game::Load_item_db(std::ifstream& item_db_stream) {
 	std::string aux;
-	for (int i = 0; i < 18; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 19; i++) {				//skip file format specifiers at the top
 		getline(item_db_stream, aux, '\n');
 	}
 	item_db_stream >> num_items;
@@ -176,7 +187,25 @@ void Game::Load_item_db(std::ifstream& item_db_stream) {
 			item_db[i] = new Shield();
 		}
 		item_db[i]->Load(item_db_stream);
-		item_db[i] = item_db[i];
+	}
+}
+
+void Game::Load_vendors(std::ifstream& vendor_str) {
+	std::string aux;
+	for (int i = 0; i < 9; i++) {				//skip file format specifiers at the top
+		getline(vendor_str, aux, '\n');
+	}
+	vendor_str >> num_vendors;
+	vendor_str >> aux;
+	if (aux != ";;") {
+		printf("Vendor file corrupted!");
+		exit(1);
+	}
+	for (int i = num_chars; i < num_chars + num_vendors; i++) {
+		npcs[i] = new Vendor();
+		vendor_str.ignore();				//ignores the character ID
+		vendor_str.ignore();				//ignores the newline after the character ID
+		npcs[i]->Load(vendor_str, maps, item_db);
 	}
 }
 
@@ -185,7 +214,7 @@ void Game::Load_dialogues(std::ifstream& dialogue_stream) {
 	for (int i = 0; i < 23; i++) {				//skip file format specifiers at the top
 		getline(dialogue_stream, aux, '\n');
 	}
-	for (int i = 0; i < num_chars; i++) {
+	for (int i = 0; i < num_chars+num_vendors; i++) {
 		DialogueState* root = new DialogueState;
 		std::string _aux;
 		int auxint;
@@ -210,7 +239,7 @@ void Game::Load_dialogues(std::ifstream& dialogue_stream) {
 	}
 }
 
-void Game::Load(std::string maps_file, std::string character_file,std::string conn_file,std::string obj_file,std::string npc_file,std::string item_db_file,std::string dialogue_file) {
+void Game::Load(std::string maps_file, std::string character_file,std::string conn_file,std::string obj_file,std::string npc_file,std::string item_db_file,std::string dialogue_file,std::string vendor_file) {
 	std::ifstream map_stream(maps_file, std::ifstream::in);
 	std::ifstream character_stream(character_file, std::ifstream::in);
 	std::ifstream connections_stream(conn_file, std::ifstream::in);
@@ -218,12 +247,14 @@ void Game::Load(std::string maps_file, std::string character_file,std::string co
 	std::ifstream npc_stream(npc_file, std::ifstream::in);
 	std::ifstream item_db_stream(item_db_file, std::ifstream::in);
 	std::ifstream dialogue_stream(dialogue_file, std::ifstream::in);
+	std::ifstream vendor_stream(vendor_file, std::ifstream::in);
 	Load_maps(map_stream);
 	Load_item_db(item_db_stream);
 	Load_objects(objects_stream);
 	Load_MainCharacter(character_stream);
 	Load_connections(connections_stream);
 	Load_npcs(npc_stream);
+	Load_vendors(vendor_stream);
 	Load_dialogues(dialogue_stream);
 }
 
@@ -231,7 +262,7 @@ void Game::Play() {
 	while (1) {
 		fflush(stdin);
 		main_character->Draw();
-		for (int i = 0; i < num_chars; i++) {
+		for (int i = 0; i < num_chars+num_vendors; i++) {
 			npcs[i]->Draw(main_character->current_map,i+1);
 		}
 		printf(" ");
@@ -240,7 +271,7 @@ void Game::Play() {
 }
 
 NPC* Game::GetNPC(COORD coordonate, int map_id) {
-	for (int i = 0; i < num_chars; i++) {
+	for (int i = 0; i < num_chars+num_vendors; i++) {
 		if (npcs[i]->CheckNPC(coordonate, map_id)) return npcs[i];
 	}
 	return nullptr;
@@ -286,7 +317,7 @@ void Game::Splash(std::string splashscreen_file) {
 	std::cout << splash;
 }
 
-void Game::Menu(std::string maps_file, std::string character_file, std::string conn_file, std::string obj_file, std::string npc_file, std::string item_db_file, std::string dialogue_file,std::string music_file) {
+void Game::Menu(std::string maps_file, std::string character_file, std::string conn_file, std::string obj_file, std::string npc_file, std::string item_db_file, std::string dialogue_file,std::string vendor_file,std::string music_file) {
 	int opt;
 	system("cls");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
@@ -311,7 +342,7 @@ void Game::Menu(std::string maps_file, std::string character_file, std::string c
 	if (opt == 1) {
 		std::string music;
 		std::ifstream mus(music_file, std::ifstream::in);
-		Load(maps_file,character_file,conn_file,obj_file,npc_file,item_db_file,dialogue_file);
+		Load(maps_file,character_file,conn_file,obj_file,npc_file,item_db_file,dialogue_file,vendor_file);
 		getline(mus, music, '\n');
 		PlaySound(TEXT(music.c_str()), NULL, SND_FILENAME|SND_ASYNC);
 		Play();

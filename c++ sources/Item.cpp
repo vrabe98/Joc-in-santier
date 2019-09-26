@@ -9,6 +9,7 @@ void Weapon::Load(std::ifstream& item_db_str) {
 	item_db_str >> id;
 	item_db_str.ignore();
 	getline(item_db_str, name, '\n');
+	item_db_str >> price;
 	item_db_str >> equip_slot;
 	item_db_str >> twohanded;
 	item_db_str >> weight;
@@ -25,6 +26,7 @@ void Armor::Load(std::ifstream& item_db_str) {
 	item_db_str >> id;
 	item_db_str.ignore();
 	getline(item_db_str, name, '\n');
+	item_db_str >> price;
 	item_db_str >> equip_slot;
 	item_db_str >> weight;
 	item_db_str >> armor;
@@ -41,6 +43,7 @@ void Generic_item::Load(std::ifstream& item_db_str) {
 	item_db_str >> id;
 	item_db_str.ignore();
 	getline(item_db_str, name, '\n');
+	item_db_str >> price;
 	item_db_str >> equip_slot;
 	item_db_str >> weight;
 	item_db_str >> garbage;
@@ -57,6 +60,7 @@ void Shield::Load(std::ifstream& item_db_str) {
 	item_db_str >> id;
 	item_db_str.ignore();
 	getline(item_db_str, name, '\n');
+	item_db_str >> price;
 	item_db_str >> equip_slot;
 	item_db_str >> weight;
 	item_db_str >> garbage;
@@ -67,27 +71,33 @@ void Shield::Load(std::ifstream& item_db_str) {
 	}
 }
 
-void Generic_item::Show_info() {
+void Generic_item::Show_info(int vendor_op) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
-	std::cout << name << "\n";
+	std::cout << name;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	if (vendor_op) std::cout << "	-	Price: " << price;
+	std::cout << "\n";
 	printf("Item type: generic (non-equipable)\n");
 	printf("Weight: %d\n", weight);
 }
 
-void Shield::Show_info() {
+void Shield::Show_info(int vendor_op) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
-	std::cout << name << "\n";
+	std::cout << name;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	if (vendor_op) std::cout << "	-	Price: " << price;
+	std::cout << "\n";
 	printf("Item type: shield\n");
 	printf("Slot: Left hand\n");
 	printf("Weight: %d\n", weight);
 }
 
-void Armor::Show_info() {
+void Armor::Show_info(int vendor_op) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
-	std::cout << name << "\n";
+	std::cout << name;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	if (vendor_op) std::cout << "	-	Price: " << price;
+	std::cout << "\n";
 	printf("Item type: armor\n");
 	switch (equip_slot) {
 	case CHEST:	printf("Slot: Chest\n");
@@ -105,10 +115,12 @@ void Armor::Show_info() {
 	printf("Armor value: %d\n", armor);
 }
 
-void Weapon::Show_info() {
+void Weapon::Show_info(int vendor_op) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
-	std::cout << name<<"\n";
+	std::cout << name;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	if (vendor_op) std::cout << "	-	Price: " << price;
+	std::cout << "\n";
 	printf("Item type: weapon\n");
 	if (twohanded) {
 		printf("Two-handed\n");

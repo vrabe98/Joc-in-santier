@@ -2,9 +2,10 @@ NPC_ID (incremental, from 0, to help with dialogue file)
 Map_ID
 Coordinate_x Coordinate_y
 "Stats:" -mandatory text
-STR (0-20)
-DEX (0-20)
-CON (0-20)
+STR (0-20) -strength
+DEX (0-20) -dexterity
+CON (0-20) -constitution
+CHA (0-20) -charisma
 "Items:" -mandatory text
 Number of equipped items
 *Equipped items list* (if more items per one slot, an error will be signalled)
@@ -19,6 +20,7 @@ Stats:
 STR 10
 DEX 20
 CON 1
+CHA 10
 Items:
 3
 1 3 7
@@ -31,6 +33,7 @@ Stats:
 STR 11
 DEX 10
 CON 11
+CHA 10
 Items:
 2
 8 9
@@ -43,6 +46,7 @@ Stats:
 STR 20
 DEX 20
 CON 20
+CHA 10
 Items:
 2
 0 9

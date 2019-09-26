@@ -30,8 +30,8 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt,inventory_size,strength,dexterity,constitution,armor,damage_bonus;	//for npcs, inventory_size is auxiliary in the loading process
-	float hp;
+	int map_change_attempt,inventory_size,strength,dexterity,constitution,charisma,armor,damage_bonus;	//for npcs, inventory_size is auxiliary in the loading process
+	float hp, currency;
 	std::string name;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
@@ -66,6 +66,9 @@ public:
 	inline int CON() {
 		return constitution;
 	}
+	inline int CHA() {
+		return charisma;
+	}
 	inline void SetDmgBonus() {
 		damage_bonus = 1;
 	}
@@ -75,12 +78,23 @@ public:
 	inline int HasDmgBonus() {
 		return damage_bonus;
 	}
+	inline int GetInvSize() {
+		return inventory_size;
+	}
+	inline void Pay(float price) {
+		currency -= price;
+	}
+	inline float GetCash() {
+		return currency;
+	}
 	Damage GetWeaponDmg(int);
 	float GetEvasion();
 	int Has1h();
 	inline int IsPlayer() {
 		return 1;
 	}
+	void AddToInventory(Item*);
+	Item* RemoveFromInventory(int);
 	void ShowStats();
 	void RefreshArmor();
 	void RefreshHP();
@@ -92,11 +106,11 @@ public:
 	void Interact_NPC(COORD);
 	void Draw();
 	void Move();
-	void Show_inventory(int);
+	void Show_inventory(int,int);
 	void Query_inventory(Object*);
 	friend int Check_terrain(Character, COORD);
 	Character();
-	Character(int, int,Map*,int,int,int,int,std::string,Item**,int);
+	Character(int, int,Map*,int,int,int,int,int,float,std::string,Item**,int);
 };
 
 
@@ -109,8 +123,9 @@ public:
 	inline int IsPlayer() {
 		return 0;
 	}
-	void Draw(Map*,int);
-	void Load(std::ifstream&,Map[],Item**);
+	virtual void Interact(Character*);
+	virtual void Draw(Map*,int);
+	virtual void Load(std::ifstream&,Map[],Item**);
 	void Dialogue();
 	std::string GetName();
 	int CheckNPC(COORD, int);
@@ -121,6 +136,17 @@ public:
 	inline void Bind_dialogue_root(DialogueState* root_state) {
 		root = root_state;
 	}
+};
+
+class Vendor : public NPC
+{
+	friend class Game;
+public:
+	void Load(std::ifstream&, Map[], Item**);
+	void BuySell(Character*);
+	void Display_inventories(Character*);
+	void Interact(Character*);
+	void Draw(Map*, int);
 };
 #endif
 

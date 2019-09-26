@@ -81,7 +81,7 @@ void Container::Show_inventory() {
 		std::cout << i;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		std::cout << "]. ";
-		inventory[i]->Show_info();
+		inventory[i]->Show_info(0);
 		printf("\n");
 	}
 	printf("\n\n");

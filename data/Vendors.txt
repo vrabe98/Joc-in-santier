@@ -1,0 +1,29 @@
+Vendor_ID (incremental, from the number of NPCs, to help with dialogue file)
+Map_ID
+Coordinate_x Coordinate_y
+CHA (0-20) -charisma
+Inventory size
+"Items:" -mandatory text
+Inventory item list
+Name
+;;
+2
+;;
+3
+1
+7 7
+19
+11
+Items:
+0 1 2 3 4 5 6 7 8 9 10
+Vanzatoarea de la birtul de sub A101
+;;
+4
+1
+8 8
+19
+11
+Items:
+0 1 2 3 4 5 6 7 8 9 10
+Crasmarita de peste drum
+;;

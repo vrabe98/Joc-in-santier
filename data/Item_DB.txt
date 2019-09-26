@@ -2,6 +2,7 @@ First: Number of items;
 Type	(Weapon/Armor/Generic/Shield)
 Item_ID (incremental only)
 Name
+Price	(floating point)
 Equip slot (if weapon: also two-handed, next to equip slot; 1 if twohanded, 0 if onehanded; equip slot is always RIGHT HAND-5, one-handed weapons can be equipped on the right hand as well though)
 Weight
 Stat
@@ -21,6 +22,7 @@ NONEQUIPABLE -1			//Items that can't be equipped
 Weapon
 0
 Cartea de fizica a lui Zaharie
+10.1
 5 0
 1
 100
@@ -28,6 +30,7 @@ Cartea de fizica a lui Zaharie
 Armor
 1
 Armura de bronz de la Termopile
+10.2
 0
 10
 100
@@ -35,6 +38,7 @@ Armura de bronz de la Termopile
 Generic
 2
 Sendvisul Inghetat al Disperarii
+11.0
 -1
 1
 -1
@@ -42,6 +46,7 @@ Sendvisul Inghetat al Disperarii
 Armor
 3
 Teoria Sistemelor-Aplicatii, vol.1+2
+100.51
 1
 10
 200
@@ -49,6 +54,7 @@ Teoria Sistemelor-Aplicatii, vol.1+2
 Armor
 4
 Pantaloni Norocosi te trec TSu
+1000.20
 2
 10
 20
@@ -56,6 +62,7 @@ Pantaloni Norocosi te trec TSu
 Armor
 5
 Manusile Inghetului
+1.12
 3
 10
 0
@@ -63,6 +70,7 @@ Manusile Inghetului
 Armor
 6
 Cizmele de Cauciuc ale Ghinionului
+13.0
 4
 10
 -10
@@ -70,6 +78,7 @@ Cizmele de Cauciuc ale Ghinionului
 Weapon
 7
 Subiect examen TS1 P1
+0.5
 5 0
 1
 101
@@ -77,6 +86,7 @@ Subiect examen TS1 P1
 Weapon
 8
 Proiectia epileptica
+420.0
 5 0
 1
 101
@@ -84,6 +94,7 @@ Proiectia epileptica
 Armor
 9
 Pyur Fucken Nolledge
+1000.0
 1
 1
 300
@@ -91,6 +102,7 @@ Pyur Fucken Nolledge
 Shield
 10
 Ajutor la examen
+10.0
 6
 10
 -1
@@ -98,6 +110,7 @@ Ajutor la examen
 Weapon
 11
 Cartile de fizica a lui Zaharie
+50.0
 5 1
 1
 150
@@ -105,6 +118,7 @@ Cartile de fizica a lui Zaharie
 Weapon
 12
 Aialalta carte de fizica a lui Zaharie
+25.0
 5 0
 1
 100

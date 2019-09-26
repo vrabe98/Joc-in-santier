@@ -3,7 +3,7 @@
 
 #define MAX_MAP 100
 #define MAX_CONNECTIONS 200
-#define MAX_CHARACTERS 100
+#define MAX_CHARACTERS 100		//vendors are counted towards character limit
 #define MAX_ITEMS 100
 
 #include "Map.h"
@@ -21,7 +21,7 @@ class Generic_item;
 class Game
 {
 	friend class Character;
-	int num_maps, num_conn,num_chars,num_items;
+	int num_maps,num_conn,num_chars,num_items,num_vendors;
 	Map maps[MAX_MAP];
 	Connection con[MAX_CONNECTIONS];
 	NPC *npcs[MAX_CHARACTERS];
@@ -29,7 +29,7 @@ class Game
 	Item* item_db[MAX_STORAGE];
 public:
 	void Splash(std::string);
-	void Menu(std::string, std::string, std::string, std::string, std::string, std::string, std::string,std::string);
+	void Menu(std::string, std::string, std::string, std::string, std::string, std::string, std::string,std::string,std::string);
 	void Enter_connection();
 	Connection Search(COORD ,int);
 	int Check_NPC(int, std::string);
@@ -41,7 +41,8 @@ public:
 	void Load_npcs(std::ifstream&);
 	void Load_item_db(std::ifstream&);
 	void Load_dialogues(std::ifstream&);
-	void Load(std::string,std::string,std::string,std::string,std::string,std::string,std::string);
+	void Load_vendors(std::ifstream&);
+	void Load(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string);
 	void Play();
 };
 
