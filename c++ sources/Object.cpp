@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include "Object.h"
 
+void WriteOneCharConsole(COORD coordonate, char caracter, unsigned short attribute);
+
 void Generic_object::Load(std::ifstream& obj_stream,Item** db) {
 	std::string aux;
 	obj_stream >> coordonate.Y >> coordonate.X;
@@ -60,11 +62,11 @@ void Container::Draw() {
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(consola, &info_consola);
 	SetConsoleCursorPosition(consola, coordonate);
-	SetConsoleTextAttribute(consola, obj_ID + 1);
-	printf("0");
+	WriteOneCharConsole(coordonate, 'O', obj_ID + 1);
 	SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
-	printf("0");
-	SetConsoleTextAttribute(consola, 7);
+	WriteOneCharConsole(info_consola.dwCursorPosition, 'O', obj_ID + 1);
+	info_consola.dwCursorPosition.X++;
+	SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
 	std::cout << " - " + name << "\n";
 }
 

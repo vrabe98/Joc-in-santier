@@ -4,10 +4,7 @@
 #include <Windows.h>
 #include "Game.h"
 
-int Compare_coord(COORD coord1,COORD coord2) {
-	if ((coord1.X == coord2.X) && (coord1.Y == coord2.Y)) return 1;
-	else return 0;
-}
+int Compare_coord(COORD coord1, COORD coord2);
 
 int Game::Check_NPC(int auxint, std::string aux) {
 	return npcs[auxint]->CheckName(aux);

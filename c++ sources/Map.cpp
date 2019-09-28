@@ -4,10 +4,7 @@
 #include <Windows.h>
 #include "Map.h"
 
-int Compare_coord2(COORD coord1, COORD coord2) {
-	if ((coord1.X == coord2.X) && (coord1.Y == coord2.Y)) return 1;
-	else return 0;
-}
+int Compare_coord(COORD coord1, COORD coord2);
 
 void Map::Draw() {												//draws a 2D map in the console
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -57,7 +54,7 @@ void Map::Load(std::ifstream& f) {								//Load a map from a file
 
 Object* Map::Get_obj(COORD coordonata) {
 	for (int i = 0; i < num_obj; i++) {
-		if (Compare_coord2(coordonata, objects[i]->GetCoord())) return objects[i];
+		if (Compare_coord(coordonata, objects[i]->GetCoord())) return objects[i];
 	}
 	return nullptr;
 }

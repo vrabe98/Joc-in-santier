@@ -7,10 +7,9 @@
 
 extern Game game;
 
-int Compare_coord3(COORD coord1, COORD coord2) {
-	if ((coord1.X == coord2.X) && (coord1.Y == coord2.Y)) return 1;
-	else return 0;
-}
+int Compare_coord(COORD coord1, COORD coord2);
+
+void WriteOneCharConsole(COORD coordonate, char caracter, unsigned short attribute);
 
 char GetConsoleChar(COORD coord) {
 	SMALL_RECT rect;
@@ -35,14 +34,12 @@ void Character::Draw() {								//function draws both the character and the curr
 	CONSOLE_SCREEN_BUFFER_INFO info_consola;
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (map_change_attempt) system("cls");
-	else for (int i = 0; i <= exp2(20); i++) {}
+	Sleep(40);
 	current_map->Draw();									//drawing the current map;
 	GetConsoleScreenBufferInfo(consola, &info_consola);	//this sequence draws the character with another color than the map
 	SetConsoleCursorPosition(consola, coordonate);
-	SetConsoleTextAttribute(consola, 2);
-	printf("X");
+	WriteOneCharConsole(coordonate, 'X',2);
 	SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
-	SetConsoleTextAttribute(consola, 7);
 	if (map_change_attempt == 1) map_change_attempt = 0;
 }
 
@@ -388,7 +385,6 @@ void Character::Move() {
 	COORD new_coord = coordonate;
 	int entered_connection = 0;
 	int check_ter;
-	while (!GetAsyncKeyState(VK_UP) && !GetAsyncKeyState(VK_DOWN) && !GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_RIGHT)&&!GetAsyncKeyState(VK_RETURN)&&!GetAsyncKeyState(0x49) && !GetAsyncKeyState(0x4B)) {}
 	if (GetAsyncKeyState(0x49)&(1<<16)) {					//if I is pressed
 		Query_inventory(nullptr);
 	}
@@ -515,7 +511,7 @@ NPC::NPC() {
 }
 
 int NPC::CheckNPC(COORD coord, int map_id) {
-	if (Compare_coord3(coord, coordonate) && (map_id == current_map->Get_ID())) return 1;
+	if (Compare_coord(coord, coordonate) && (map_id == current_map->Get_ID())) return 1;
 	else return 0;
 }
 
@@ -659,11 +655,11 @@ void NPC::Draw(Map* map,int style) {
 		HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 		GetConsoleScreenBufferInfo(consola, &info_consola);
 		SetConsoleCursorPosition(consola, coordonate);
-		SetConsoleTextAttribute(consola, style + 1);
-		printf("K");
+		WriteOneCharConsole(coordonate, 'K', style + 1);
 		SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
-		printf("K");
-		SetConsoleTextAttribute(consola, 7);
+		WriteOneCharConsole(info_consola.dwCursorPosition, 'K', style + 1);
+		info_consola.dwCursorPosition.X++;
+		SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
 		std::cout << " - " + name << "\n";
 	}
 }
@@ -674,11 +670,11 @@ void Vendor::Draw(Map* map, int style) {
 		HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 		GetConsoleScreenBufferInfo(consola, &info_consola);
 		SetConsoleCursorPosition(consola, coordonate);
-		SetConsoleTextAttribute(consola, style + 1);
-		printf("B");
+		WriteOneCharConsole(coordonate, 'B', style + 1);
 		SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
-		printf("B");
-		SetConsoleTextAttribute(consola, 7);
+		WriteOneCharConsole(info_consola.dwCursorPosition, 'B', style + 1);
+		info_consola.dwCursorPosition.X++;
+		SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
 		std::cout << " - " + name << "\n";
 	}
 }
