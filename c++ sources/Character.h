@@ -2,6 +2,8 @@
 #define CHARACTER_H
 
 #define MAX_STORAGE 100
+#define MAX_QUESTS 100
+
 #define NUM_SLOTS 7
 #define CHEST 0				//Armor slots
 #define HEAD 1
@@ -18,11 +20,12 @@
 #include "DialogueState.h"
 #include "Game.h"
 #include "Combat.h"
+#include "Quest.h"
 
 class Map;
 
 typedef struct Damage {
-	int damage;
+	float damage;
 	std::string type;
 } Damage;
 
@@ -30,29 +33,21 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt,inventory_size,strength,dexterity,constitution,charisma,armor,damage_bonus;	//for npcs, inventory_size is auxiliary in the loading process
+	int map_change_attempt,inventory_size,strength,dexterity,constitution,charisma,armor,damage_bonus,num_quests;	//for npcs, inventory_size is auxiliary in the loading process
 	float hp, currency;
 	std::string name;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
 	Item* equipped_items[NUM_SLOTS];
 	Map* current_map;
+	Quest* qlist[MAX_QUESTS];		//quest list; for main char, it is the list of started and finished quests, for npcs it has no role;
 public:
 	std::string GetName() {
 		return name;
 	}
-	int Dualwield() {
-		if (equipped_items[LHAND] == nullptr) return 0;
-		else if (equipped_items[LHAND]->IsWeapon() && (!equipped_items[LHAND]->Is2h())) return 1;
-		else return 0;
-	}
-	inline int died() {
-		if (hp <= 0) {
-			hp = 0;
-			return 1;
-		}
-		else return 0;
-	}
+	void RefreshQuests();
+	int Dualwield();
+	int died();
 	inline float GetHP() {
 		return hp;
 	}
@@ -93,6 +88,17 @@ public:
 	inline int IsPlayer() {
 		return 1;
 	}
+	void Add_quest(Quest* q) {
+		qlist[num_quests] = q;
+		num_quests++;
+	}
+	void Load_startquest(std::ifstream& qstream) {
+		Quest* q = new Quest();
+		q->Load(qstream);
+		q->Take();
+		Add_quest(q);
+	}
+	void Quest_screen();
 	void AddToInventory(Item*);
 	Item* RemoveFromInventory(int);
 	void ShowStats();
@@ -114,10 +120,11 @@ public:
 };
 
 
-class NPC :public Character 
+class NPC :public Character
 {
 	friend class Game;
 	DialogueState* root;
+	Quest_flag death_flag;	//flag is set by killing the NPC
 public:
 	NPC();
 	inline int IsPlayer() {

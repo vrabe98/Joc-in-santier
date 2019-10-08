@@ -131,5 +131,5 @@ void Weapon::Show_info(int vendor_op) {
 		printf("Slot: Right Hand\n");
 	}
 	printf("Weight: %d\n", weight);
-	printf("Damage: %d\n", damage);
+	printf("Damage: %f\n", damage);
 }

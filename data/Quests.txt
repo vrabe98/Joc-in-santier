@@ -1,0 +1,21 @@
+Name
+Description	-one line
+Number of objectived
+"OBJECTIVES:"	-mandatory string
+Objective 1 number_of_flags
+<list of flags, only the names, followed by the needed counter,separated by newline>
+Objective 1 description
+;;
+Objective 2 number_of_flags
+.
+.
+.
+;;	-end of format specifications (they apply to dialogues as well)
+Inceputuri
+Cum ai ajuns aici? Nici tu nu stii... Ai auzit tu ca se castiga biiine de tot in IT. Ai mai auzit ca la CTI se face soft, la IS hard. De Info n-ai auzit nimic, nici nu stiai ca exista pana la formularul de admitere. Ai mai aruncat o privire pe google, sa vezi ce e de capul facultatii asteia. "Hmm...IS...roboti...hmmm...da" au fost singurele tale ganduri legate de alegerea specializarii. Ce-o fi o fi, acuma, aia e. E prima zi de facultate... ai seminar de algebra la SPM, nici nu stii unde e. Te plimbi in stanga si in dreapta pe coridoarele facultatii, pierdut. Trebuie, totusi, sa ajungi la SPM. E fara un sfert deja...
+1
+OBJECTIVES:
+Gaseste-l pe Cismas.
+1
+cismas_found 1
+;;

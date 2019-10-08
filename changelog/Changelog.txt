@@ -87,3 +87,7 @@
 
 0.031-26.09.2019:
 *Acum poti cumpara ce vrea sufletul tau de la noii bisnitari!
+
+0.032-9.10.2019:
+*Acum poti face diverse treburi!
+*Am implementat o prima versiune a sistemului de questuri

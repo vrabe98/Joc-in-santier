@@ -208,7 +208,7 @@ void Game::Load_vendors(std::ifstream& vendor_str) {
 
 void Game::Load_dialogues(std::ifstream& dialogue_stream) {
 	std::string aux;
-	for (int i = 0; i < 23; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 29; i++) {				//skip file format specifiers at the top
 		getline(dialogue_stream, aux, '\n');
 	}
 	for (int i = 0; i < num_chars+num_vendors; i++) {
@@ -236,7 +236,15 @@ void Game::Load_dialogues(std::ifstream& dialogue_stream) {
 	}
 }
 
-void Game::Load(std::string maps_file, std::string character_file,std::string conn_file,std::string obj_file,std::string npc_file,std::string item_db_file,std::string dialogue_file,std::string vendor_file) {
+void Game::Load_start_quest(std::ifstream& quest_stream) {
+	std::string aux;
+	for (int i = 0; i < 13; i++) {				//skip file format specifiers at the top
+		getline(quest_stream, aux, '\n');
+	}
+	main_character->Load_startquest(quest_stream);
+}
+
+void Game::Load(std::string maps_file, std::string character_file,std::string conn_file,std::string obj_file,std::string npc_file,std::string item_db_file,std::string dialogue_file,std::string vendor_file,std::string startquest_file) {
 	std::ifstream map_stream(maps_file, std::ifstream::in);
 	std::ifstream character_stream(character_file, std::ifstream::in);
 	std::ifstream connections_stream(conn_file, std::ifstream::in);
@@ -245,6 +253,7 @@ void Game::Load(std::string maps_file, std::string character_file,std::string co
 	std::ifstream item_db_stream(item_db_file, std::ifstream::in);
 	std::ifstream dialogue_stream(dialogue_file, std::ifstream::in);
 	std::ifstream vendor_stream(vendor_file, std::ifstream::in);
+	std::ifstream startquest_stream(startquest_file, std::ifstream::in);
 	Load_maps(map_stream);
 	Load_item_db(item_db_stream);
 	Load_objects(objects_stream);
@@ -253,11 +262,13 @@ void Game::Load(std::string maps_file, std::string character_file,std::string co
 	Load_npcs(npc_stream);
 	Load_vendors(vendor_stream);
 	Load_dialogues(dialogue_stream);
+	Load_start_quest(startquest_stream);		//loads the starting quest
 }
 
 void Game::Play() {
 	while (1) {
 		fflush(stdin);
+		main_character->RefreshQuests();
 		main_character->Draw();
 		for (int i = 0; i < num_chars+num_vendors; i++) {
 			npcs[i]->Draw(main_character->current_map,i+1);
@@ -314,7 +325,7 @@ void Game::Splash(std::string splashscreen_file) {
 	std::cout << splash;
 }
 
-void Game::Menu(std::string maps_file, std::string character_file, std::string conn_file, std::string obj_file, std::string npc_file, std::string item_db_file, std::string dialogue_file,std::string vendor_file,std::string music_file) {
+void Game::Menu(std::string maps_file, std::string character_file, std::string conn_file, std::string obj_file, std::string npc_file, std::string item_db_file, std::string dialogue_file,std::string vendor_file,std::string music_file,std::string quest_file) {
 	int opt;
 	system("cls");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
@@ -339,10 +350,22 @@ void Game::Menu(std::string maps_file, std::string character_file, std::string c
 	if (opt == 1) {
 		std::string music;
 		std::ifstream mus(music_file, std::ifstream::in);
-		Load(maps_file,character_file,conn_file,obj_file,npc_file,item_db_file,dialogue_file,vendor_file);
+		Load(maps_file,character_file,conn_file,obj_file,npc_file,item_db_file,dialogue_file,vendor_file,quest_file);
 		getline(mus, music, '\n');
 		PlaySound(TEXT(music.c_str()), NULL, SND_FILENAME|SND_ASYNC);
 		Play();
 	}
 	else return;
+}
+
+void Game::Set_flag(Quest_flag flag_unset){
+	std::map<std::string, Quest_flag>::iterator iter = unclaimed_flags.find(flag_unset.Get_name());
+	if (iter == unclaimed_flags.end()) {
+		unclaimed_flags[flag_unset.Get_name()] = flag_unset;
+	}
+	else {
+		Quest_flag found = iter->second;
+		found.Increment_counter();
+		unclaimed_flags[found.Get_name()] = found;
+	}
 }

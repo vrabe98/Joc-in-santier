@@ -3,11 +3,36 @@
 #include <string>
 #include <Windows.h>
 #include "DialogueState.h"
+#include "Game.h"
+
+extern Game game;
 
 void DialogueState::Load(std::ifstream& stream,int j) {
 	std::string aux;
 	if(!j) stream.ignore();
 	getline(stream, text, '\n');
+	stream >> num_flags;
+	stream.ignore();
+	getline(stream, aux, '\n');
+	if (aux == "FLAGS:") {
+		for(int i=0;i<num_flags;i++){
+			flags[i] = new Quest_flag();
+			flags[i]->Load(stream);
+		}
+	}
+	else {
+		printf("Dialogue file corrupted!");
+		exit(1);
+	}
+	stream >> aux;
+	if (aux == "has_quest") {
+		quest = new Quest();
+		quest->Load(stream);
+	}
+	else if (aux!="no_quest"){
+		printf("Dialogue file corrupted!");
+		exit(1);
+	}
 	stream >> num_options;
 	stream.ignore();
 	getline(stream, aux, '\n');
@@ -36,8 +61,17 @@ void DialogueState::Load(std::ifstream& stream,int j) {
 	}
 }
 
+void DialogueState::SetFlags() {
+	for (int i = 0; i < num_flags; i++) {
+		game.Set_flag(*flags[i]);
+		delete flags[i];
+	}
+	num_flags = 0;
+}
+
 void DialogueState::Enter_dialogue(std::string NPCname) {
 	int opt;
+	SetFlags();
 	system("cls");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "-------------------------------------------\n";

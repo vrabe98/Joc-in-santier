@@ -381,15 +381,33 @@ void Character::Interact_NPC(COORD new_coord) {
 	}
 }
 
+void Character::Quest_screen() {
+	system("cls");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "-------------------------------------------\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+	std::cout << name << " - Quests:";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+	std::cout << "\n-------------------------------------------\n\n";
+	for (int i = 0; i < num_quests; i++) {
+		qlist[i]->Show(i);
+		std::cout << "\n\n";
+	}
+	std::cin.get();
+	system("cls");
+}
+
 void Character::Move() {
 	COORD new_coord = coordonate;
-	int entered_connection = 0;
-	int check_ter;
+	int entered_connection = 0, check_ter;
 	if (GetAsyncKeyState(0x49)&(1<<16)) {					//if I is pressed
 		Query_inventory(nullptr);
 	}
 	else if (GetAsyncKeyState(0x4B) & (1 << 16)) {			//if the K key is pressed
 		ShowStats();
+	}
+	else if (GetAsyncKeyState(0x51) & (1 << 16)) {			//if the K key is pressed
+		Quest_screen();
 	}
 	else if (GetAsyncKeyState(VK_UP) & (1 << 16)) {			//if the UP arrow key is pressed
 		new_coord.Y-=1;
@@ -410,9 +428,11 @@ void Character::Move() {
 	check_ter = Check_terrain(*this, new_coord);
 	if (check_ter == 2) {			//container interaction
 		Interact_container(new_coord);
+		system("cls");
 	}
 	else if (check_ter == 3) {		//NPC dialogue interaction
 		Interact_NPC(new_coord);
+		system("cls");
 	}
 	else if ((check_ter == 1) && !entered_connection) coordonate = new_coord;
 }
@@ -441,6 +461,7 @@ Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex
 		inventory[i] = inventory_copy[i];
 	}
 	inventory_size = items;
+	num_quests = 0;
 	RefreshArmor();
 	RefreshHP();
 }
@@ -740,5 +761,25 @@ void Vendor::BuySell(Character* mainchar) {
 			system("cls");
 			return;
 		}
+	}
+}
+
+int Character::Dualwield() {
+	if (equipped_items[LHAND] == nullptr) return 0;
+	else if (equipped_items[LHAND]->IsWeapon() && (!equipped_items[LHAND]->Is2h())) return 1;
+	else return 0;
+}
+
+int Character::died() {
+	if (hp <= 0) {
+		hp = 0;
+		return 1;
+	}
+	else return 0;
+}
+
+void Character::RefreshQuests() {
+	for (int i = 0; i < num_quests; i++) {
+		qlist[i]->Refresh();
 	}
 }

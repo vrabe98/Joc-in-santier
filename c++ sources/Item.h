@@ -10,12 +10,15 @@
 #define RHAND 5
 #define NONEQUIPABLE -1		//Items that can't be equipped
 
+#include "Quest.h"
+
 class Container;
 class Character;
 
 class Item
 {
 protected:
+	Quest_flag collection_flag;		//flag is set when moving the item to the inventory, unset when moving it out
 	std::string name;
 	int equip_slot,weight,id;
 	float price;
@@ -27,6 +30,9 @@ public:
 	virtual int IsArmor()=0;
 	virtual int IsWeapon()=0;
 	virtual int IsGeneric() = 0;
+	Quest_flag Get_collection_flag() {
+		return collection_flag;
+	}
 	inline int GetSlot() {
 		return equip_slot;
 	}
@@ -34,12 +40,13 @@ public:
 		return price;
 	}
 	virtual int GetArmor()=0;
-	virtual int GetDamage() = 0;
+	virtual float GetDamage() = 0;
 };
 
 class Weapon:public Item
 {
-	int damage,twohanded;
+	float damage;
+	int twohanded;
 public:
 	inline double BlockMultiplier() {
 		return 0.4;
@@ -61,7 +68,7 @@ public:
 	inline int GetArmor() {
 		return 0;
 	}
-	inline int GetDamage() {
+	inline float GetDamage() {
 		return damage;
 	}
 };
@@ -89,7 +96,7 @@ public:
 	inline int GetArmor() {
 		return armor;
 	}
-	inline int GetDamage() {
+	inline float GetDamage() {
 		return 0;
 	}
 };
@@ -116,7 +123,7 @@ public:
 	inline int GetArmor() {
 		return 0;
 	}
-	inline int GetDamage() {
+	inline float GetDamage() {
 		return 0;
 	}
 };
@@ -143,7 +150,7 @@ public:
 	inline int GetArmor() {
 		return 0;
 	}
-	inline int GetDamage() {
+	inline float GetDamage() {
 		return 0;
 	}
 };
