@@ -26,7 +26,7 @@ void DialogueState::Load(std::ifstream& stream,int j) {
 	}
 	stream >> aux;
 	if (aux == "has_quest") {
-		quest = new Quest();
+		quest = new Generic_quest();
 		quest->Load(stream);
 	}
 	else if (aux!="no_quest"){

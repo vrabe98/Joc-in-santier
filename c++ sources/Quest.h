@@ -46,15 +46,35 @@ public:
 
 class Quest
 {
+protected:
 	int status,num_objectives;
 	std::string description, name;
+public:
+	virtual void Show(int)=0;
+	virtual void Load(std::ifstream&)=0;
+	virtual void Refresh()=0;
+	inline void Take() {
+		status = IN_PROGRESS;
+	}
+};
+
+class Generic_quest:public Quest {
+protected:
 	Quest_objective* objectives[MAX_OBJECTIVES];
 public:
 	void Show(int);
 	void Load(std::ifstream&);
 	void Refresh();
-	inline void Take() {
-		status = IN_PROGRESS;
-	}
+};
+
+class Chain_quest:public Generic_quest {
+	Quest* nextquest;
+public:
+	void Load(std::ifstream&);
+	void Refresh();
+};
+
+class Umbrella_quest:public Quest {
+
 };
 

@@ -91,3 +91,6 @@
 0.032-9.10.2019:
 *Acum poti face diverse treburi!
 *Am implementat o prima versiune a sistemului de questuri
+
+0.033-26.10.2019:
+*Am implementat quest chains.

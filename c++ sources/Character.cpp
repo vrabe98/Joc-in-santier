@@ -783,3 +783,19 @@ void Character::RefreshQuests() {
 		qlist[i]->Refresh();
 	}
 }
+
+void Character::Load_startquest(std::ifstream& qstream) {
+	std::string aux;
+	Quest* q;
+	qstream >> aux;
+	if (aux == "Generic") {
+		q = new Generic_quest();
+	}
+	else if (aux == "Chain") {
+		q = new Chain_quest();
+	}
+	else q = new Generic_quest();
+	q->Load(qstream);
+	q->Take();
+	Add_quest(q);
+}

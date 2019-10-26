@@ -92,12 +92,7 @@ public:
 		qlist[num_quests] = q;
 		num_quests++;
 	}
-	void Load_startquest(std::ifstream& qstream) {
-		Quest* q = new Quest();
-		q->Load(qstream);
-		q->Take();
-		Add_quest(q);
-	}
+	void Load_startquest(std::ifstream&);
 	void Quest_screen();
 	void AddToInventory(Item*);
 	Item* RemoveFromInventory(int);

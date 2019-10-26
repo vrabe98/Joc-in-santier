@@ -88,6 +88,19 @@ Nici mie.
 1
 ;;
 4
+Karoly si cam atat mai stii din numele lui
+;;
+*Ai intarziat, nu mai e*
+1
+FLAGS:
+catedra_mec 1
+no_quest
+1
+DIALOGUE OPTIONS:
+Ok.
+1
+;;
+5
 Vanzatoarea de la birtul de sub A101
 ;;
 Ce doresti?
@@ -99,7 +112,7 @@ DIALOGUE OPTIONS:
 Nimic, is doar in vizita.
 1
 ;;
-5
+6
 Crasmarita de peste drum
 ;;
 Ce doresti?

@@ -34,6 +34,9 @@ public:
 	inline std::map<std::string,Quest_flag>* Get_unclaimed_flags_map(){
 		return &unclaimed_flags;
 	}
+	Character* Get_main_char() {
+		return main_character;
+	}
 	void Set_flag(Quest_flag);
 	void Splash(std::string);
 	void Menu(std::string, std::string, std::string, std::string, std::string, std::string, std::string,std::string,std::string,std::string);

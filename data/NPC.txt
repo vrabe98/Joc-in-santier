@@ -11,7 +11,7 @@ Number of equipped items
 *Equipped items list* (if more items per one slot, an error will be signalled)
 Name
 ;;
-4
+5
 ;;
 0
 1
@@ -63,4 +63,16 @@ CHA 10
 Items:
 0
 Emanuel Cismas
+;;
+4
+1
+10 10
+Stats:
+STR 10
+DEX 10
+CON 10
+CHA 10
+Items:
+0
+Karoly si cam atat mai stii din numele lui
 ;;

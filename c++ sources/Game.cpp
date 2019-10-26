@@ -238,7 +238,7 @@ void Game::Load_dialogues(std::ifstream& dialogue_stream) {
 
 void Game::Load_start_quest(std::ifstream& quest_stream) {
 	std::string aux;
-	for (int i = 0; i < 13; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 14; i++) {				//skip file format specifiers at the top
 		getline(quest_stream, aux, '\n');
 	}
 	main_character->Load_startquest(quest_stream);

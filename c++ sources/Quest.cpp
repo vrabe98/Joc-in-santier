@@ -31,8 +31,9 @@ void Quest_objective::Load(std::ifstream& qstream) {
 	}
 }
 
-void Quest::Load(std::ifstream& qstream) {
+void Generic_quest::Load(std::ifstream& qstream) {
 	std::string aux;
+	qstream.ignore();
 	getline(qstream, name, '\n');
 	getline(qstream, description, '\n');
 	qstream>>  num_objectives;
@@ -63,7 +64,7 @@ void Quest_objective::Show() {
 
 }
 
-void Quest::Show(int order_no) {
+void Generic_quest::Show(int order_no) {
 	std::string aux;
 	std::cout << "[";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
@@ -124,7 +125,7 @@ void Quest_objective::Refresh() {
 	}
 }
 
-void Quest::Refresh() {
+void Generic_quest::Refresh() {
 	int done = 1;
 	if (status == IN_PROGRESS || status == ACTIVE) {
 		for (int i = 0; i < num_objectives; i++) {
@@ -134,5 +135,38 @@ void Quest::Refresh() {
 			done = objectives[i]->Finished();
 		}
 		if (done == 1) status = FINISHED;
+	}
+}
+
+void Chain_quest::Load(std::ifstream& qstream) {
+	Generic_quest::Load(qstream);
+	Quest* q;
+	std::string aux;
+	qstream >> aux;
+	if (aux == "Generic") {
+		q = new Generic_quest;
+	}
+	else if (aux == "Chain") {
+		q = new Chain_quest;
+	}
+	else q = new Generic_quest();
+	q->Load(qstream);
+	nextquest = q;
+}
+
+void Chain_quest::Refresh() {
+	int done = 1;
+	if (status == IN_PROGRESS || status == ACTIVE) {
+		for (int i = 0; i < num_objectives; i++) {
+			objectives[i]->Refresh();
+		}
+		for (int i = 0; i < num_objectives && done == 1; i++) {
+			done = objectives[i]->Finished();
+		}
+		if (done == 1) {
+			status = FINISHED;
+			nextquest->Take();
+			game.Get_main_char()->Add_quest(nextquest);
+		}
 	}
 }
