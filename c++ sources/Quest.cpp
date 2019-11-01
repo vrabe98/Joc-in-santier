@@ -9,13 +9,6 @@ extern Game game;
 
 std::string WordWrap(std::string text,int padding);
 
-void Quest_objective::UpdateState() {
-	if (state == OBJECTIVE_COMPLETE) return;
-	else {
-
-	}
-}
-
 void Quest_flag::Load(std::ifstream& qstream) {
 	qstream >> name;
 	qstream >> counter;

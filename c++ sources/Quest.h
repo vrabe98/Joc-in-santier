@@ -41,7 +41,6 @@ public:
 	}
 	void Show();
 	void Refresh();
-	void UpdateState();
 };
 
 class Quest
