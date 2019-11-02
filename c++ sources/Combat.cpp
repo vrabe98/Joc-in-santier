@@ -56,7 +56,7 @@ void Round(Character* attacker, Character* defender,int turn) {
 	} while (dualwield);
 }
 
-int Combat(Character* me, NPC* enemy) {
+int Combat(Character* me, Character* enemy) {
 	int turn_number = 0,someonedied;
 	double initiative_roll_mainchar, initiative_roll_enemy;
 	Character* attacker=nullptr;

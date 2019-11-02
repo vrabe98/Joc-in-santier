@@ -30,7 +30,7 @@ char GetConsoleChar(COORD coord) {
 	return buffer->Char.AsciiChar;
 }
 
-void Character::Draw() {								//function draws both the character and the current map
+void Main_character::Draw(Map* mapa=nullptr,int style=0) {								//function draws both the character and the current map
 	CONSOLE_SCREEN_BUFFER_INFO info_consola;
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (map_change_attempt) system("cls");
@@ -43,13 +43,13 @@ void Character::Draw() {								//function draws both the character and the curr
 	if (map_change_attempt == 1) map_change_attempt = 0;
 }
 
-int Check_terrain(Character caract,COORD coordonata) {		//function checks if the terrain is accessible,if not returns 0;
+int Check_terrain(Character* caract,COORD coordonata) {		//function checks if the terrain is accessible,if not returns 0;
 	if (GetConsoleChar(coordonata) == '|' || GetConsoleChar(coordonata) == '+' || GetConsoleChar(coordonata) == '-' || GetConsoleChar(coordonata) == 'O')
 		return 0;
 	else if (GetConsoleChar(coordonata) == '0') return 2;
 	else if (GetConsoleChar(coordonata) == 'K'||GetConsoleChar(coordonata)=='B') return 3;
 	else {													//if accessible, check boundaries;
-		if ((coordonata.X > caract.current_map->Dimx() - 1) || (coordonata.Y > caract.current_map->Dimy() - 1) || (coordonata.X < 0) || (coordonata.Y < 0))
+		if ((coordonata.X > caract->current_map->Dimx() - 1) || (coordonata.Y > caract->current_map->Dimy() - 1) || (coordonata.X < 0) || (coordonata.Y < 0))
 			return 0;
 		else return 1;
 	}
@@ -125,10 +125,6 @@ void Character::ShowStats() {
 	std::cout << "\nArmor:\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	std::cout << armor;
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
-	std::cout << "\nCurrent cash amount:\n";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	std::cout << currency<<"\n\n";
 	std::cout << "Press any key to continue...";
 	std::cin.ignore();
 	std::cin.get();
@@ -215,7 +211,6 @@ void Character::Show_inventory(int want_to_equip,int vendor_op) {
 				}
 			}
 			printf("\n\n");
-
 			if ((inventory_size != 0 || HasEquippedItems()) && want_to_equip) {
 				char opt;
 				printf("Do you want to equip/unequip an item or exit (e/u/x): ");
@@ -325,7 +320,7 @@ void NPC::Dialogue() {
 	root->Enter_dialogue(name);
 }
 
-void NPC::Interact(Character* mainchar) {
+void NPC::Interact(Main_character* mainchar) {
 	char opt;
 	system("cls");
 	std::cout << "Do you want to talk to " << name << " or see his stats, or even see the items he has on? Or maybe you want to fight?" << "\n(t/s/i/f/x-exit)";
@@ -356,7 +351,7 @@ void NPC::Interact(Character* mainchar) {
 	else return;
 }
 
-void Vendor::Interact(Character* mainchar) {
+void Vendor::Interact(Main_character* mainchar) {
 	char opt;
 	system("cls");
 	std::cout << "Do you want to talk to " << name << " or buy/sell something?" << "\n(t/b/x-exit)";
@@ -369,7 +364,7 @@ void Vendor::Interact(Character* mainchar) {
 	else return;
 }
 
-void Character::Interact_NPC(COORD new_coord) {
+void Main_character::Interact_NPC(COORD new_coord) {
 	NPC* npc_inter = nullptr;
 	npc_inter=game.GetNPC(new_coord, current_map->Get_ID());
 	if (npc_inter) {
@@ -381,7 +376,7 @@ void Character::Interact_NPC(COORD new_coord) {
 	}
 }
 
-void Character::Quest_screen() {
+void Main_character::Quest_screen() {
 	system("cls");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "-------------------------------------------\n";
@@ -397,7 +392,7 @@ void Character::Quest_screen() {
 	system("cls");
 }
 
-void Character::Move() {
+void Main_character::Move() {
 	COORD new_coord = coordonate;
 	int entered_connection = 0, check_ter;
 	if (GetAsyncKeyState(0x49)&(1<<16)) {					//if I is pressed
@@ -425,7 +420,7 @@ void Character::Move() {
 		game.Enter_connection();
 		entered_connection = 1;
 	}
-	check_ter = Check_terrain(*this, new_coord);
+	check_ter = Check_terrain(this, new_coord);
 	if (check_ter == 2) {			//container interaction
 		Interact_container(new_coord);
 		system("cls");
@@ -437,12 +432,12 @@ void Character::Move() {
 	else if ((check_ter == 1) && !entered_connection) coordonate = new_coord;
 }
 
-void Character::Change_map(Map* map,COORD coord) {
+void Main_character::Change_map(Map* map,COORD coord) {
 	current_map = map;
 	coordonate = coord;
 }
 
-Character::Character(int x, int y,Map* starting_map,int inv_size,int str,int dex,int con,int cha,float currency,std::string nume,Item** inventory_copy,int items) {
+Main_character::Main_character(int x, int y,Map* starting_map,int inv_size,int str,int dex,int con,int cha,float currency,std::string nume,Item** inventory_copy,int items) {
 	coordonate.X = x;
 	coordonate.Y = y;
 	current_map = starting_map;
@@ -527,7 +522,6 @@ float Character::GetEvasion() {
 
 Character::Character(){}
 NPC::NPC() {
-	currency = 0;
 	root = nullptr;
 }
 
@@ -706,7 +700,7 @@ void Vendor::Display_inventories(Character* mainchar) {
 	mainchar->Show_inventory(0,1);
 }
 
-void Vendor::BuySell(Character* mainchar) {
+void Vendor::BuySell(Main_character* mainchar) {
 	int option;
 	char opt;
 	while (1){
@@ -778,13 +772,13 @@ int Character::died() {
 	else return 0;
 }
 
-void Character::RefreshQuests() {
+void Main_character::RefreshQuests() {
 	for (int i = 0; i < num_quests; i++) {
 		qlist[i]->Refresh();
 	}
 }
 
-void Character::Load_startquest(std::ifstream& qstream) {
+void Main_character::Load_startquest(std::ifstream& qstream) {
 	std::string aux;
 	Quest* q;
 	qstream >> aux;

@@ -6,13 +6,5 @@ Starting cash:
 5000
 Inventory size:
 0
-Strength:
-11
-Dexterity:
-10
-Constitution:
-11
-Charisma:
-11
 Items:
 0 1 2 3 4 5 6 10 12

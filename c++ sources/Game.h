@@ -14,6 +14,7 @@
 #include "Quest.h"
 
 class Character;
+class Main_character;
 class NPC;
 class Item;
 class Armor;
@@ -23,18 +24,19 @@ class Generic_item;
 class Game
 {
 	friend class Character;
+	friend class Main_character;
 	int num_maps,num_conn,num_chars,num_items,num_vendors;
 	Map maps[MAX_MAP];
 	Connection con[MAX_CONNECTIONS];
 	NPC *npcs[MAX_CHARACTERS];
-	Character* main_character;
+	Main_character* main_character;
 	Item* item_db[MAX_STORAGE];
 	std::map<std::string,Quest_flag> unclaimed_flags;
 public:
 	inline std::map<std::string,Quest_flag>* Get_unclaimed_flags_map(){
 		return &unclaimed_flags;
 	}
-	Character* Get_main_char() {
+	Main_character* Get_main_char(){
 		return main_character;
 	}
 	void Set_flag(Quest_flag);

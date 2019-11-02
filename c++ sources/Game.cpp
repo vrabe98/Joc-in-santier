@@ -30,7 +30,7 @@ void Game::Load_maps(std::ifstream& map_stream) {
 }
 
 void Game::Load_MainCharacter(std::ifstream& character_stream) {
-	int map_id = 0, x = 0, y = 0, inventory_size = 0, str = 0,dex=0,con=0,cha=0,num_items=0;
+	int map_id = 0, x = 0, y = 0, inventory_size = 0, str = 10,dex=10,con=10,cha=10,num_items=0;
 	float currency = 0.0;
 	char name[100];
 	Item* inventory[MAX_ITEMS];
@@ -56,26 +56,6 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	}
 	character_stream.ignore();
 	getline(character_stream, aux, '\n');
-	if (aux == "Strength:") {
-		character_stream >> str;
-	}
-	character_stream.ignore();
-	getline(character_stream, aux, '\n');
-	if (aux == "Dexterity:") {
-		character_stream >> dex;
-	}
-	character_stream.ignore();
-	getline(character_stream, aux, '\n');
-	if (aux == "Constitution:") {
-		character_stream >> con;
-	}
-	character_stream.ignore();
-	getline(character_stream, aux, '\n');
-	if (aux == "Charisma:") {
-		character_stream >> cha;
-	}
-	character_stream.ignore();
-	getline(character_stream, aux, '\n');
 	if (aux == "Items:") {
 		while (!character_stream.eof()) {
 			int id;
@@ -88,7 +68,7 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	std::cin.ignore(INT_MAX, '\n');
 	std::cin.getline(name,100);
 	std::string nume(name);
-	main_character = new Character(x, y, &maps[map_id],inventory_size,str,dex,con,cha,currency,nume,inventory,num_items);
+	main_character = new Main_character(x, y, &maps[map_id],inventory_size,str,dex,con,cha,currency,nume,inventory,num_items);
 }
 
 void Game::Load_connections(std::ifstream& conn_stream) {
@@ -269,7 +249,7 @@ void Game::Play() {
 	while (1) {
 		fflush(stdin);
 		main_character->RefreshQuests();
-		main_character->Draw();
+		main_character->Draw(nullptr,NULL);
 		for (int i = 0; i < num_chars+num_vendors; i++) {
 			npcs[i]->Draw(main_character->current_map,i+1);
 		}
@@ -313,7 +293,7 @@ void Game::Enter_connection() {
 				printf("The other map cannot be reached! The connection is one-way!");
 			}
 		}
-		main_character->map_change_attempt = 1;
+		main_character->Set_map_change_attempt();
 	}
 	Sleep(70);
 }

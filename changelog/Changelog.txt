@@ -94,3 +94,7 @@
 
 0.033-26.10.2019:
 *Am implementat quest chains.
+
+0.034-02.11.2019:
+*Am refacut ierarhia de clase pentru caractere: acum NPC-urile nu mai sunt un fel de caracter principal!
+*Am inceput sa pregatesc terenul pentru character customization.

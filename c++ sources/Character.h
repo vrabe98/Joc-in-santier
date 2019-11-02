@@ -33,19 +33,17 @@ class Character
 {
 	friend class Game;
 protected:
-	int map_change_attempt,inventory_size,strength,dexterity,constitution,charisma,armor,damage_bonus,num_quests;	//for npcs, inventory_size is auxiliary in the loading process
-	float hp, currency;
+	int inventory_size, strength, dexterity, constitution, charisma, armor, damage_bonus;	//for npcs, inventory_size is auxiliary in the loading process
+	float hp;
 	std::string name;
 	COORD coordonate;
 	Item* inventory[MAX_STORAGE];
 	Item* equipped_items[NUM_SLOTS];
 	Map* current_map;
-	Quest* qlist[MAX_QUESTS];		//quest list; for main char, it is the list of started and finished quests, for npcs it has no role;
 public:
 	std::string GetName() {
 		return name;
 	}
-	void RefreshQuests();
 	int Dualwield();
 	int died();
 	inline float GetHP() {
@@ -76,24 +74,9 @@ public:
 	inline int GetInvSize() {
 		return inventory_size;
 	}
-	inline void Pay(float price) {
-		currency -= price;
-	}
-	inline float GetCash() {
-		return currency;
-	}
 	Damage GetWeaponDmg(int);
 	float GetEvasion();
 	int Has1h();
-	inline int IsPlayer() {
-		return 1;
-	}
-	void Add_quest(Quest* q) {
-		qlist[num_quests] = q;
-		num_quests++;
-	}
-	void Load_startquest(std::ifstream&);
-	void Quest_screen();
 	void AddToInventory(Item*);
 	Item* RemoveFromInventory(int);
 	void ShowStats();
@@ -102,18 +85,41 @@ public:
 	int HasEquippedItems();
 	void Equip(int);
 	void Unequip(int);
-	void Change_map(Map*,COORD);
 	void Interact_container(COORD);
-	void Interact_NPC(COORD);
-	void Draw();
-	void Move();
+	virtual void Draw(Map*,int)=0;
 	void Show_inventory(int,int);
 	void Query_inventory(Object*);
-	friend int Check_terrain(Character, COORD);
+	friend int Check_terrain(Character*, COORD);
 	Character();
-	Character(int, int,Map*,int,int,int,int,int,float,std::string,Item**,int);
 };
 
+class Main_character :public Character {
+	int map_change_attempt, num_quests;
+	float currency;
+	Quest* qlist[MAX_QUESTS];		//quest list;
+public:
+	void Set_map_change_attempt() {
+		map_change_attempt = 1;
+	}
+	void Load_startquest(std::ifstream&);
+	void RefreshQuests();
+	void Quest_screen();
+	void Move();
+	void Interact_NPC(COORD);
+	void Change_map(Map*, COORD);
+	void Draw(Map*,int);
+	inline void Pay(float price) {
+		currency -= price;
+	}
+	inline float GetCash() {
+		return currency;
+	}
+	void Add_quest(Quest* q) {
+		qlist[num_quests] = q;
+		num_quests++;
+	}
+	Main_character(int, int, Map*, int, int, int, int, int, float, std::string, Item**, int);
+};
 
 class NPC :public Character
 {
@@ -122,12 +128,9 @@ class NPC :public Character
 	Quest_flag death_flag;	//flag is set by killing the NPC
 public:
 	NPC();
-	inline int IsPlayer() {
-		return 0;
-	}
-	virtual void Interact(Character*);
-	virtual void Draw(Map*,int);
+	virtual void Interact(Main_character*);
 	virtual void Load(std::ifstream&,Map[],Item**);
+	void Draw(Map*, int);
 	void Dialogue();
 	std::string GetName();
 	int CheckNPC(COORD, int);
@@ -145,9 +148,9 @@ class Vendor : public NPC
 	friend class Game;
 public:
 	void Load(std::ifstream&, Map[], Item**);
-	void BuySell(Character*);
+	void BuySell(Main_character*);
 	void Display_inventories(Character*);
-	void Interact(Character*);
+	void Interact(Main_character*);
 	void Draw(Map*, int);
 };
 #endif
