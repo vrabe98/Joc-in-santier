@@ -33,7 +33,7 @@ class Character
 {
 	friend class Game;
 protected:
-	int inventory_size, strength, dexterity, constitution, charisma, armor, damage_bonus;	//for npcs, inventory_size is auxiliary in the loading process
+	int inventory_size, strength, dexterity, constitution, charisma, armor, damage_bonus,level;	//for npcs, inventory_size is auxiliary in the loading process
 	float hp;
 	std::string name;
 	COORD coordonate;
@@ -98,6 +98,7 @@ class Main_character :public Character {
 	float currency;
 	Quest* qlist[MAX_QUESTS];		//quest list;
 public:
+	void Character_creation();
 	void Set_map_change_attempt() {
 		map_change_attempt = 1;
 	}
@@ -107,7 +108,7 @@ public:
 	void Move();
 	void Interact_NPC(COORD);
 	void Change_map(Map*, COORD);
-	void Draw(Map*,int);
+	void Draw(Map* mapa=nullptr, int style=NULL);
 	inline void Pay(float price) {
 		currency -= price;
 	}
@@ -118,7 +119,7 @@ public:
 		qlist[num_quests] = q;
 		num_quests++;
 	}
-	Main_character(int, int, Map*, int, int, int, int, int, float, std::string, Item**, int);
+	Main_character(int, int, Map*, int, float,Item**, int);
 };
 
 class NPC :public Character

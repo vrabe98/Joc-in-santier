@@ -62,9 +62,9 @@ void Container::Draw() {
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(consola, &info_consola);
 	SetConsoleCursorPosition(consola, coordonate);
-	WriteOneCharConsole(coordonate, 'O', obj_ID + 1);
+	WriteOneCharConsole(coordonate, '0', obj_ID + 1);
 	SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
-	WriteOneCharConsole(info_consola.dwCursorPosition, 'O', obj_ID + 1);
+	WriteOneCharConsole(info_consola.dwCursorPosition, '0', obj_ID + 1);
 	info_consola.dwCursorPosition.X++;
 	SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
 	std::cout << " - " + name << "\n";

@@ -98,3 +98,6 @@
 0.034-02.11.2019:
 *Am refacut ierarhia de clase pentru caractere: acum NPC-urile nu mai sunt un fel de caracter principal!
 *Am inceput sa pregatesc terenul pentru character customization.
+
+0.035-03.11.2019:
+*Primul stadiu al lucrarilor pentru implementarea character customization e gata! Acum poti selecta la inceput pe care stats vrei sa pui 5 puncte libere!

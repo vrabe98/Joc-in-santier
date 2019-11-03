@@ -30,9 +30,8 @@ void Game::Load_maps(std::ifstream& map_stream) {
 }
 
 void Game::Load_MainCharacter(std::ifstream& character_stream) {
-	int map_id = 0, x = 0, y = 0, inventory_size = 0, str = 10,dex=10,con=10,cha=10,num_items=0;
+	int map_id = 0, x = 0, y = 0, inventory_size = 0, num_items=0;
 	float currency = 0.0;
-	char name[100];
 	Item* inventory[MAX_ITEMS];
 	std::string aux;
 	getline(character_stream, aux, '\n');
@@ -64,11 +63,8 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 			inventory[num_items-1] = item_db[id];
 		}
 	}
-	printf("What's your name? ");
-	std::cin.ignore(INT_MAX, '\n');
-	std::cin.getline(name,100);
-	std::string nume(name);
-	main_character = new Main_character(x, y, &maps[map_id],inventory_size,str,dex,con,cha,currency,nume,inventory,num_items);
+	main_character = new Main_character(x, y, &maps[map_id],inventory_size,currency,inventory,num_items);
+	main_character->Character_creation();
 }
 
 void Game::Load_connections(std::ifstream& conn_stream) {
@@ -249,10 +245,11 @@ void Game::Play() {
 	while (1) {
 		fflush(stdin);
 		main_character->RefreshQuests();
-		main_character->Draw(nullptr,NULL);
+		main_character->Draw();
 		for (int i = 0; i < num_chars+num_vendors; i++) {
 			npcs[i]->Draw(main_character->current_map,i+1);
 		}
+		Sleep(40);
 		printf(" ");
 		main_character->Move();
 	}
@@ -344,8 +341,6 @@ void Game::Set_flag(Quest_flag flag_unset){
 		unclaimed_flags[flag_unset.Get_name()] = flag_unset;
 	}
 	else {
-		Quest_flag found = iter->second;
-		found.Increment_counter();
-		unclaimed_flags[found.Get_name()] = found;
+		iter->second.Increment_counter();
 	}
 }

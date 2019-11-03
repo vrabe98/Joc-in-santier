@@ -30,11 +30,10 @@ char GetConsoleChar(COORD coord) {
 	return buffer->Char.AsciiChar;
 }
 
-void Main_character::Draw(Map* mapa=nullptr,int style=0) {								//function draws both the character and the current map
+void Main_character::Draw(Map* mapa,int style) {								//function draws both the character and the current map
 	CONSOLE_SCREEN_BUFFER_INFO info_consola;
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (map_change_attempt) system("cls");
-	Sleep(40);
 	current_map->Draw();									//drawing the current map;
 	GetConsoleScreenBufferInfo(consola, &info_consola);	//this sequence draws the character with another color than the map
 	SetConsoleCursorPosition(consola, coordonate);
@@ -94,7 +93,11 @@ void Character::ShowStats() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 	std::cout << "\n-------------------------------------------\n\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
-	std::cout << "Strength:\n";
+	std::cout << "Level:\n";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << level;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "\nStrength:\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	std::cout << strength;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
@@ -303,12 +306,61 @@ void Character::Interact_container(COORD new_coord) {
 	else if (opt == 'f') {
 		while (1) {
 			Item* item = (current_map->Get_obj(new_coord))->Interact();
-			AddToInventory(item);
+			if (item) {
+				AddToInventory(item);
+			}
+			else return;
 		}
 	}
 	else if (opt == 'x') {
 		system("cls");
 		return;
+	}
+}
+
+void Main_character::Character_creation() {
+	CONSOLE_SCREEN_BUFFER_INFO info_consola;
+	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
+	char nume[100];
+	int spare_points = 5;
+	std::string aux;
+	std::cout<<"What's your name? ";
+	std::cin.ignore(INT_MAX, '\n');
+	std::cin.getline(nume, 100);
+	name = std::string(nume);
+	std::cout << "\n";
+	std::cout << "Stat descriptions: " << "\n";
+	std::cout << "1.Strength: Increases damage dealt to enemies. Increases health points slightly.\n";
+	std::cout << "2.Dexterity: Increases the chance to hit an enemy. Decreases the chance that an enemy will hit you. Increases critical hit chance.\n";
+	std::cout << "3.Constitution: Increases health points.\n";
+	std::cout << "4.Charisma: Affects vendor prices favourably.\n";
+	GetConsoleScreenBufferInfo(consola, &info_consola);
+	while (spare_points) {
+		std::cout << "Current stats: \n\n";
+		std::cout << "Strength: " << strength<<"\n";
+		std::cout << "Dexterity: " << dexterity << "\n";
+		std::cout << "Constitution: " << constitution << "\n";
+		std::cout << "Charisma: " << charisma << "\n\n";
+		std::cout << "Points left to spend on stats: " << spare_points << "\n";
+		std::cout << "Where do you want to spend points? (1 point at a time, STR/DEX/CON/CHA) ";
+		std::cin >> aux;
+		if (aux == "STR") {
+			strength++;
+			spare_points--;
+		}
+		else if (aux == "DEX") {
+			dexterity++;
+			spare_points--;
+		}
+		else if (aux == "CON") {
+			constitution++;
+			spare_points--;
+		}
+		else if (aux == "CHA") {
+			charisma++;
+			spare_points--;
+		}
+		SetConsoleCursorPosition(consola, info_consola.dwCursorPosition);
 	}
 }
 
@@ -437,18 +489,13 @@ void Main_character::Change_map(Map* map,COORD coord) {
 	coordonate = coord;
 }
 
-Main_character::Main_character(int x, int y,Map* starting_map,int inv_size,int str,int dex,int con,int cha,float currency,std::string nume,Item** inventory_copy,int items) {
+Main_character::Main_character(int x, int y,Map* starting_map,int inv_size,float currency,Item** inventory_copy,int items) {
 	coordonate.X = x;
 	coordonate.Y = y;
 	current_map = starting_map;
 	inventory_size = inv_size;
-	strength = str;
-	dexterity = dex;
-	constitution = con;
-	charisma = cha;
 	this->currency = currency;
 	map_change_attempt = 1;
-	name = nume;
 	for (int i = 0; i < NUM_SLOTS; i++) {
 		equipped_items[i] = nullptr;
 	}
@@ -520,7 +567,13 @@ float Character::GetEvasion() {
 	return 0.5f * (dexterity-10.0f)+noshield_bonus*0.5f;
 }
 
-Character::Character(){}
+Character::Character() {
+	level = 1;
+	strength = 10;
+	dexterity = 10;
+	charisma = 10;
+	constitution = 10;
+}
 NPC::NPC() {
 	root = nullptr;
 }
