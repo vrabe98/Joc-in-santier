@@ -12,6 +12,7 @@
 #include "Character.h"
 #include "Item.h"
 #include "Quest.h"
+#include "Music.h"
 
 class Character;
 class Main_character;
@@ -41,7 +42,7 @@ public:
 	}
 	void Set_flag(Quest_flag);
 	void Splash(std::string);
-	void Menu(std::string, std::string, std::string, std::string, std::string, std::string, std::string,std::string,std::string,std::string);
+	void Menu(std::string, std::string, std::string, std::string, std::string, std::string, std::string,std::string,std::string);
 	void Enter_connection();
 	Connection Search(COORD ,int);
 	int Check_NPC(int, std::string);

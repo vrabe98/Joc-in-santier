@@ -127,7 +127,7 @@ void Character::ShowStats() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
 	std::cout << "\nArmor:\n";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	std::cout << armor;
+	std::cout << armor<<"\n";
 	std::cout << "Press any key to continue...";
 	std::cin.ignore();
 	std::cin.get();
@@ -455,6 +455,9 @@ void Main_character::Move() {
 	}
 	else if (GetAsyncKeyState(0x51) & (1 << 16)) {			//if the K key is pressed
 		Quest_screen();
+	}
+	else if (GetAsyncKeyState(0x4D) & (1 << 16)) {			//if the K key is pressed
+		ListSongs();
 	}
 	else if (GetAsyncKeyState(VK_UP) & (1 << 16)) {			//if the UP arrow key is pressed
 		new_coord.Y-=1;

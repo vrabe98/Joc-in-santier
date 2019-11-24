@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Windows.h>
+#include "Music.h"
 #include "Game.h"
 
 Game game;
@@ -44,8 +45,8 @@ std::string WordWrap(std::string text,int padding) {						/*Introduce spatii sup
 	return text;
 }
 
-int main() {
+int main(int argc,char* argv[]) {
 	game.Splash("Splash.txt");
 	std::cin.get();
-	game.Menu("Maps.txt", "Character.txt", "Connections.txt", "Objects.txt", "NPC.txt", "Item_DB.txt", "Dialogues.txt","Vendors.txt","Music.txt","Quests.txt");
+	game.Menu("Maps.txt", "Character.txt", "Connections.txt", "Objects.txt", "NPC.txt", "Item_DB.txt", "Dialogues.txt","Vendors.txt","Quests.txt");
 }

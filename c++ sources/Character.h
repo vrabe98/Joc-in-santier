@@ -21,6 +21,7 @@
 #include "Game.h"
 #include "Combat.h"
 #include "Quest.h"
+#include "Music.h"
 
 class Map;
 

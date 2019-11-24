@@ -101,3 +101,6 @@
 
 0.035-03.11.2019:
 *Primul stadiu al lucrarilor pentru implementarea character customization e gata! Acum poti selecta la inceput pe care stats vrei sa pui 5 puncte libere!
+
+0.036-24.11.2019:
+*Se poate alege melodia din fundal in aproape orice moment

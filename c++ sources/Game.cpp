@@ -302,7 +302,7 @@ void Game::Splash(std::string splashscreen_file) {
 	std::cout << splash;
 }
 
-void Game::Menu(std::string maps_file, std::string character_file, std::string conn_file, std::string obj_file, std::string npc_file, std::string item_db_file, std::string dialogue_file,std::string vendor_file,std::string music_file,std::string quest_file) {
+void Game::Menu(std::string maps_file, std::string character_file, std::string conn_file, std::string obj_file, std::string npc_file, std::string item_db_file, std::string dialogue_file,std::string vendor_file,std::string quest_file) {
 	int opt;
 	system("cls");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
@@ -325,11 +325,8 @@ void Game::Menu(std::string maps_file, std::string character_file, std::string c
 	std::cout << "Ce alegi? ";
 	std::cin >> opt;
 	if (opt == 1) {
-		std::string music;
-		std::ifstream mus(music_file, std::ifstream::in);
 		Load(maps_file,character_file,conn_file,obj_file,npc_file,item_db_file,dialogue_file,vendor_file,quest_file);
-		getline(mus, music, '\n');
-		PlaySound(TEXT(music.c_str()), NULL, SND_FILENAME|SND_ASYNC);
+		ListSongs();
 		Play();
 	}
 	else return;
