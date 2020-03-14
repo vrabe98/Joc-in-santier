@@ -3,11 +3,11 @@ Name
 Description	-one line
 Number of objectived
 "OBJECTIVES:"	-mandatory string
+Objective 1 description
 Objective 1 number_of_flags
 <list of flags, only the names, followed by the needed counter,separated by newline>
-Objective 1 description
 ;;
-Objective 2 number_of_flags
+Objective 2 description
 .
 .
 .

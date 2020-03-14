@@ -15,7 +15,7 @@ char GetConsoleChar(COORD coord) {
 	SMALL_RECT rect;
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	PCHAR_INFO buffer=(PCHAR_INFO)malloc(1*sizeof(CHAR_INFO));
-	COORD buffer_size,position;
+	COORD buffer_size, position;
 	if (!buffer) {
 		printf("Dynamic allocation error!");
 		exit(1);
@@ -374,6 +374,7 @@ void NPC::Dialogue() {
 
 void NPC::Interact(Main_character* mainchar) {
 	char opt;
+	std::cin.clear();
 	system("cls");
 	std::cout << "Do you want to talk to " << name << " or see his stats, or even see the items he has on? Or maybe you want to fight?" << "\n(t/s/i/f/x-exit)";
 	std::cin >> opt;
@@ -560,7 +561,7 @@ void Character::GetDamaged(float enemy_damage,Character* enemy,int riposte,int c
 
 int Character::Has1h() {
 	if (equipped_items[RHAND] == nullptr||(!equipped_items[RHAND]->Is2h())) return 1;
-	if (equipped_items[RHAND]->Is2h()) return 0;
+	else if (equipped_items[RHAND]->Is2h()) return 0;
 }
 
 float Character::GetEvasion() {
@@ -626,6 +627,7 @@ void Vendor::Load(std::ifstream& vendor_str, Map maps[], Item** database) {
 void NPC::Load(std::ifstream& npc_str,Map maps[],Item** database) {
 	std::string aux;
 	int map_ID;
+	death_flag = new Quest_flag;
 	npc_str >> map_ID;
 	current_map = &maps[map_ID];
 	npc_str >> coordonate.X >> coordonate.Y;
@@ -709,6 +711,7 @@ void NPC::Load(std::ifstream& npc_str,Map maps[],Item** database) {
 			}
 		}
 	}
+	death_flag->Load(npc_str);
 	npc_str.ignore();
 	getline(npc_str,name, '\n');
 	npc_str >> aux;

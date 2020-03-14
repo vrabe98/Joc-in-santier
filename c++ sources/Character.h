@@ -127,7 +127,7 @@ class NPC :public Character
 {
 	friend class Game;
 	DialogueState* root;
-	Quest_flag death_flag;	//flag is set by killing the NPC
+	Quest_flag* death_flag;	//flag is set by killing the NPC, vendors don't use it since you can't kill them
 public:
 	NPC();
 	virtual void Interact(Main_character*);

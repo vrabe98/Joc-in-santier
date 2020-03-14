@@ -9,6 +9,7 @@ CHA (0-20) -charisma
 "Items:" -mandatory text
 Number of equipped items
 *Equipped items list* (if more items per one slot, an error will be signalled)
+*Death Flag* *flag count (should be 1)*
 Name
 ;;
 5
@@ -24,6 +25,7 @@ CHA 10
 Items:
 3
 1 3 7
+dragomir_killed 1
 Toma Leonida Dragomir
 ;;
 1
@@ -37,6 +39,7 @@ CHA 10
 Items:
 2
 8 9
+greconici_killed 1
 Marian Greconici
 ;;
 2
@@ -50,6 +53,7 @@ CHA 10
 Items:
 2
 0 9
+zaharie_killed 1
 Ioan Zaharie
 ;;
 3
@@ -62,6 +66,7 @@ CON 10
 CHA 10
 Items:
 0
+cismas_killed 1
 Emanuel Cismas
 ;;
 4
@@ -74,5 +79,6 @@ CON 10
 CHA 10
 Items:
 0
+karoly_killed 1
 Karoly si cam atat mai stii din numele lui
 ;;

@@ -116,7 +116,7 @@ void Game::Load_objects(std::ifstream& obj_stream) {
 
 void Game::Load_npcs(std::ifstream& npc_stream) {
 	std::string aux;
-	for (int i = 0; i < 13; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 14; i++) {				//skip file format specifiers at the top
 		getline(npc_stream, aux, '\n');
 	}
 	npc_stream >> num_chars;

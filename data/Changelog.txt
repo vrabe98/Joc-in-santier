@@ -1,0 +1,110 @@
+0.001-4.07.2019:
+*Se poate incarca o harta dintr-un fisier, pe care o pot afisa in consola.
+
+0.002-5.07.2019:
+*S-a nascut un caracter!
+*Caracterul nu mai e lenes si se poate misca.
+*Nu mai poti trece prin ziduri.
+
+0.003-6.07.2019:
+*Structura aplicatiei a fost schimbata, acum totul e impachetat intr-o clasa "Game".
+*Se pot incarca harti multiple.
+*Au fost implementate structurile fisierelor txt.
+*Acum nu mai poti parasi aceasta lume.
+
+0.004-6.07.2019:
+*Poti calatori!
+
+0.005-7.07.2019:
+*Mapele au obiecte.
+
+0.006-9.07.2019:
+*Am implementat o baza pentru NPCs, deocamdata sunt tot ca niste obiecte, sry.
+
+0.007-10.07.2019:
+*Am optimizat afisarea mapei, acum totul e smooth as butter.
+
+0.008-11.07.2019:
+*Am inceput sa implementez un sistem pentru iteme si inventare+containere pentru iteme.
+*Is lenes, o sa mai dureze...
+
+0.009-31.07.2019:
+*Am extins sistemul de iteme, am adaugat 3 tipuri de iteme, cu caracteristici provizorii, dar corespunzatoare: armuri, arme si iteme generice (nici armuri, nici arme, a.k.a. iteme ce nu pot fi echipate)
+*Am reusit sa incarc baza de date cu cateva iteme, merge :)
+
+0.010-1.08.2019:
+*Unele functii au fost facute inline, nicio alta schimbare
+
+0.011-2.08.2019:
+*Am adaugat, intr-un final, la inceputul fisierelor, o sectiune cu formatul lor.
+
+0.012-4.08.2019:
+*...Iar in a 31-a zi, Vrabie a creat itemele si le-a pus pe Pamant.
+*Tot in a 31-a zi, Vrabie a creat proprietatea personala, iar itemele pot ajunge in posesia sa.
+
+0.013-5.08.2019:
+*Acum poti depozita fara griji iteme in containere.
+
+0.020-17.08.2019:
+*Caracterul nu mai e mut. A invatat sa vorbeasca. I-a luat ceva timp, e lenes...
+
+0.021-23.08.2019:
+*Cosmetic stuff + un minunat splash screen!
+
+0.021-24.08.2019:
+*Acelasi joc depresiv, acum si cu o manea in fundal pe care sa-ti ineci amarul!
+*Am inceput lucrul la sistemul de combat, deocamdata poti echipa iteme
+
+0.022-25.08.2019:
+*Poti dezechipa iteme
+*Caracterul are stats
+
+0.023-26.08.2019:
+*Nu mai trebuie sa inchizi containerele sau inventarul daca mai ai treaba cu ele!
+
+0.024-3.09.2019:
+*Acum poti incepe jocul cu iteme in inventar! (+cateva alte schimbari de care nu-mi mai aduc aminte)
+
+0.025-4.09.2019:
+*NPC-ii pot incepe jocul cu iteme echipate! Mai putin si vor prinde putere!
+
+0.026-7.09.2019:
+*NPC-ii nu mai sunt oameni de nimic si au propriile stats!
+
+0.027-11.09.2019:
+*Te poti bate cu cine vrea sufletu tau!
+
+0.028-11.09.2019:
+*Am adaugat daune pt pumni, in caz ca nu ai arme echipate.
+
+0.029-12.09.2019:
+*Am adaugat scuturi.
+*Am reparat unele buguri.
+
+0.030-22.09.2019:
+*Am bagat dual wielding
+*Am bagat arme pt 2 maini
+
+0.031-26.09.2019:
+*Acum poti cumpara ce vrea sufletul tau de la noii bisnitari!
+
+0.032-9.10.2019:
+*Acum poti face diverse treburi!
+*Am implementat o prima versiune a sistemului de questuri
+
+0.033-26.10.2019:
+*Am implementat quest chains.
+
+0.034-02.11.2019:
+*Am refacut ierarhia de clase pentru caractere: acum NPC-urile nu mai sunt un fel de caracter principal!
+*Am inceput sa pregatesc terenul pentru character customization.
+
+0.035-03.11.2019:
+*Primul stadiu al lucrarilor pentru implementarea character customization e gata! Acum poti selecta la inceput pe care stats vrei sa pui 5 puncte libere!
+
+0.036-24.11.2019:
+*Se poate alege melodia din fundal in aproape orice moment
+
+0.037-14.03.2020:
+*Ah ce frumos, viitorul luminos
+*M-am reapucat de joc, am inceput oarecum sa implementez questurile bazate pe omorarea de NPCs
