@@ -26,6 +26,7 @@ void Quest_objective::Load(std::ifstream& qstream) {
 
 void Generic_quest::Load(std::ifstream& qstream) {
 	std::string aux;
+	qstream >> aux;
 	qstream.ignore();
 	getline(qstream, name, '\n');
 	getline(qstream, description, '\n');
@@ -38,13 +39,13 @@ void Generic_quest::Load(std::ifstream& qstream) {
 		}
 	}
 	else {
-		std::cout << "Quest/dialogue file corrupted!";
+		std::cout << "Quest file corrupted!";
 		exit(1);
 	}
 	qstream >> aux;
 	if (aux != ";;") {
-		std::cout << "Quest/dialogue file corrupted!";
-		exit(1);
+		std::cout << "Quest file corrupted!";
+		exit(2);
 	}
 }
 
@@ -132,19 +133,29 @@ void Generic_quest::Refresh() {
 }
 
 void Chain_quest::Load(std::ifstream& qstream) {
-	Generic_quest::Load(qstream);
-	Quest* q;
 	std::string aux;
 	qstream >> aux;
-	if (aux == "Generic") {
-		q = new Generic_quest;
+	qstream.ignore();
+	getline(qstream, name, '\n');
+	getline(qstream, description, '\n');
+	qstream >> nextquest_id;
+	qstream >> num_objectives;
+	qstream >> aux;
+	if (aux == "OBJECTIVES:") {
+		for (int i = 0; i < num_objectives; i++) {
+			objectives[i] = new Quest_objective();
+			objectives[i]->Load(qstream);
+		}
 	}
-	else if (aux == "Chain") {
-		q = new Chain_quest;
+	else {
+		std::cout << "Quest file corrupted!";
+		exit(1);
 	}
-	else q = new Generic_quest();
-	q->Load(qstream);
-	nextquest = q;
+	qstream >> aux;
+	if (aux != ";;") {
+		std::cout << "Quest file corrupted!";
+		exit(2);
+	}
 }
 
 void Chain_quest::Refresh() {
@@ -158,8 +169,8 @@ void Chain_quest::Refresh() {
 		}
 		if (done == 1) {
 			status = FINISHED;
-			nextquest->Take();
-			game.Get_main_char()->Add_quest(nextquest);
+			game.Get_quest_by_ID(nextquest_id)->Take();
+			game.Get_main_char()->Add_quest(game.Get_quest_by_ID(nextquest_id));
 		}
 	}
 }

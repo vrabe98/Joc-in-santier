@@ -108,3 +108,6 @@
 0.037-14.03.2020:
 *Ah ce frumos, viitorul luminos
 *M-am reapucat de joc, am inceput oarecum sa implementez questurile bazate pe omorarea de NPCs
+
+0.038-15.03.2020:
+*Toate questurile stau acum intr-o baza de date si sunt incarcate, frumos, la inceputul jocului.

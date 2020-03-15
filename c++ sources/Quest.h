@@ -13,12 +13,15 @@
 #define MAX_OBJECTIVES 100
 
 class Quest_flag {
-	int counter;
+	int counter, id;
 	std::string name;
 public:
 	Quest_flag();
 	void Refresh();
 	void Load(std::ifstream&);
+	inline int Get_ID() {
+		return id;
+	}
 	inline std::string Get_name() {
 		return name;
 	}
@@ -67,7 +70,7 @@ public:
 };
 
 class Chain_quest:public Generic_quest {
-	Quest* nextquest;
+	int nextquest_id;
 public:
 	void Load(std::ifstream&);
 	void Refresh();

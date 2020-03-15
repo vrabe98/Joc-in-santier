@@ -1,7 +1,11 @@
-Type ("Generic", "Chain", "Umbrella") -for chain quests, the next quest has to be the nxt one in the file
+Number of quests
+;;	-separator
+Type ("Generic", "Chain", "Umbrella")
+Quest ID (has to be incremental, starts at 0)
 Name
 Description	-one line
-Number of objectived
+ID of next quest in chain !! ONLY FOR CHAIN QUESTS !!
+Number of objectives
 "OBJECTIVES:"	-mandatory string
 Objective 1 description
 Objective 1 number_of_flags
@@ -12,9 +16,13 @@ Objective 2 description
 .
 .
 ;;	-end of format specifications (they apply to dialogues as well)
+2
+;;
 Chain
+0
 Inceputuri
 Cum ai ajuns aici? Nici tu nu stii... Ai auzit tu ca se castiga biiine de tot in IT. Ai mai auzit ca la CTI se face soft, la IS hard. De Info n-ai auzit nimic, nici nu stiai ca exista pana la formularul de admitere. Ai mai aruncat o privire pe google, sa vezi ce e de capul facultatii asteia. "Hmm...IS...roboti...hmmm...da" au fost singurele tale ganduri legate de alegerea specializarii. Ce-o fi o fi, acuma, aia e. E prima zi de facultate... ai seminar de algebra la SPM, nici nu stii unde e. Te plimbi in stanga si in dreapta pe coridoarele facultatii, pierdut. Trebuie, totusi, sa ajungi la SPM. E fara un sfert deja...
+1
 1
 OBJECTIVES:
 Gaseste-l pe Cismas.
@@ -22,6 +30,7 @@ Gaseste-l pe Cismas.
 cismas_found 1
 ;;
 Generic
+1
 Primul seminar
 Prima zi de faculta nu a inceput prea bine. Pe langa faptul ca la intrarea in SPM te-a izbit un miros de spital, era sa te impiedici si sa mori de cateva ori pe scarile de inaltime neregulata. Asta este, ai ras si tu, au ras si ceilalti cu care veneai la prima ta intalnire mai serioasa cu facultatea. Seminarul de Algebra in sine a inceput ok. Cismas a rugat pe fiecare sa se prezinte... stii si tu, lucrurile de rutina pentru prima zi. Ai incercat sa fii cat mai sincer cu prezentarea "calitatilor": i-ai zis pe fata ca esti lenes. Evident ca a urmat o scurta cuvantare despre treaba asta din partea lui Cismas... A iesit bine intr-un final, ti-ai zis tu. In continuare, Cismas a facut o mica introducere in materia care-ti va manca cel mai mult timp in sesiune si chiar inainte de ea. Frumos, ce sa mai zici... Vectori, matrici, chestii faine... Acum, ca seminarul s-a terminat, mai ai treaba pe la facultate: laboratorul de FIMR. Nu mai stii ce inseamna, nu stii unde se tine, dar e bine, iti spui tu. Te iei pur si simplu dupa ceilalti, nu? Unde merg ei trebuie sa mergi si tu...
 1

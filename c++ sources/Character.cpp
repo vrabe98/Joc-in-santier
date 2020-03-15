@@ -493,7 +493,7 @@ void Main_character::Change_map(Map* map,COORD coord) {
 	coordonate = coord;
 }
 
-Main_character::Main_character(int x, int y,Map* starting_map,int inv_size,float currency,Item** inventory_copy,int items) {
+Main_character::Main_character(int x, int y,Map* starting_map,int inv_size,float currency,Item** inventory_copy,int items,Quest* startquest) {
 	coordonate.X = x;
 	coordonate.Y = y;
 	current_map = starting_map;
@@ -510,6 +510,8 @@ Main_character::Main_character(int x, int y,Map* starting_map,int inv_size,float
 	num_quests = 0;
 	RefreshArmor();
 	RefreshHP();
+	startquest->Take();
+	Add_quest(startquest);
 }
 
 void Character::GetDamaged(float enemy_damage,Character* enemy,int riposte,int critted) {
@@ -835,20 +837,4 @@ void Main_character::RefreshQuests() {
 	for (int i = 0; i < num_quests; i++) {
 		qlist[i]->Refresh();
 	}
-}
-
-void Main_character::Load_startquest(std::ifstream& qstream) {
-	std::string aux;
-	Quest* q;
-	qstream >> aux;
-	if (aux == "Generic") {
-		q = new Generic_quest();
-	}
-	else if (aux == "Chain") {
-		q = new Chain_quest();
-	}
-	else q = new Generic_quest();
-	q->Load(qstream);
-	q->Take();
-	Add_quest(q);
 }

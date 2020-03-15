@@ -103,7 +103,6 @@ public:
 	void Set_map_change_attempt() {
 		map_change_attempt = 1;
 	}
-	void Load_startquest(std::ifstream&);
 	void RefreshQuests();
 	void Quest_screen();
 	void Move();
@@ -120,7 +119,7 @@ public:
 		qlist[num_quests] = q;
 		num_quests++;
 	}
-	Main_character(int, int, Map*, int, float,Item**, int);
+	Main_character(int, int, Map*, int, float,Item**, int,Quest*);
 };
 
 class NPC :public Character

@@ -30,7 +30,7 @@ void Game::Load_maps(std::ifstream& map_stream) {
 }
 
 void Game::Load_MainCharacter(std::ifstream& character_stream) {
-	int map_id = 0, x = 0, y = 0, inventory_size = 0, num_items=0;
+	int map_id = 0, x = 0, y = 0, inventory_size = 0, num_items = 0, startquest=0;
 	float currency = 0.0;
 	Item* inventory[MAX_ITEMS];
 	std::string aux;
@@ -55,6 +55,11 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 	}
 	character_stream.ignore();
 	getline(character_stream, aux, '\n');
+	if (aux == "Start quest ID:") {
+		character_stream >> startquest;
+	}
+	character_stream.ignore();
+	getline(character_stream, aux, '\n');
 	if (aux == "Items:") {
 		while (!character_stream.eof()) {
 			int id;
@@ -63,7 +68,7 @@ void Game::Load_MainCharacter(std::ifstream& character_stream) {
 			inventory[num_items-1] = item_db[id];
 		}
 	}
-	main_character = new Main_character(x, y, &maps[map_id],inventory_size,currency,inventory,num_items);
+	main_character = new Main_character(x, y, &maps[map_id],inventory_size,currency,inventory,num_items,Get_quest_by_ID(startquest));
 	main_character->Character_creation();
 }
 
@@ -212,15 +217,30 @@ void Game::Load_dialogues(std::ifstream& dialogue_stream) {
 	}
 }
 
-void Game::Load_start_quest(std::ifstream& quest_stream) {
+void Game::Load_quests(std::ifstream& quest_stream) {
 	std::string aux;
-	for (int i = 0; i < 14; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 18; i++) {				//skip file format specifiers at the top
 		getline(quest_stream, aux, '\n');
 	}
-	main_character->Load_startquest(quest_stream);
+	quest_stream >> num_quests;
+	quest_stream >> aux;
+	for (int i = 0; i < num_quests; i++) {
+		quest_stream >> aux;
+		if (aux == "Generic") {
+			quest_db[i] = new Generic_quest();
+			quest_db[i]->Load(quest_stream);
+		}
+		else if (aux == "Chain") {
+			quest_db[i] = new Chain_quest();
+			quest_db[i]->Load(quest_stream);
+		}
+		else if (aux == "Umbrella") {
+			//umbrella quests not implemented yet
+		}
+	}
 }
 
-void Game::Load(std::string maps_file, std::string character_file,std::string conn_file,std::string obj_file,std::string npc_file,std::string item_db_file,std::string dialogue_file,std::string vendor_file,std::string startquest_file) {
+void Game::Load(std::string maps_file, std::string character_file,std::string conn_file,std::string obj_file,std::string npc_file,std::string item_db_file,std::string dialogue_file,std::string vendor_file,std::string quest_file) {
 	std::ifstream map_stream(maps_file, std::ifstream::in);
 	std::ifstream character_stream(character_file, std::ifstream::in);
 	std::ifstream connections_stream(conn_file, std::ifstream::in);
@@ -229,16 +249,16 @@ void Game::Load(std::string maps_file, std::string character_file,std::string co
 	std::ifstream item_db_stream(item_db_file, std::ifstream::in);
 	std::ifstream dialogue_stream(dialogue_file, std::ifstream::in);
 	std::ifstream vendor_stream(vendor_file, std::ifstream::in);
-	std::ifstream startquest_stream(startquest_file, std::ifstream::in);
+	std::ifstream quest_stream(quest_file, std::ifstream::in);
 	Load_maps(map_stream);
 	Load_item_db(item_db_stream);
+	Load_quests(quest_stream);		//loads the starting quest
 	Load_objects(objects_stream);
 	Load_MainCharacter(character_stream);
 	Load_connections(connections_stream);
 	Load_npcs(npc_stream);
 	Load_vendors(vendor_stream);
 	Load_dialogues(dialogue_stream);
-	Load_start_quest(startquest_stream);		//loads the starting quest
 }
 
 void Game::Play() {
