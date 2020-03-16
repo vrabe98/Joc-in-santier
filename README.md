@@ -5,8 +5,6 @@
   Proiectul in sine consta in cateva fisiere .cpp si .h, ce pot fi compilate fara nicio problema, no special tricks. Doar se importa fisierele .cpp si .h intr-un mediu de dezvoltare si se build-uie. That's all. No tird party libraries.
   
   ## Planuri de viitor
-  Vreau, in viitor, sa creez un sistem de quest-uri bazat pe niste flag-uri setate de diverse actiuni, cum ar fi omorarea unui NPC sau "animal", atingerea unui anumit nivel, aducerea in inventarul propriu a unor anumite iteme, atingerea unui anumit stadiu intr-un dialog. De asemenea, vor exista si flaguri de control, ce vor lasa flagurile ce depind de ele sa poata fi setate. In absenta tuturor flagurilor de control de care depinde, un flag principal nu va putea fi setat.
-  
-  Am implementat un sistem de dialoguri si un sistem rudimentar de combat. Pot trece la questuri.
+  Vreau, in viitor, sa extind sistemul de questuri cu questuri umbrela (questuri ale caror finalizare depinde de finalizarea mai multor questuri mai "mici"), questuri de gathering, questuri date prin dialog si questuri de omorare a unor inamici (bosi sau mai multi inamici mai slabi).
 	
-  Dupa ce engine-ul e "terminat" ca si schelet-caci toate feature-urile pot fi imbunatatite si extinse- voi trece la crearea de continut.
+  Dupa ce engine-ul e "terminat" in mare, voi trece la crearea de continut.
