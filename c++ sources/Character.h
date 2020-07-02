@@ -97,7 +97,7 @@ public:
 class Main_character :public Character {
 	int map_change_attempt, num_quests;
 	float currency;
-	Quest* qlist[MAX_QUESTS];		//quest list;
+	Quest* qlist[MAX_QUESTS];		//quest list, the quests are taken from a 'database' of sorts;
 public:
 	void Character_creation();
 	void Set_map_change_attempt() {

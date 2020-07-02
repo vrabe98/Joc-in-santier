@@ -9,9 +9,8 @@
 
 class DialogueState;
 
-class DialogueOption
+struct DialogueOption
 {
-public:
 	std::string text;
 	int exit;
 	DialogueState* next;
@@ -27,7 +26,7 @@ class DialogueState
 	std::string text;
 	int num_options,num_flags;
 	Quest_flag* flags[MAX_FLAGS];		//flags that can be set by reaching the dialogue state
-	Quest* quest;						//the quest that will be started when reaching the dialogue state
+	Quest* quest;						//the quest that will be started when reaching the dialogue state, only one
 	DialogueOption* options[MAX_OPT];
 public:
 	DialogueState() {

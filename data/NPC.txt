@@ -12,7 +12,7 @@ Number of equipped items
 *Death Flag* *flag count (should be 1)*
 Name
 ;;
-5
+6
 ;;
 0
 1
@@ -81,4 +81,17 @@ Items:
 0
 karoly_killed 1
 Karoly si cam atat mai stii din numele lui
+;;
+5
+1
+4 7
+Stats:
+STR 1
+DEX 1
+CON 1
+CHA 1
+Items:
+0
+sefu_alarme_killed 1
+Sefu la alarme
 ;;

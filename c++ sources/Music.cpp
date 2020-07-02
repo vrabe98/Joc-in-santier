@@ -14,7 +14,7 @@ void ListSongs() {
 	_WIN32_FIND_DATAA* music_data=new _WIN32_FIND_DATAA;
 	HANDLE music_hnd;
 	system("cls");
-	music_hnd=FindFirstFile(TEXT("C://Users//vrabi//source//repos//Project1//Music//*.wav"), music_data);
+	music_hnd=FindFirstFile(TEXT(".//Music//*.wav"), music_data);
 	std::cout << current << ". " << music_data->cFileName<<"\n";
 	aux = ".//Music//";
 	aux.append(music_data->cFileName);

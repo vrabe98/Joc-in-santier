@@ -7,9 +7,7 @@ Dialogue state text (one line)
 Number of flags set
 "FLAGS:"
 <list of flags set by this dialogue state, delimited by a newline>
-"has_quest"/"no_quest"	-if no_quest, there will be no quest section like the one that follows
-"QUEST:"
-<structure is identical to the one detailed in the "Quests.txt" file header>
+quest/noquest <if "quest", a single quest ID will follow, on the same line>
 Number of dialogue options
 "DIALOGUE OPTIONS:"
 First option text
@@ -33,7 +31,7 @@ Toma Leonida Dragomir
 Aveti intrebari?
 0
 FLAGS:
-no_quest
+noquest
 2
 DIALOGUE OPTIONS:
 *zgomote din Iad in fundal*
@@ -44,7 +42,7 @@ DIALOGUE OPTIONS:
 *zgomote amplificate din Iad*
 0
 FLAGS:
-no_quest
+noquest
 1
 DIALOGUE OPTIONS:
 Bag pl
@@ -56,7 +54,7 @@ Marian Greconici
 Deci tu n-ai invatat!Poti sa te lasi de facultate deja.
 0
 FLAGS:
-no_quest
+noquest
 1
 DIALOGUE OPTIONS:
 Ok
@@ -68,7 +66,7 @@ Ioan Zaharie
 Barbate! Iti dau 10 de 10 tie si prietenilor tai daca imi raspunzi corect la intrebare!
 0
 FLAGS:
-no_quest
+noquest
 1
 DIALOGUE OPTIONS:
 *turn tail and run. fast*
@@ -81,7 +79,7 @@ Nu-mi place sa lucrez cu Bundau.
 1
 FLAGS:
 cismas_found 1
-no_quest
+noquest
 1
 DIALOGUE OPTIONS:
 Nici mie.
@@ -94,31 +92,43 @@ Karoly si cam atat mai stii din numele lui
 1
 FLAGS:
 catedra_mec 1
-no_quest
+noquest
 1
 DIALOGUE OPTIONS:
 Ok.
 1
 ;;
 5
+Sefu la alarme
+;;
+Asta e un subsistem de alarma nu sistem de alarma, prostilor.
+0
+FLAGS:
+noquest
+1
+DIALOGUE OPTIONS:
+Bine ca ai tu firma de sisteme de alarma...
+1
+;;
+6
 Vanzatoarea de la birtul de sub A101
 ;;
 Ce doresti?
 0
 FLAGS:
-no_quest
+noquest
 1
 DIALOGUE OPTIONS:
 Nimic, is doar in vizita.
 1
 ;;
-6
+7
 Crasmarita de peste drum
 ;;
 Ce doresti?
 0
 FLAGS:
-no_quest
+noquest
 1
 DIALOGUE OPTIONS:
 *Il vezi pe Zaharie in carciuma* Uh...ma scuzati, trebuie sa ies pana afara...

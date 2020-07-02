@@ -25,11 +25,12 @@ void DialogueState::Load(std::ifstream& stream,int j) {
 		exit(1);
 	}
 	stream >> aux;
-	if (aux == "has_quest") {
-		quest = new Generic_quest();
-		quest->Load(stream);
+	if (aux == "quest") {
+		int questid;
+		stream >> questid;
+		quest = game.Get_quest_by_ID(questid);
 	}
-	else if (aux!="no_quest"){
+	else if (aux!="noquest"){
 		printf("Dialogue file corrupted!");
 		exit(1);
 	}

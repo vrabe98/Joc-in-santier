@@ -189,19 +189,18 @@ void Game::Load_vendors(std::ifstream& vendor_str) {
 
 void Game::Load_dialogues(std::ifstream& dialogue_stream) {
 	std::string aux;
-	for (int i = 0; i < 29; i++) {				//skip file format specifiers at the top
+	for (int i = 0; i < 27; i++) {				//skip file format specifiers at the top
 		getline(dialogue_stream, aux, '\n');
 	}
 	for (int i = 0; i < num_chars+num_vendors; i++) {
 		DialogueState* root = new DialogueState;
-		std::string _aux;
 		int auxint;
 		dialogue_stream >> auxint;
 		dialogue_stream.ignore();
-		getline(dialogue_stream, _aux, '\n');
-		if (Check_NPC(auxint, _aux)) {
-			dialogue_stream >> _aux;
-			if (_aux == ";;") {
+		getline(dialogue_stream, aux, '\n');
+		if (Check_NPC(auxint, aux)) {
+			dialogue_stream >> aux;
+			if (aux == ";;") {
 				root->Load(dialogue_stream,0);
 			}
 			else {

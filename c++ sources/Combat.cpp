@@ -55,7 +55,6 @@ void Round(Character* attacker, Character* defender,int turn) {
 		dualwield--;
 	} while (dualwield);
 }
-
 int Combat(Character* me, Character* enemy) {
 	int turn_number = 0,someonedied;
 	double initiative_roll_mainchar, initiative_roll_enemy;
@@ -78,9 +77,9 @@ int Combat(Character* me, Character* enemy) {
 	someonedied = me->died() || enemy->died();
 	while(!someonedied){
 		char action;
-		std::cout << "Mai vrei sa dai cu sabia-n dusman? Sau ti-a ajuns? (a-attack/x-exit)\n";
+		std::cout << "Mai vrei sa dai cu sabia-n dujman? Sau ti-a ajuns? (a-attack/x-exit)\n";
 		std::cin >> action;
-		if (action == 'a'&&(!someonedied)) {
+		if ((action == 'a')&&(!someonedied)) {
 			turn_number++;
 			if (turn_number % 2) {
 				Round(defender, attacker, turn_number);

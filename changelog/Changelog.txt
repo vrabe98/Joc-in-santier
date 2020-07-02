@@ -111,3 +111,7 @@
 
 0.038-15.03.2020:
 *Toate questurile stau acum intr-o baza de date si sunt incarcate, frumos, la inceputul jocului.
+
+0.039?-02.07.2020:
+*Sa ma reapuc oare de joc?
+*Am bagat putin continut+alte schimbari mici de care am uitat.
