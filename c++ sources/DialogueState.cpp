@@ -14,15 +14,13 @@ void DialogueState::Load(std::ifstream& stream,int j) {
 	stream >> num_flags;
 	stream.ignore();
 	getline(stream, aux, '\n');
-	if (aux == "FLAGS:") {
-		for(int i=0;i<num_flags;i++){
-			flags[i] = new Quest_flag();
-			flags[i]->Load(stream);
-		}
-	}
-	else {
+	if (aux != "FLAGS:") {
 		printf("Dialogue file corrupted!");
 		exit(1);
+	}
+	for (int i = 0; i < num_flags; i++) {
+		flags[i] = new Quest_flag();
+		flags[i]->Load(stream);
 	}
 	stream >> aux;
 	if (aux == "quest") {
@@ -37,17 +35,15 @@ void DialogueState::Load(std::ifstream& stream,int j) {
 	stream >> num_options;
 	stream.ignore();
 	getline(stream, aux, '\n');
-	if (aux == "DIALOGUE OPTIONS:") {
-		for (int i = 0; i < num_options; i++) {
-			options[i] = new DialogueOption;
-			if (i != 0) stream.ignore();
-			getline(stream, options[i]->text);
-			stream >> options[i]->exit;
-		}
-	}
-	else {
+	if (aux != "DIALOGUE OPTIONS:") {
 		printf("Dialogue file corrupted!");
 		exit(1);
+	}
+	for (int i = 0; i < num_options; i++) {
+		options[i] = new DialogueOption;
+		if (i != 0) stream.ignore();
+		getline(stream, options[i]->text);
+		stream >> options[i]->exit;
 	}
 	stream.ignore();
 	getline(stream, aux, '\n');

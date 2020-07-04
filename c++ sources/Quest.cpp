@@ -32,15 +32,13 @@ void Generic_quest::Load(std::ifstream& qstream) {
 	getline(qstream, description, '\n');
 	qstream>>  num_objectives;
 	qstream >> aux;
-	if (aux == "OBJECTIVES:") {
-		for (int i = 0; i < num_objectives; i++) {
-			objectives[i] = new Quest_objective();
-			objectives[i]->Load(qstream);
-		}
-	}
-	else {
+	if (aux != "OBJECTIVES:") {
 		std::cout << "Quest file corrupted!";
 		exit(1);
+	}
+	for (int i = 0; i < num_objectives; i++) {
+		objectives[i] = new Quest_objective();
+		objectives[i]->Load(qstream);
 	}
 	qstream >> aux;
 	if (aux != ";;") {
@@ -141,15 +139,13 @@ void Chain_quest::Load(std::ifstream& qstream) {
 	qstream >> nextquest_id;
 	qstream >> num_objectives;
 	qstream >> aux;
-	if (aux == "OBJECTIVES:") {
-		for (int i = 0; i < num_objectives; i++) {
-			objectives[i] = new Quest_objective();
-			objectives[i]->Load(qstream);
-		}
-	}
-	else {
+	if (aux != "OBJECTIVES:") {
 		std::cout << "Quest file corrupted!";
 		exit(1);
+	}
+	for (int i = 0; i < num_objectives; i++) {
+		objectives[i] = new Quest_objective();
+		objectives[i]->Load(qstream);
 	}
 	qstream >> aux;
 	if (aux != ";;") {

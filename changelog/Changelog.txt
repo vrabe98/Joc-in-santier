@@ -115,3 +115,7 @@
 0.039?-02.07.2020:
 *Sa ma reapuc oare de joc?
 *Am bagat putin continut+alte schimbari mici de care am uitat.
+
+0.0399-04.07.2020:
+*Nu pot sa-i zic 0.040
+*Am scos cateva else-uri inutile de prin cod

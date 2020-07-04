@@ -645,52 +645,44 @@ void NPC::Load(std::ifstream& npc_str,Map maps[],Item** database) {
 			printf("NPC file corrupted! Stats order is wrong!");
 			exit(1);
 		}
+		npc_str >> stat;
+		if (stat <= 20 && stat >= 0) strength = stat;
 		else {
-			npc_str >> stat;
-			if (stat <= 20 && stat >= 0) strength = stat;
-			else {
-				printf("Wrong stat value! Stats need to be in the 0-20 range!");
-				exit(1);
-			}
+			printf("Wrong stat value! Stats need to be in the 0-20 range!");
+			exit(1);
 		}
 		npc_str >> aux;
 		if (aux != "DEX") {
 			printf("NPC file corrupted! Stats order is wrong!");
 			exit(1);
 		}
+		npc_str >> stat;
+		if (stat <= 20 && stat >= 0) dexterity = stat;
 		else {
-			npc_str >> stat;
-			if (stat <= 20 && stat >= 0) dexterity = stat;
-			else {
-				printf("Wrong stat value! Stats need to be in the 0-20 range!");
-				exit(1);
-			}
+			printf("Wrong stat value! Stats need to be in the 0-20 range!");
+			exit(1);
 		}
 		npc_str >> aux;
 		if (aux != "CON") {
 			printf("NPC file corrupted! Stats order is wrong!");
 			exit(1);
 		}
+		npc_str >> stat;
+		if (stat <= 20 && stat >= 0) constitution = stat;
 		else {
-			npc_str >> stat;
-			if (stat <= 20 && stat >= 0) constitution = stat;
-			else {
-				printf("Wrong stat value! Stats need to be in the 0-20 range!");
-				exit(1);
-			}
+			printf("Wrong stat value! Stats need to be in the 0-20 range!");
+			exit(1);
 		}
 		npc_str >> aux;
 		if (aux != "CHA") {
 			printf("NPC file corrupted! Stats order is wrong!");
 			exit(1);
 		}
+		npc_str >> stat;
+		if (stat <= 20 && stat >= 0) charisma = stat;
 		else {
-			npc_str >> stat;
-			if (stat <= 20 && stat >= 0) charisma = stat;
-			else {
-				printf("Wrong stat value! Stats need to be in the 0-20 range!");
-				exit(1);
-			}
+			printf("Wrong stat value! Stats need to be in the 0-20 range!");
+			exit(1);
 		}
 	}
 	npc_str >> aux;

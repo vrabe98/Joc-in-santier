@@ -18,7 +18,7 @@ int Compare_coord(COORD coord1, COORD coord2) {
 }
 
 std::string WordWrap(std::string text,int padding) {						/*Introduce spatii suplimentare in string, pentru ca toate cuvintele
-																sa fie afisate pe o linie fiecare, nu separate*/
+																			sa fie afisate pe o linie fiecare, nu separate*/
 	CONSOLE_SCREEN_BUFFER_INFO info_consola;
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(consola, &info_consola);
